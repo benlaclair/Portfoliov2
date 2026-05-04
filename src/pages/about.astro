@@ -1,0 +1,172 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const experience = [
+  {
+    role: 'Graphic / AI Designer',
+    org: 'Market Mentors LLC — Springfield, MA',
+    period: '2026 — Present',
+    type: 'work',
+    bullets: [
+      'Utilizing evolving Generative AI platforms for graphic, video, and web development purposes',
+      'Spearheading UX/UI redesigns for new and existing clients',
+      'Meeting social, print, and digital needs for 40+ clients',
+      'Creating design systems and atomic design standards for client branding',
+    ],
+  },
+  {
+    role: 'UX/UI Analyst, CMS Web Dev & Graphic Design Intern',
+    org: 'Metropolitan YMCA of New Jersey — Maplewood, NJ',
+    period: '2024 — 2025',
+    type: 'work',
+    bullets: [
+      'Analyzed user flow and experience on 4+ childcare and event sites',
+      'Created infographics, logos, and t-shirt designs that increased social engagement',
+      'Led creation of 2 new CMS-centered websites',
+    ],
+  },
+  {
+    role: 'Multimedia Designer & WordPress Developer',
+    org: 'The Gazelle Group — Princeton, NJ',
+    period: '2023 — 2024',
+    type: 'work',
+    bullets: [
+      'Designed branded assets for 5+ ESPN-affiliated tournaments',
+      'Created 150+ real-time social posts driving 10,000+ interactions',
+      'Built reusable Adobe components and led updates on 11 WordPress sites',
+      'Ran A/B testing on CTAs, improving click-through rates by 10%',
+    ],
+  },
+  {
+    role: 'Graphic Design Intern',
+    org: 'Sweet Sign Systems — Jackson, NJ',
+    period: '2020 — 2023',
+    type: 'work',
+    bullets: [
+      'Designed install guides for 30+ signage projects, reducing field errors',
+      'Standardized layout templates to improve consistency across 30+ designs',
+    ],
+  },
+  {
+    role: 'UX/UI Design Certificate',
+    org: 'Skillcrush Academy — Remote',
+    period: '2024 — 2025',
+    type: 'education',
+    bullets: [],
+  },
+  {
+    role: 'B.A. Design & Interactive Media',
+    org: 'Seton Hall University — South Orange, NJ',
+    period: '2018 — 2022',
+    type: 'education',
+    bullets: [],
+  },
+];
+
+const skills = [
+  { name: 'Figma', group: 'Design' },
+  { name: 'Photoshop', group: 'Design' },
+  { name: 'Illustrator', group: 'Design' },
+  { name: 'InDesign', group: 'Design' },
+  { name: 'UX Research', group: 'Strategy' },
+  { name: 'Wireframing', group: 'Strategy' },
+  { name: 'Prototyping', group: 'Strategy' },
+  { name: 'A/B Testing', group: 'Strategy' },
+  { name: 'Accessibility (WCAG)', group: 'Strategy' },
+  { name: 'HTML / CSS', group: 'Dev' },
+  { name: 'React', group: 'Dev' },
+  { name: 'Astro', group: 'Dev' },
+  { name: 'GSAP', group: 'Dev' },
+  { name: 'Google Flow', group: 'AI' },
+  { name: 'Gemini API', group: 'AI' },
+  { name: 'Claude', group: 'AI' },
+];
+---
+
+<BaseLayout title="About — Ben LaClair" description="5+ years of UX/UI and graphic design. Currently at Market Mentors LLC.">
+  <div class="px-6 md:px-12 pt-16 pb-24">
+    <div class="max-w-[1200px] mx-auto">
+
+      <!-- Header -->
+      <div class="mb-16">
+        <p class="eyebrow mb-5">About</p>
+        <h1 class="font-serif text-5xl md:text-6xl text-[var(--color-ink)] mb-8">Hey, I'm Ben.</h1>
+      </div>
+
+      <!-- Bio + Skills -->
+      <div class="grid md:grid-cols-2 gap-12 md:gap-20 mb-20">
+        <div>
+          <div class="inline-flex items-center gap-2 border border-emerald-200 bg-emerald-50 text-emerald-700 text-xs font-medium px-3 py-1.5 rounded-full mb-6">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block animate-pulse"></span>
+            Open to new opportunities
+          </div>
+          <p class="text-base text-[var(--color-ink-soft)] leading-relaxed mb-4">
+            I'm a UX/UI and Graphic Designer with <strong class="text-[var(--color-ink)]">5+ years of experience</strong> in user-centered design,
+            research-based problem solving, and web content management.
+          </p>
+          <p class="text-base text-[var(--color-ink-soft)] leading-relaxed mb-4">
+            I've designed for <strong class="text-[var(--color-ink)]">ESPN-affiliated tournaments</strong>, redesigned program sites for the
+            <strong class="text-[var(--color-ink)]">Metropolitan YMCA of NJ</strong>, and currently lead graphic and AI design work at
+            <strong class="text-[var(--color-ink)]">Market Mentors LLC</strong> — serving 40+ clients across social, print, and digital.
+          </p>
+          <p class="text-base text-[var(--color-ink-soft)] leading-relaxed mb-8">
+            I actively integrate <strong class="text-[var(--color-ink)]">Generative AI</strong> into my workflow — treating it as an opportunity
+            to push design further, faster.
+          </p>
+          <div class="flex flex-wrap gap-3">
+            <a href="/contact" class="bg-[var(--color-ink)] text-[var(--color-bg)] text-sm font-medium px-6 py-3 rounded-full hover:bg-[var(--color-pop)] transition-colors">
+              Work with me
+            </a>
+            <a href="/resume.pdf" target="_blank" rel="noopener noreferrer" class="border border-[var(--color-line)] text-[var(--color-ink)] text-sm font-medium px-6 py-3 rounded-full hover:border-[var(--color-ink)] transition-colors">
+              View Resume
+            </a>
+          </div>
+        </div>
+
+        <div>
+          <p class="eyebrow mb-5">Tools & Skills</p>
+          <div class="flex flex-wrap gap-2">
+            {skills.map((s) => (
+              <span class="text-sm border border-[var(--color-line)] rounded-full px-3 py-1.5 text-[var(--color-ink)]">
+                {s.name}
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <!-- Timeline -->
+      <div class="border-t border-[var(--color-line)] pt-16">
+        <p class="eyebrow mb-10">Experience & Education</p>
+        <div class="flex flex-col">
+          {experience.map((item, i) => (
+            <div class="flex gap-6 pb-10 relative">
+              {i < experience.length - 1 && (
+                <div class="absolute left-2 top-6 bottom-0 w-px bg-[var(--color-line)]" />
+              )}
+              <div class={`shrink-0 w-4 h-4 rounded-full mt-1 z-10 ring-2 ring-[var(--color-bg)] ${
+                item.type === 'work' ? 'bg-[var(--color-pop)]' : 'bg-[var(--color-muted-soft)]'
+              }`} />
+              <div>
+                <p class="eyebrow mb-1">{item.period}</p>
+                <p class="font-medium text-[var(--color-ink)] mb-0.5">{item.role}</p>
+                <p class="text-sm text-[var(--color-muted)] mb-3">{item.org}</p>
+                {item.bullets.length > 0 && (
+                  <ul class="flex flex-col gap-1">
+                    {item.bullets.map((b) => (
+                      <li class="text-sm text-[var(--color-muted)] flex gap-2">
+                        <span class="text-[var(--color-muted-soft)] shrink-0">–</span>
+                        {b}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+    </div>
+  </div>
+</BaseLayout>
