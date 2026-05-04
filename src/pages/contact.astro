@@ -1,0 +1,50 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ContactForm from '../components/ContactForm.tsx';
+---
+
+<BaseLayout title="Contact — Ben LaClair" description="Get in touch to discuss a project or collaboration.">
+  <div class="px-6 md:px-12 pt-16 pb-24">
+    <div class="max-w-[720px] mx-auto">
+
+      <div class="mb-14">
+        <p class="eyebrow mb-5">Say hello</p>
+        <h1 class="font-serif text-5xl md:text-6xl text-[var(--color-ink)] mb-5">
+          Let's talk.
+        </h1>
+        <p class="text-base text-[var(--color-muted)] max-w-md leading-relaxed">
+          Have a project in mind, want to collaborate, or just want to say hi?
+          My inbox is open.
+        </p>
+      </div>
+
+      <div class="mb-16">
+        <ContactForm client:load />
+      </div>
+
+      <div class="flex items-center gap-4 mb-8">
+        <div class="h-px flex-1 bg-[var(--color-line)]" />
+        <span class="eyebrow">Or find me here</span>
+        <div class="h-px flex-1 bg-[var(--color-line)]" />
+      </div>
+
+      <div class="flex flex-wrap gap-3">
+        <a
+          href="https://www.linkedin.com/in/benlaclair"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="border border-[var(--color-line)] rounded-full px-6 py-3 text-sm font-medium text-[var(--color-ink)] hover:border-[var(--color-pop)] hover:text-[var(--color-pop)] transition-colors"
+        >
+          LinkedIn ↗
+        </a>
+        <a
+          href="mailto:hello@benlaclair.com"
+          class="border border-[var(--color-line)] rounded-full px-6 py-3 text-sm font-medium text-[var(--color-ink)] hover:border-[var(--color-pop)] hover:text-[var(--color-pop)] transition-colors"
+        >
+          hello@benlaclair.com
+        </a>
+      </div>
+
+    </div>
+  </div>
+</BaseLayout>
