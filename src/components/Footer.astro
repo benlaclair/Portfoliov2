@@ -1,85 +1,87 @@
 ---
 const year = new Date().getFullYear();
 ---
-<footer class="border-t border-[var(--color-line)]">
-  <div class="wrap py-14 md:py-20">
-    <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-12">
-      <!-- Name + tagline -->
-      <div>
-        <p
-          class="text-[var(--color-ink)] mb-3"
-          style="font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800; font-size: clamp(2rem, 4vw, 3.25rem); letter-spacing: -0.03em; line-height: 1.0"
-        >
-          Ben LaClair
-        </p>
-        <p class="text-sm text-[var(--color-muted)] max-w-xs leading-relaxed">
-          UX/UI &amp; Graphic Designer. Available for select projects in {year}.
-        </p>
+<footer class="footer-mark-section">
+  <div class="wrap" style="padding-top: 80px; padding-bottom: 40px; border-top: 1px solid var(--color-line)">
+    <div
+      style="display: flex; justify-content: space-between; align-items: flex-end; gap: 60px; flex-wrap: wrap"
+    >
+      <div
+        class="footer-mark"
+        style="font-family: 'Instrument Serif', Georgia, serif; font-style: italic; font-size: clamp(64px, 10vw, 120px); line-height: 0.85; letter-spacing: -0.03em; color: var(--color-ink); transform-origin: left bottom"
+      >
+        Ben<span style="color: var(--color-accent)">.</span>
       </div>
 
-      <!-- Links -->
-      <div class="flex gap-14">
+      <div
+        class="footer-info"
+        style="display: grid; grid-template-columns: repeat(2, auto); gap: 32px 60px; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase"
+      >
         <div>
-          <p
-            class="mb-5 text-[var(--color-muted)]"
-            style="font-family: 'Geist Mono', monospace; font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase"
-          >Pages</p>
-          <ul class="flex flex-col gap-3">
-            {['/work', '/tools', '/about', '/contact'].map((href) => (
-              <li>
-                <a
-                  href={href}
-                  class="text-sm text-[var(--color-ink)] hover:text-[var(--color-accent)] transition-colors duration-200"
-                >
-                  {href.slice(1).replace(/^./, (c) => c.toUpperCase())}
-                </a>
-              </li>
-            ))}
-          </ul>
+          <div style="color: var(--color-muted); margin-bottom: 8px">Index</div>
+          <div style="color: var(--color-ink)">{year}</div>
         </div>
-
         <div>
-          <p
-            class="mb-5 text-[var(--color-muted)]"
-            style="font-family: 'Geist Mono', monospace; font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase"
-          >Connect</p>
-          <ul class="flex flex-col gap-3">
-            <li>
-              <a
-                href="https://www.linkedin.com/in/benlaclair"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="text-sm text-[var(--color-ink)] hover:text-[var(--color-accent)] transition-colors duration-200"
-              >LinkedIn ↗</a>
-            </li>
-            <li>
-              <a
-                href="mailto:hello@benlaclair.com"
-                class="text-sm text-[var(--color-ink)] hover:text-[var(--color-accent)] transition-colors duration-200"
-              >Email ↗</a>
-            </li>
-            <li>
-              <a
-                href="/resume.pdf"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="text-sm text-[var(--color-ink)] hover:text-[var(--color-accent)] transition-colors duration-200"
-              >Résumé ↗</a>
-            </li>
-          </ul>
+          <div style="color: var(--color-muted); margin-bottom: 8px">Built with</div>
+          <div style="color: var(--color-ink)">Astro &middot; GSAP</div>
+        </div>
+        <div>
+          <div style="color: var(--color-muted); margin-bottom: 8px">Elsewhere</div>
+          <a
+            href="https://www.linkedin.com/in/benlaclair"
+            target="_blank"
+            rel="noopener noreferrer"
+            data-cursor="Visit"
+            style="color: var(--color-ink); border-bottom: 1px solid currentColor; padding-bottom: 1px"
+          >LinkedIn ↗</a>
+        </div>
+        <div>
+          <div style="color: var(--color-muted); margin-bottom: 8px">Reach</div>
+          <a
+            href="mailto:hello@benlaclair.com"
+            data-cursor="Mail"
+            style="color: var(--color-ink); border-bottom: 1px solid currentColor; padding-bottom: 1px"
+          >hello@benlaclair.com</a>
         </div>
       </div>
     </div>
 
     <div
-      class="mt-14 pt-6 border-t border-[var(--color-line)] flex flex-col md:flex-row md:items-center md:justify-between gap-2"
+      style="margin-top: 80px; padding-top: 24px; border-top: 1px solid var(--color-line); display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-muted)"
     >
-      <p style="font-family: 'Geist Mono', monospace; font-size: 0.65rem; color: var(--color-muted)">
-        &copy; {year} Ben LaClair
-      </p>
-      <p style="font-family: 'Geist Mono', monospace; font-size: 0.65rem; color: var(--color-muted)">
-        Astro &middot; GSAP &middot; Tailwind
-      </p>
+      <span>&copy; {year} Ben LaClair</span>
+      <span>Designed &amp; built from scratch</span>
+      <span>v2.0</span>
     </div>
   </div>
 </footer>
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  gsap.registerPlugin(ScrollTrigger);
+
+  const mark = document.querySelector<HTMLElement>('.footer-mark');
+  if (mark) {
+    gsap.from(mark, {
+      y: 60,
+      scale: 0.96,
+      opacity: 0,
+      duration: 1.1,
+      ease: 'expo.out',
+      scrollTrigger: { trigger: mark, start: 'top 92%' },
+    });
+  }
+
+  const info = document.querySelectorAll<HTMLElement>('.footer-info > div');
+  if (info.length) {
+    gsap.from(info, {
+      y: 20,
+      opacity: 0,
+      duration: 0.6,
+      stagger: 0.06,
+      ease: 'power3.out',
+      scrollTrigger: { trigger: '.footer-info', start: 'top 92%' },
+    });
+  }
+</script>
