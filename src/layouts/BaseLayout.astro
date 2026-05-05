@@ -3,11 +3,10 @@ import '../styles/global.css';
 import '@fontsource/geist-sans/400.css';
 import '@fontsource/geist-sans/500.css';
 import '@fontsource/geist-sans/600.css';
-import '@fontsource/geist-sans/700.css';
 import '@fontsource/geist-mono/400.css';
 import '@fontsource/geist-mono/500.css';
-import '@fontsource/instrument-serif/400.css';
-import '@fontsource/instrument-serif/400-italic.css';
+import '@fontsource/plus-jakarta-sans/700.css';
+import '@fontsource/plus-jakarta-sans/800.css';
 import Navbar from '../components/Navbar.tsx';
 import Footer from '../components/Footer.astro';
 
@@ -47,7 +46,7 @@ const jsonLd = {
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content={description} />
-    <meta name="theme-color" content="#F8F8F6" />
+    <meta name="theme-color" content="#EFEDE8" />
     <meta property="og:type" content={pageType} />
     <meta property="og:url" content={canonicalUrl} />
     <meta property="og:title" content={title} />
@@ -65,9 +64,9 @@ const jsonLd = {
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
   </head>
   <body>
-    <a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[100] focus:bg-[var(--color-ink)] focus:text-[var(--color-bg)] focus:px-4 focus:py-2 focus:rounded">Skip to content</a>
+    <a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[100] focus:bg-[var(--color-ink)] focus:text-[var(--color-bg)] focus:px-4 focus:py-2">Skip to content</a>
     {!hideChrome && <Navbar pathname={Astro.url.pathname} client:load />}
-    <main id="main" class={hideChrome ? '' : 'pt-16 md:pt-20'}>
+    <main id="main">
       <slot />
     </main>
     {!hideChrome && <Footer />}

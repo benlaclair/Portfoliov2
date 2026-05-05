@@ -18,7 +18,7 @@
     "@astrojs/vercel": "^9.0.0",
     "@fontsource/geist-sans": "^5.2.5",
     "@fontsource/geist-mono": "^5.2.5",
-    "@fontsource/instrument-serif": "^5.2.5",
+    "@fontsource/plus-jakarta-sans": "^5.2.5",
     "@gsap/react": "^2.1.2",
     "@tailwindcss/vite": "^4.1.0",
     "@types/react": "^18.3.12",
