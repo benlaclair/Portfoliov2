@@ -14,7 +14,6 @@ const { project } = Astro.props;
 const currentIdx = PROJECTS.findIndex((p) => p.slug === project.slug);
 const nextProject = PROJECTS[(currentIdx + 1) % PROJECTS.length];
 
-// Load per-project case study data
 let stats: { value: string; label: string }[] = [];
 let process: { step: string; title: string; description: string }[] = [];
 let decisions: { number: string; label: string; title: string; description: string; before?: string; after?: string }[] = [];
@@ -42,6 +41,9 @@ if (project.slug === 'vlier') {
 const isVeo = project.slug === 'veo-olympics';
 const isVlier = project.slug === 'vlier';
 const isGraphicDesign = project.slug === 'graphic-design';
+
+const mono = "font-family: 'Geist Mono', monospace; font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase";
+const displayStyle = "font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800; letter-spacing: -0.03em; line-height: 1.0";
 ---
 
 <BaseLayout
@@ -50,128 +52,117 @@ const isGraphicDesign = project.slug === 'graphic-design';
   pageType="article"
 >
   <!-- Back -->
-  <div class="px-6 md:px-12 pt-8">
-    <div class="max-w-[1200px] mx-auto">
-      <a
-        href="/work"
-        class="inline-flex items-center gap-2 text-sm text-[var(--color-muted)] hover:text-[var(--color-ink)] transition-colors"
-      >
-        <span>&larr;</span> All work
-      </a>
-    </div>
+  <div class="px-5 md:px-12 lg:px-20 pt-20" style="max-width: 1360px; margin-inline: auto">
+    <a
+      href="/work"
+      class="inline-flex items-center gap-2 text-sm text-[var(--color-muted)] hover:text-[var(--color-ink)] transition-colors duration-200"
+    >← All work</a>
   </div>
 
   <!-- Hero -->
-  <header class="px-6 md:px-12 pt-10 pb-16 md:pb-24" id="cs-hero">
-    <div class="max-w-[1200px] mx-auto">
-      <p class="eyebrow mb-5 cs-el">{project.category} &middot; {project.year}</p>
-      <h1 class="font-serif text-4xl md:text-6xl text-[var(--color-ink)] max-w-4xl text-pretty cs-el">
-        {project.title}
-      </h1>
-      <p class="text-lg text-[var(--color-muted)] max-w-2xl mt-6 leading-relaxed cs-el">
-        {project.description}
-      </p>
-
-      {project.client && (
-        <p class="text-sm text-[var(--color-muted-soft)] mt-4 cs-el">
-          Client: <span class="text-[var(--color-ink)]">{project.client}</span>
-        </p>
-      )}
-    </div>
+  <header class="px-5 md:px-12 lg:px-20 pt-12 pb-16 md:pb-20" style="max-width: 1360px; margin-inline: auto" id="cs-hero">
+    <p
+      class="text-[var(--color-muted)] mb-6 cs-el"
+      style={mono}
+    >{project.category} &middot; {project.year}</p>
+    <h1
+      class="text-[var(--color-ink)] max-w-5xl cs-el"
+      style={`${displayStyle}; font-size: clamp(2.25rem, 6vw, 5.5rem); line-height: 1.0`}
+    >{project.title}</h1>
+    <p class="text-lg text-[var(--color-muted)] max-w-2xl mt-8 leading-relaxed cs-el">
+      {project.description}
+    </p>
   </header>
 
   <!-- Cover image -->
   {project.coverImage && (
-    <div class="px-6 md:px-12 mb-16 md:mb-24">
-      <div class="max-w-[1200px] mx-auto">
-        <div class="rounded-2xl overflow-hidden aspect-[16/9] bg-[var(--color-line-soft)]">
-          <img
-            src={project.coverImage}
-            alt={project.shortTitle}
-            width="1200"
-            height="675"
-            class="w-full h-full object-cover"
-          />
-        </div>
+    <div class="px-5 md:px-12 lg:px-20 mb-16 md:mb-24" style="max-width: 1360px; margin-inline: auto">
+      <div class="overflow-hidden aspect-[16/9] bg-[var(--color-surface)]">
+        <img
+          src={project.coverImage}
+          alt={project.shortTitle}
+          width="1360"
+          height="765"
+          class="w-full h-full object-cover"
+        />
       </div>
     </div>
   )}
 
-  <!-- VEO: Video embed -->
+  <!-- VEO: Video -->
   {isVeo && project.videoUrl && (
-    <div class="px-6 md:px-12 mb-16 md:mb-24">
-      <div class="max-w-[1200px] mx-auto">
-        <p class="eyebrow mb-4">The spot</p>
-        <div class="rounded-2xl overflow-hidden aspect-video bg-[var(--color-accent)]">
-          <video
-            src={project.videoUrl}
-            controls
-            poster={project.coverImage}
-            class="w-full h-full object-cover"
-            preload="metadata"
-          >
-            Your browser doesn't support HTML5 video.
-          </video>
-        </div>
-        <p class="text-xs text-[var(--color-muted)] mt-3">
-          15-second AI-generated broadcast spot. Aired on traditional TV and CTV during Winter Olympics coverage.
-        </p>
+    <div class="px-5 md:px-12 lg:px-20 mb-16 md:mb-24" style="max-width: 1360px; margin-inline: auto">
+      <p class="text-[var(--color-muted)] mb-5" style={mono}>The spot</p>
+      <div class="overflow-hidden aspect-video bg-[var(--color-ink)]">
+        <video
+          src={project.videoUrl}
+          controls
+          poster={project.coverImage}
+          class="w-full h-full object-cover"
+          preload="metadata"
+        >
+          Your browser doesn’t support HTML5 video.
+        </video>
       </div>
+      <p class="text-xs text-[var(--color-muted)] mt-4" style="font-family: 'Geist Mono', monospace; font-size: 0.65rem">
+        15-second AI-generated broadcast spot. Aired on traditional TV and CTV during Winter Olympics coverage.
+      </p>
     </div>
   )}
 
-  <!-- Stats row -->
+  <!-- Stats -->
   {stats.length > 0 && (
-    <div class="px-6 md:px-12 mb-16 md:mb-24">
-      <div class="max-w-[1200px] mx-auto">
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-px bg-[var(--color-line)] rounded-2xl overflow-hidden">
-          {stats.map((stat) => (
-            <div class="bg-white px-8 py-8 stat-item">
-              <p class="font-serif text-3xl md:text-4xl text-[var(--color-ink)] mb-1">{stat.value}</p>
-              <p class="eyebrow">{stat.label}</p>
-            </div>
-          ))}
-        </div>
+    <div class="px-5 md:px-12 lg:px-20 mb-16 md:mb-24" style="max-width: 1360px; margin-inline: auto">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-px bg-[var(--color-line)]">
+        {stats.map((stat) => (
+          <div class="bg-[var(--color-bg)] px-8 py-10 stat-item">
+            <p
+              class="text-[var(--color-ink)] mb-2"
+              style={`${displayStyle}; font-size: clamp(2rem, 4vw, 3.5rem)`}
+            >{stat.value}</p>
+            <p class="text-[var(--color-muted)]" style={mono}>{stat.label}</p>
+          </div>
+        ))}
       </div>
     </div>
   )}
 
   <!-- Metadata + Overview -->
-  <div class="px-6 md:px-12 mb-16 md:mb-24">
-    <div class="max-w-[1200px] mx-auto grid md:grid-cols-3 gap-12">
+  <div class="px-5 md:px-12 lg:px-20 mb-16 md:mb-24 border-y border-[var(--color-line)] py-12" style="max-width: 1360px; margin-inline: auto">
+    <div class="grid md:grid-cols-[200px_1fr] gap-12 md:gap-16">
       <!-- Sidebar -->
-      <aside class="flex flex-col gap-6">
+      <aside class="flex flex-col gap-7">
         <div>
-          <p class="eyebrow mb-2">Role</p>
+          <p class="text-[var(--color-muted)] mb-2" style={mono}>Role</p>
           <p class="text-sm text-[var(--color-ink)]">{project.role}</p>
         </div>
         {project.client && (
           <div>
-            <p class="eyebrow mb-2">Client</p>
+            <p class="text-[var(--color-muted)] mb-2" style={mono}>Client</p>
             <p class="text-sm text-[var(--color-ink)]">{project.client}</p>
           </div>
         )}
         <div>
-          <p class="eyebrow mb-2">Year</p>
+          <p class="text-[var(--color-muted)] mb-2" style={mono}>Year</p>
           <p class="text-sm text-[var(--color-ink)]">{project.year}</p>
         </div>
         <div>
-          <p class="eyebrow mb-2">Tools</p>
-          <div class="flex flex-wrap gap-1.5">
+          <p class="text-[var(--color-muted)] mb-2" style={mono}>Tools</p>
+          <ul class="flex flex-col gap-1.5">
             {project.tools.map((t) => (
-              <span class="text-xs font-medium border border-[var(--color-line)] rounded-full px-3 py-1 text-[var(--color-ink)]">{t}</span>
+              <li class="text-sm text-[var(--color-ink)]">{t}</li>
             ))}
-          </div>
+          </ul>
         </div>
       </aside>
 
       <!-- Overview -->
-      <div class="md:col-span-2">
-        <p class="eyebrow mb-4">Overview</p>
-        <p class="text-base md:text-lg text-[var(--color-ink-soft)] leading-relaxed">{project.overview}</p>
+      <div>
+        <p class="text-[var(--color-muted)] mb-5" style={mono}>Overview</p>
+        <p class="text-base md:text-lg leading-relaxed mb-8" style="color: var(--color-ink-2)">{project.overview}</p>
         {project.problem && (
           <>
-            <p class="eyebrow mt-8 mb-4">The challenge</p>
+            <p class="text-[var(--color-muted)] mb-5" style={mono}>The challenge</p>
             <p class="text-base text-[var(--color-muted)] leading-relaxed">{project.problem}</p>
           </>
         )}
@@ -179,164 +170,166 @@ const isGraphicDesign = project.slug === 'graphic-design';
     </div>
   </div>
 
-  <!-- VEO: Scene breakdown -->
+  <!-- VEO: Scenes -->
   {isVeo && extraSections.scenes && (
-    <div class="px-6 md:px-12 mb-16 md:mb-24">
-      <div class="max-w-[1200px] mx-auto">
-        <p class="eyebrow mb-8">Scene breakdown</p>
-        <div class="grid md:grid-cols-2 gap-6">
-          {(extraSections.scenes as {number:string;title:string;description:string}[]).map((scene) => (
-            <div class="border border-[var(--color-line)] rounded-2xl p-7 bg-white">
-              <p class="font-mono text-xs text-[var(--color-muted-soft)] mb-3">Scene {scene.number}</p>
-              <h3 class="font-serif text-xl text-[var(--color-ink)] mb-3">{scene.title}</h3>
-              <p class="text-sm text-[var(--color-muted)] leading-relaxed">{scene.description}</p>
-            </div>
-          ))}
-        </div>
+    <div class="px-5 md:px-12 lg:px-20 mb-16 md:mb-24" style="max-width: 1360px; margin-inline: auto">
+      <p class="text-[var(--color-muted)] mb-10" style={mono}>Scene breakdown</p>
+      <div class="grid md:grid-cols-2 gap-px bg-[var(--color-line)]">
+        {(extraSections.scenes as {number:string;title:string;description:string}[]).map((scene) => (
+          <div class="bg-[var(--color-bg)] p-8">
+            <p class="text-[var(--color-muted)] mb-3" style="font-family: 'Geist Mono', monospace; font-size: 0.65rem">Scene {scene.number}</p>
+            <h3
+              class="text-[var(--color-ink)] mb-3"
+              style="font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800; font-size: 1.15rem; letter-spacing: -0.02em"
+            >{scene.title}</h3>
+            <p class="text-sm text-[var(--color-muted)] leading-relaxed">{scene.description}</p>
+          </div>
+        ))}
       </div>
     </div>
   )}
 
   <!-- Vlier: Personas -->
   {isVlier && extraSections.personas && (
-    <div class="px-6 md:px-12 mb-16 md:mb-24">
-      <div class="max-w-[1200px] mx-auto">
-        <p class="eyebrow mb-8">Two users, one page</p>
-        <div class="grid md:grid-cols-2 gap-6">
-          {(extraSections.personas as {role:string;description:string}[]).map((persona) => (
-            <div class="border border-[var(--color-line)] rounded-2xl p-7 bg-white">
-              <h3 class="font-serif text-xl text-[var(--color-ink)] mb-3">{persona.role}</h3>
-              <p class="text-sm text-[var(--color-muted)] leading-relaxed">{persona.description}</p>
-            </div>
-          ))}
-        </div>
+    <div class="px-5 md:px-12 lg:px-20 mb-16 md:mb-24" style="max-width: 1360px; margin-inline: auto">
+      <p class="text-[var(--color-muted)] mb-10" style={mono}>Two users, one page</p>
+      <div class="grid md:grid-cols-2 gap-px bg-[var(--color-line)]">
+        {(extraSections.personas as {role:string;description:string}[]).map((persona) => (
+          <div class="bg-[var(--color-bg)] p-8">
+            <h3
+              class="text-[var(--color-ink)] mb-3"
+              style="font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800; font-size: 1.15rem; letter-spacing: -0.02em"
+            >{persona.role}</h3>
+            <p class="text-sm text-[var(--color-muted)] leading-relaxed">{persona.description}</p>
+          </div>
+        ))}
       </div>
     </div>
   )}
 
-  <!-- Decisions / Key choices -->
+  <!-- Key decisions -->
   {decisions.length > 0 && (
-    <div class="px-6 md:px-12 mb-16 md:mb-24">
-      <div class="max-w-[1200px] mx-auto">
-        <p class="eyebrow mb-8">Key decisions</p>
-        <div class="flex flex-col gap-6">
-          {decisions.map((d) => (
-            <div class="border border-[var(--color-line)] rounded-2xl p-7 md:p-9 bg-white">
-              <div class="flex flex-col md:flex-row md:items-start gap-6">
-                <div class="shrink-0">
-                  <p class="font-mono text-xs text-[var(--color-muted-soft)] mb-1">{d.number}</p>
-                  <p class="eyebrow">{d.label}</p>
-                </div>
-                <div class="flex-1">
-                  <h3 class="font-serif text-xl md:text-2xl text-[var(--color-ink)] mb-3">{d.title}</h3>
-                  <p class="text-sm text-[var(--color-muted)] leading-relaxed mb-5">{d.description}</p>
-                  {d.before && d.after && (
-                    <div class="grid md:grid-cols-2 gap-4">
-                      <div class="rounded-xl bg-red-50 border border-red-100 px-5 py-4">
-                        <p class="text-xs font-mono text-red-400 mb-2">Before</p>
-                        <p class="text-sm text-red-700">{d.before}</p>
-                      </div>
-                      <div class="rounded-xl bg-emerald-50 border border-emerald-100 px-5 py-4">
-                        <p class="text-xs font-mono text-emerald-600 mb-2">After</p>
-                        <p class="text-sm text-emerald-800">{d.after}</p>
-                      </div>
+    <div class="px-5 md:px-12 lg:px-20 mb-16 md:mb-24" style="max-width: 1360px; margin-inline: auto">
+      <p class="text-[var(--color-muted)] mb-10" style={mono}>Key decisions</p>
+      <div class="divide-y divide-[var(--color-line)]">
+        {decisions.map((d) => (
+          <div class="py-10">
+            <div class="grid md:grid-cols-[160px_1fr] gap-6 md:gap-12">
+              <div>
+                <p class="text-[var(--color-muted)] mb-1" style="font-family: 'Geist Mono', monospace; font-size: 0.7rem">{d.number}</p>
+                <p class="text-[var(--color-muted)]" style={mono}>{d.label}</p>
+              </div>
+              <div>
+                <h3
+                  class="text-[var(--color-ink)] mb-3"
+                  style="font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800; font-size: clamp(1.15rem, 2vw, 1.5rem); letter-spacing: -0.02em; line-height: 1.2"
+                >{d.title}</h3>
+                <p class="text-sm text-[var(--color-muted)] leading-relaxed mb-6">{d.description}</p>
+                {d.before && d.after && (
+                  <div class="grid md:grid-cols-2 gap-px bg-[var(--color-line)]">
+                    <div class="bg-[var(--color-bg)] border-t-2 border-red-400 px-6 py-5">
+                      <p class="mb-2" style="font-family: 'Geist Mono', monospace; font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: #ef4444">Before</p>
+                      <p class="text-sm leading-relaxed" style="color: var(--color-ink-2)">{d.before}</p>
                     </div>
-                  )}
-                </div>
+                    <div class="bg-[var(--color-bg)] border-t-2 border-emerald-500 px-6 py-5">
+                      <p class="mb-2" style="font-family: 'Geist Mono', monospace; font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: #10b981">After</p>
+                      <p class="text-sm leading-relaxed" style="color: var(--color-ink-2)">{d.after}</p>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
-          ))}
-        </div>
+          </div>
+        ))}
       </div>
     </div>
   )}
 
-  <!-- Process steps -->
+  <!-- Process -->
   {process.length > 0 && (
-    <div class="px-6 md:px-12 mb-16 md:mb-24">
-      <div class="max-w-[1200px] mx-auto">
-        <p class="eyebrow mb-8">Process</p>
-        <div class="flex flex-col">
-          {process.map((step, i) => (
-            <div class="flex gap-8 pb-10 relative">
-              {i < process.length - 1 && (
-                <div class="absolute left-5 top-8 bottom-0 w-px bg-[var(--color-line)]" />
-              )}
-              <div class="shrink-0 w-10 h-10 rounded-full border border-[var(--color-line)] bg-white flex items-center justify-center z-10">
-                <span class="font-mono text-xs text-[var(--color-muted)]">{step.step}</span>
-              </div>
-              <div class="pt-2">
-                <h3 class="font-serif text-lg text-[var(--color-ink)] mb-2">{step.title}</h3>
-                <p class="text-sm text-[var(--color-muted)] leading-relaxed">{step.description}</p>
-              </div>
+    <div class="px-5 md:px-12 lg:px-20 mb-16 md:mb-24" style="max-width: 1360px; margin-inline: auto">
+      <p class="text-[var(--color-muted)] mb-10" style={mono}>Process</p>
+      <div class="divide-y divide-[var(--color-line)]">
+        {process.map((step) => (
+          <div class="grid md:grid-cols-[160px_1fr] gap-6 md:gap-12 py-8">
+            <p class="text-[var(--color-muted)]" style="font-family: 'Geist Mono', monospace; font-size: 0.7rem">{step.step}</p>
+            <div>
+              <h3
+                class="text-[var(--color-ink)] mb-2"
+                style="font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800; font-size: 1.1rem; letter-spacing: -0.02em"
+              >{step.title}</h3>
+              <p class="text-sm text-[var(--color-muted)] leading-relaxed">{step.description}</p>
             </div>
-          ))}
-        </div>
+          </div>
+        ))}
       </div>
     </div>
   )}
 
   <!-- VEO: Challenges -->
   {isVeo && extraSections.challenges && (
-    <div class="px-6 md:px-12 mb-16 md:mb-24">
-      <div class="max-w-[1200px] mx-auto">
-        <p class="eyebrow mb-8">Constraints & solutions</p>
-        <div class="flex flex-col gap-4">
-          {(extraSections.challenges as {number:string;title:string;body:string}[]).map((c) => (
-            <div class="flex gap-6 border border-[var(--color-line)] rounded-2xl p-6 bg-white">
-              <p class="font-mono text-xs text-[var(--color-muted-soft)] shrink-0 pt-0.5">{c.number}</p>
-              <div>
-                <h3 class="font-serif text-lg text-[var(--color-ink)] mb-2">{c.title}</h3>
-                <p class="text-sm text-[var(--color-muted)] leading-relaxed">{c.body}</p>
-              </div>
+    <div class="px-5 md:px-12 lg:px-20 mb-16 md:mb-24" style="max-width: 1360px; margin-inline: auto">
+      <p class="text-[var(--color-muted)] mb-10" style={mono}>Constraints &amp; solutions</p>
+      <div class="divide-y divide-[var(--color-line)]">
+        {(extraSections.challenges as {number:string;title:string;body:string}[]).map((c) => (
+          <div class="grid md:grid-cols-[160px_1fr] gap-6 md:gap-12 py-8">
+            <p class="text-[var(--color-muted)]" style="font-family: 'Geist Mono', monospace; font-size: 0.7rem">{c.number}</p>
+            <div>
+              <h3
+                class="text-[var(--color-ink)] mb-2"
+                style="font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800; font-size: 1.1rem; letter-spacing: -0.02em"
+              >{c.title}</h3>
+              <p class="text-sm text-[var(--color-muted)] leading-relaxed">{c.body}</p>
             </div>
-          ))}
-        </div>
+          </div>
+        ))}
       </div>
     </div>
   )}
 
   <!-- Outcomes -->
   {outcomes.length > 0 && (
-    <div class="px-6 md:px-12 mb-16 md:mb-24">
-      <div class="max-w-[1200px] mx-auto">
-        <p class="eyebrow mb-8">Outcomes</p>
-        <div class="grid md:grid-cols-3 gap-6">
-          {outcomes.map((o) => (
-            <div class="border border-[var(--color-line)] rounded-2xl p-6 bg-white">
-              <p class="eyebrow mb-3">{o.label}</p>
-              <p class="font-serif text-lg text-[var(--color-ink)] leading-snug">{o.value}</p>
-            </div>
-          ))}
-        </div>
+    <div class="px-5 md:px-12 lg:px-20 mb-16 md:mb-24" style="max-width: 1360px; margin-inline: auto">
+      <p class="text-[var(--color-muted)] mb-10" style={mono}>Outcomes</p>
+      <div class="grid md:grid-cols-3 gap-px bg-[var(--color-line)]">
+        {outcomes.map((o) => (
+          <div class="bg-[var(--color-bg)] px-8 py-8">
+            <p class="text-[var(--color-muted)] mb-3" style={mono}>{o.label}</p>
+            <p
+              class="text-[var(--color-ink)] leading-snug"
+              style="font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 700; font-size: 1.05rem; letter-spacing: -0.01em"
+            >{o.value}</p>
+          </div>
+        ))}
       </div>
     </div>
   )}
 
   <!-- Graphic design: Gallery link -->
   {isGraphicDesign && (
-    <div class="px-6 md:px-12 mb-16 md:mb-24">
-      <div class="max-w-[1200px] mx-auto">
-        <p class="eyebrow mb-6">Selected pieces</p>
-        <a href="/work/graphic-design" class="group inline-flex items-center gap-2 border border-[var(--color-line)] rounded-full px-6 py-3 text-sm font-medium text-[var(--color-ink)] hover:border-[var(--color-pop)] hover:text-[var(--color-pop)] transition-colors">
-          Explore the full gallery &rarr;
-        </a>
-      </div>
+    <div class="px-5 md:px-12 lg:px-20 mb-16 md:mb-24" style="max-width: 1360px; margin-inline: auto">
+      <p class="text-[var(--color-muted)] mb-6" style={mono}>Selected pieces</p>
+      <a
+        href="/work/graphic-design"
+        class="text-sm text-[var(--color-ink)] hover:text-[var(--color-accent)] transition-colors duration-200"
+      >Explore the full gallery →</a>
     </div>
   )}
 
   <!-- Next project -->
-  <div class="px-6 md:px-12 py-16 md:py-24 border-t border-[var(--color-line)]">
-    <div class="max-w-[1200px] mx-auto">
-      <p class="eyebrow mb-4">Next project</p>
-      <a href={`/work/${nextProject.slug}`} class="group block">
-        <h2 class="font-serif text-3xl md:text-5xl text-[var(--color-ink)] group-hover:text-[var(--color-pop)] transition-colors">
-          {nextProject.title} &rarr;
-        </h2>
-        <p class="text-sm text-[var(--color-muted)] mt-3">{nextProject.description}</p>
-      </a>
-    </div>
+  <div class="px-5 md:px-12 lg:px-20 py-16 md:py-24 border-t border-[var(--color-line)]" style="max-width: 1360px; margin-inline: auto">
+    <p class="text-[var(--color-muted)] mb-8" style={mono}>Next project</p>
+    <a href={`/work/${nextProject.slug}`} class="group block">
+      <h2
+        class="text-[var(--color-ink)] group-hover:text-[var(--color-accent)] transition-colors duration-300"
+        style={`${displayStyle}; font-size: clamp(2.5rem, 7vw, 7rem)`}
+      >
+        {nextProject.shortTitle}&nbsp;→
+      </h2>
+      <p class="text-sm text-[var(--color-muted)] mt-4 max-w-xl leading-relaxed">{nextProject.description}</p>
+    </a>
   </div>
+
 </BaseLayout>
 
 <script>
@@ -346,24 +339,20 @@ const isGraphicDesign = project.slug === 'graphic-design';
 
   gsap.from('.cs-el', {
     opacity: 0,
-    y: 16,
-    duration: 0.6,
+    y: 20,
+    duration: 0.65,
     stagger: 0.1,
     ease: 'power3.out',
     delay: 0.05,
   });
 
-  gsap.utils.toArray<HTMLElement>('.stat-item, .border.rounded-2xl').forEach((el) => {
+  gsap.utils.toArray<HTMLElement>('.stat-item').forEach((el) => {
     gsap.from(el, {
       opacity: 0,
-      y: 12,
+      y: 16,
       duration: 0.5,
       ease: 'power3.out',
-      scrollTrigger: {
-        trigger: el,
-        start: 'top 88%',
-        once: true,
-      },
+      scrollTrigger: { trigger: el, start: 'top 90%', once: true },
     });
   });
 </script>
