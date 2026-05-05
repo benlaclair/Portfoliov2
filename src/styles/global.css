@@ -184,53 +184,6 @@
   pointer-events: none;
 }
 
-/* Hero reel — full-bleed dark visual that shrinks behind the mountain on scroll */
-.hero-reel-wrap {
-  position: relative;
-  width: calc(100% + 80px);
-  margin-left: -40px;
-  min-height: clamp(200px, 36vh, 500px);
-  flex: 1;
-  overflow: hidden;
-}
-
-.hero-reel {
-  position: absolute;
-  top: -15%;
-  left: 0; right: 0;
-  bottom: -15%;
-  background:
-    radial-gradient(ellipse 90% 55% at 62% 38%, rgba(255, 91, 31, 0.13) 0%, transparent 60%),
-    linear-gradient(168deg, #2b1e0e 0%, #1a1208 38%, #0f0c08 72%, #080604 100%);
-  transform-origin: center center;
-  will-change: transform;
-}
-
-.hero-reel::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: repeating-linear-gradient(
-    0deg,
-    rgba(255, 255, 255, 0.012) 0px,
-    rgba(255, 255, 255, 0.012) 1px,
-    transparent 1px,
-    transparent 4px
-  );
-  pointer-events: none;
-}
-
-.hero-mountain {
-  position: absolute;
-  bottom: -2px;
-  left: 0; right: 0;
-  z-index: 2;
-  line-height: 0;
-  pointer-events: none;
-}
-
-.hero-mountain svg { width: 100%; height: auto; display: block; }
-
 /* Visual break — dark full-bleed parallax strip between sections */
 .vbreak { overflow: hidden; }
 
@@ -270,5 +223,5 @@
   .word { opacity: 1; }
   .cursor-dot, .cursor-ring { display: none; }
   body { cursor: auto !important; }
-  .hero-reel, .vbreak-bg { transform: none !important; }
+  .vbreak-bg { transform: none !important; }
 }

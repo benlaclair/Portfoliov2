@@ -191,6 +191,8 @@ const featured: Project[] = PROJECTS.slice(0, 3);
     overflow: hidden;
     border-radius: 2px;
     clip-path: inset(0 100% 0 0);
+    transform-origin: center center;
+    will-change: transform, clip-path;
   }
   .hwork-visual.in { clip-path: inset(0 0 0 0); }
   .hwork-visual-inner {
@@ -264,7 +266,7 @@ const featured: Project[] = PROJECTS.slice(0, 3);
       gap: 32px;
     }
     .hwork-rail { display: none; }
-    .hwork-visual { clip-path: none !important; }
+    .hwork-visual { clip-path: none !important; transform: none !important; }
   }
 </style>
 
@@ -284,8 +286,11 @@ const featured: Project[] = PROJECTS.slice(0, 3);
   if (stage && track && panels.length && !isMobile && !reduceMotion) {
     const total = panels.length;
     const distance = (total - 1) * window.innerWidth;
+    const visuals = panels.map((p) => p.querySelector<HTMLElement>('[data-visual]'));
 
-    // Pin + horizontal scroll
+    // Pin + horizontal scroll. onUpdate scales each panel's visual based on its
+    // distance from active center — active panel sits at scale 1, neighbors
+    // recede toward 0.72 with a slight upward lift, creating depth on transition.
     const tween = gsap.to(track, {
       x: -distance,
       ease: 'none',
@@ -295,6 +300,16 @@ const featured: Project[] = PROJECTS.slice(0, 3);
         scrub: 0.6,
         end: () => `+=${distance}`,
         invalidateOnRefresh: true,
+        onUpdate: (self) => {
+          const progress = self.progress * (total - 1);
+          visuals.forEach((vis, i) => {
+            if (!vis) return;
+            const dist = Math.abs(progress - i);
+            const scale = Math.max(0.72, 1 - dist * 0.28);
+            const yPercent = -dist * 14;
+            gsap.set(vis, { scale, yPercent });
+          });
+        },
       },
     });
 
