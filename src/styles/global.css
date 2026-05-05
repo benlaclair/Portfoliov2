@@ -109,7 +109,7 @@
 .scrollbar-hide::-webkit-scrollbar { display: none; }
 .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
 
-/* Motion helpers — wrap with .clip-wrap > span */
+/* Motion helpers */
 .clip-wrap {
   overflow: hidden;
   display: block;
@@ -137,7 +137,7 @@
   will-change: opacity;
 }
 
-/* Custom cursor (desktop only) */
+/* Custom cursor — solid opaque dot + lower-opacity ring that scales on hover */
 @media (hover: hover) and (pointer: fine) {
   body:not(.no-cursor) { cursor: none; }
   body:not(.no-cursor) a,
@@ -148,47 +148,28 @@
 .cursor-dot {
   position: fixed;
   top: 0; left: 0;
-  width: 8px; height: 8px;
+  width: 10px; height: 10px;
   background: var(--color-ink);
   border-radius: 50%;
   pointer-events: none;
-  z-index: 9998;
-  mix-blend-mode: difference;
-  transform: translate3d(-50%, -50%, 0);
+  z-index: 9999;
+  transform: translate3d(-50%, -50%, 0) scale(1);
   will-change: transform;
 }
+
 .cursor-ring {
   position: fixed;
   top: 0; left: 0;
-  width: 36px; height: 36px;
-  border: 1px solid var(--color-ink);
+  width: 44px; height: 44px;
+  background: var(--color-ink);
+  opacity: 0.12;
   border-radius: 50%;
   pointer-events: none;
-  z-index: 9997;
-  mix-blend-mode: difference;
-  transform: translate3d(-50%, -50%, 0);
-  will-change: transform, scale;
-  transition: width 0.3s ease, height 0.3s ease, background 0.3s ease;
-  display: grid;
-  place-items: center;
-  color: var(--color-paper);
-  font-family: var(--font-mono);
-  font-size: 10px;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+  z-index: 9998;
+  transform: translate3d(-50%, -50%, 0) scale(1);
+  will-change: transform, opacity;
 }
-.cursor-ring.expanded {
-  width: 88px; height: 88px;
-  background: var(--color-ink);
-  border-color: var(--color-ink);
-}
-.cursor-ring .cursor-text {
-  opacity: 0;
-  transition: opacity 0.2s ease;
-}
-.cursor-ring.expanded .cursor-text {
-  opacity: 1;
-}
+
 @media (hover: none), (pointer: coarse) {
   .cursor-dot, .cursor-ring { display: none; }
 }
@@ -203,6 +184,81 @@
   pointer-events: none;
 }
 
+/* Hero reel — full-bleed dark visual that shrinks behind the mountain on scroll */
+.hero-reel-wrap {
+  position: relative;
+  width: calc(100% + 80px);
+  margin-left: -40px;
+  min-height: clamp(200px, 36vh, 500px);
+  flex: 1;
+  overflow: hidden;
+}
+
+.hero-reel {
+  position: absolute;
+  top: -15%;
+  left: 0; right: 0;
+  bottom: -15%;
+  background:
+    radial-gradient(ellipse 90% 55% at 62% 38%, rgba(255, 91, 31, 0.13) 0%, transparent 60%),
+    linear-gradient(168deg, #2b1e0e 0%, #1a1208 38%, #0f0c08 72%, #080604 100%);
+  transform-origin: center center;
+  will-change: transform;
+}
+
+.hero-reel::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(255, 255, 255, 0.012) 0px,
+    rgba(255, 255, 255, 0.012) 1px,
+    transparent 1px,
+    transparent 4px
+  );
+  pointer-events: none;
+}
+
+.hero-mountain {
+  position: absolute;
+  bottom: -2px;
+  left: 0; right: 0;
+  z-index: 2;
+  line-height: 0;
+  pointer-events: none;
+}
+
+.hero-mountain svg { width: 100%; height: auto; display: block; }
+
+/* Visual break — dark full-bleed parallax strip between sections */
+.vbreak { overflow: hidden; }
+
+.vbreak-bg {
+  height: clamp(180px, 26vh, 340px);
+  background:
+    radial-gradient(ellipse 55% 85% at 20% 65%, rgba(255, 91, 31, 0.09) 0%, transparent 60%),
+    linear-gradient(158deg, #1d1509 0%, #110d07 55%, #080604 100%);
+  display: grid;
+  place-items: center;
+  will-change: transform;
+  position: relative;
+}
+
+.vbreak-quote {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: clamp(20px, 3.8vw, 56px);
+  color: rgba(241, 237, 228, 0.48);
+  letter-spacing: -0.02em;
+  text-align: center;
+  padding: 0 40px;
+  position: relative;
+  z-index: 1;
+  line-height: 1.15;
+  max-width: 860px;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
@@ -214,4 +270,5 @@
   .word { opacity: 1; }
   .cursor-dot, .cursor-ring { display: none; }
   body { cursor: auto !important; }
+  .hero-reel, .vbreak-bg { transform: none !important; }
 }

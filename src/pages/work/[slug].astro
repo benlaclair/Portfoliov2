@@ -3,10 +3,12 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import { PROJECTS } from '../../data/projects';
 
 export function getStaticPaths() {
-  return PROJECTS.map((p) => ({
-    params: { slug: p.slug },
-    props: { project: p },
-  }));
+  return PROJECTS
+    .filter((p) => p.slug !== 'graphic-design')
+    .map((p) => ({
+      params: { slug: p.slug },
+      props: { project: p },
+    }));
 }
 
 const { project } = Astro.props;
@@ -40,7 +42,6 @@ if (project.slug === 'vlier') {
 
 const isVeo = project.slug === 'veo-olympics';
 const isVlier = project.slug === 'vlier';
-const isGraphicDesign = project.slug === 'graphic-design';
 ---
 
 <BaseLayout
@@ -253,7 +254,7 @@ const isGraphicDesign = project.slug === 'graphic-design';
     <div style="padding: 0 40px 100px; max-width: 1440px; margin-inline: auto">
       <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-ink-2); margin-bottom: 32px">— Process</div>
       <div style="display: flex; flex-direction: column">
-        {process.map((step, i) => (
+        {process.map((step) => (
           <div
             class="cs-process"
             style="display: grid; grid-template-columns: 80px 1fr; gap: 40px; padding: 32px 0; border-top: 1px solid var(--color-line); align-items: start"
@@ -304,19 +305,6 @@ const isGraphicDesign = project.slug === 'graphic-design';
           </div>
         ))}
       </div>
-    </div>
-  )}
-
-  <!-- Graphic design link -->
-  {isGraphicDesign && (
-    <div style="padding: 0 40px 100px; max-width: 1440px; margin-inline: auto">
-      <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-ink-2); margin-bottom: 24px">— Selected pieces</div>
-      <a
-        href="/work/graphic-design"
-        data-cursor="Browse"
-        data-magnetic="0.3"
-        style="display: inline-flex; align-items: center; gap: 12px; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-ink); border-bottom: 1px solid var(--color-ink); padding-bottom: 4px"
-      >Explore the full gallery →</a>
     </div>
   )}
 

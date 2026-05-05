@@ -26,18 +26,29 @@ import Marquee from '../components/Marquee.astro';
 
   <!-- ============ HERO ============ -->
   <section class="hero" id="hero">
-    <div class="hero-eyebrow" id="hero-eyebrow">
-      <span class="ind">Available &middot; Spring 2026</span>
-      <span>Newark, NJ — 40.7357° N</span>
-      <span>Portfolio v2 &middot; Index 26</span>
+    <div class="hero-head">
+      <div class="hero-eyebrow" id="hero-eyebrow">
+        <span class="ind">Available &middot; Spring 2026</span>
+        <span>Newark, NJ — 40.7357° N</span>
+        <span>Portfolio v2 &middot; Index 26</span>
+      </div>
+      <h1 class="hero-title" id="hero-title">
+        <span class="line"><span>Designer</span></span>
+        <span class="line"><span><em>shaping</em> interfaces,</span></span>
+        <span class="line"><span>brands &amp; <em>moving</em></span></span>
+        <span class="line"><span>pictures.</span></span>
+      </h1>
     </div>
 
-    <h1 class="hero-title" id="hero-title">
-      <span class="line"><span>Designer</span></span>
-      <span class="line"><span><em>shaping</em> interfaces,</span></span>
-      <span class="line"><span>brands &amp; <em>moving</em></span></span>
-      <span class="line"><span>pictures.</span></span>
-    </h1>
+    <!-- Full-bleed reel: shrinks behind the mountain on scroll -->
+    <div class="hero-reel-wrap">
+      <div class="hero-reel" id="hero-reel"></div>
+      <div class="hero-mountain" aria-hidden="true">
+        <svg viewBox="0 0 1440 200" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0,200 V158 C70,136 130,112 200,88 C270,64 318,76 388,57 C458,38 504,22 576,7 C648,-8 694,10 766,26 C838,42 886,25 958,9 C1030,-7 1078,12 1150,29 C1222,46 1266,36 1336,53 C1384,65 1416,70 1440,76 V200 Z" fill="var(--color-bg)"/>
+        </svg>
+      </div>
+    </div>
 
     <div class="hero-foot" id="hero-foot">
       <div>
@@ -70,6 +81,13 @@ import Marquee from '../components/Marquee.astro';
   </section>
 
   <div class="divider"></div>
+
+  <!-- ============ VISUAL BREAK (dark parallax strip) ============ -->
+  <section class="vbreak" aria-hidden="true">
+    <div class="vbreak-bg" id="vbreak-bg">
+      <p class="vbreak-quote">Type that reads. Motion that means something.</p>
+    </div>
+  </section>
 
   <!-- ============ SELECTED WORK (horizontal pinned) ============ -->
   <HorizontalWork />
@@ -147,15 +165,16 @@ import Marquee from '../components/Marquee.astro';
   .loader-bar i { position: absolute; left: 0; top: 0; bottom: 0; width: 0%; background: var(--color-ink); }
 
   /* hero */
-  .hero { min-height: 100vh; padding: 140px 40px 60px; display: flex; flex-direction: column; justify-content: space-between; position: relative; }
+  .hero { min-height: 100vh; padding: 140px 40px 60px; display: flex; flex-direction: column; justify-content: space-between; gap: 40px; position: relative; }
+  .hero-head {}
   .hero-eyebrow { display: flex; justify-content: space-between; gap: 24px; flex-wrap: wrap; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em; color: var(--color-ink-2); text-transform: uppercase; opacity: 0; }
   .hero-eyebrow .ind { display: inline-flex; align-items: center; gap: 10px; }
   .hero-eyebrow .ind::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--color-accent); }
 
-  .hero-title { font-family: var(--font-sans); font-weight: 500; font-size: clamp(64px, 13.2vw, 200px); line-height: 0.92; letter-spacing: -0.045em; margin-top: 60px; color: var(--color-ink); }
+  .hero-title { font-family: var(--font-sans); font-weight: 500; font-size: clamp(64px, 13.2vw, 200px); line-height: 0.92; letter-spacing: -0.045em; margin-top: 44px; color: var(--color-ink); }
   .hero-title em { font-family: var(--font-serif); font-style: italic; font-weight: 400; color: var(--color-accent); }
 
-  .hero-foot { display: grid; grid-template-columns: repeat(4, 1fr); gap: 40px; align-items: end; margin-top: 80px; opacity: 0; }
+  .hero-foot { display: grid; grid-template-columns: repeat(4, 1fr); gap: 40px; align-items: end; opacity: 0; }
   .col-label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.14em; color: var(--color-muted); margin-bottom: 12px; text-transform: uppercase; }
   .col-value { font-size: 14px; line-height: 1.55; color: var(--color-ink-2); }
   .col-value strong { color: var(--color-ink); font-weight: 600; }
@@ -203,6 +222,7 @@ import Marquee from '../components/Marquee.astro';
     .timeline-cap { grid-template-columns: 1fr !important; }
     .hero-eyebrow { flex-direction: column; gap: 12px; }
     .timeline-num { font-size: clamp(120px, 22vw, 280px) !important; }
+    .hero-reel-wrap { width: calc(100% + 48px) !important; margin-left: -24px !important; }
   }
 </style>
 
@@ -243,7 +263,7 @@ import Marquee from '../components/Marquee.astro';
     gsap.set('.hero-title .line span', { y: 0 });
   }
 
-  // ============ HERO SCRUB-OUT ============
+  // ============ HERO TITLE SCRUB-OUT ============
   if (!reduceMotion) {
     gsap.to('#hero-title', {
       scale: 0.96,
@@ -252,6 +272,33 @@ import Marquee from '../components/Marquee.astro';
       ease: 'none',
       scrollTrigger: { trigger: '#hero', start: 'bottom bottom', end: 'bottom 30%', scrub: true },
     });
+  }
+
+  // ============ HERO REEL: parallax + scale (goes behind mountain on scroll) ============
+  if (!reduceMotion) {
+    gsap.to('#hero-reel', {
+      yPercent: 18,
+      scale: 0.86,
+      ease: 'none',
+      scrollTrigger: {
+        trigger: '#hero',
+        start: 'top top',
+        end: 'bottom top',
+        scrub: 1.2,
+      },
+    });
+  }
+
+  // ============ VBREAK PARALLAX ============
+  if (!reduceMotion) {
+    gsap.fromTo('#vbreak-bg',
+      { yPercent: -14 },
+      {
+        yPercent: 14,
+        ease: 'none',
+        scrollTrigger: { trigger: '.vbreak', start: 'top bottom', end: 'bottom top', scrub: true },
+      }
+    );
   }
 
   // ============ TAGLINE WORD SCRUB ============
@@ -276,7 +323,6 @@ import Marquee from '../components/Marquee.astro';
       ease: 'none',
       scrollTrigger: { trigger: el, start: 'top 80%', end: 'top 30%', scrub: 0.6 },
     });
-    // Italic em words flash accent on full opacity
     words.forEach((w) => {
       if (w.querySelector('em')) {
         ScrollTrigger.create({
