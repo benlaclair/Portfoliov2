@@ -1,10 +1,24 @@
 import { useState, useRef } from 'react';
 
-const field =
-  'w-full bg-[var(--color-surface)] border border-[var(--color-line)] px-4 py-3 text-[var(--color-ink)] placeholder:text-[var(--color-muted)] text-sm focus:outline-none focus:border-[var(--color-ink)] transition-colors duration-200';
+const field: React.CSSProperties = {
+  width: '100%',
+  background: 'var(--color-paper)',
+  border: '1px solid var(--color-line)',
+  padding: '14px 16px',
+  color: 'var(--color-ink)',
+  fontSize: '14px',
+  fontFamily: "'Inter Tight Variable', 'Inter Tight', sans-serif",
+  outline: 'none',
+  borderRadius: 0,
+};
+
+const fieldFocus: React.CSSProperties = {
+  borderColor: 'var(--color-ink)',
+};
 
 export default function ContactForm() {
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
+  const [focused, setFocused] = useState<string | null>(null);
   const nameRef = useRef<HTMLInputElement>(null);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -26,18 +40,46 @@ export default function ContactForm() {
 
   if (status === 'sent') {
     return (
-      <div className="border-t border-[var(--color-line)] pt-10">
+      <div
+        style={{
+          border: '1px solid var(--color-line)',
+          padding: '60px 40px',
+          textAlign: 'center',
+          background: 'var(--color-paper)',
+        }}
+      >
         <p
-          className="text-[var(--color-ink)] mb-2"
-          style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 800, fontSize: '1.75rem', letterSpacing: '-0.025em', lineHeight: 1.1 }}
-        >Message sent.</p>
-        <p className="text-sm text-[var(--color-muted)] mb-8">I’ll get back to you soon.</p>
+          style={{
+            fontFamily: "'Instrument Serif', serif",
+            fontStyle: 'italic',
+            fontSize: '40px',
+            color: 'var(--color-ink)',
+            marginBottom: '12px',
+            letterSpacing: '-0.02em',
+          }}
+        >
+          Message sent.
+        </p>
+        <p style={{ fontSize: '14px', color: 'var(--color-ink-2)', marginBottom: '32px' }}>
+          I'll get back to you soon.
+        </p>
         <button
           onClick={() => {
             setStatus('idle');
             requestAnimationFrame(() => nameRef.current?.focus());
           }}
-          className="text-sm text-[var(--color-muted)] hover:text-[var(--color-ink)] transition-colors duration-200"
+          style={{
+            fontFamily: "'JetBrains Mono', monospace",
+            fontSize: '11px',
+            letterSpacing: '0.12em',
+            textTransform: 'uppercase',
+            color: 'var(--color-ink-2)',
+            border: 'none',
+            background: 'transparent',
+            cursor: 'none',
+            borderBottom: '1px solid var(--color-line)',
+            paddingBottom: '4px',
+          }}
         >
           Send another →
         </button>
@@ -45,25 +87,34 @@ export default function ContactForm() {
     );
   }
 
-  return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-      <input type="text" name="_gotcha" className="hidden" tabIndex={-1} autoComplete="off" />
+  const fld = (name: string): React.CSSProperties => ({
+    ...field,
+    ...(focused === name ? fieldFocus : {}),
+  });
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+  return (
+    <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+      <input type="text" name="_gotcha" style={{ display: 'none' }} tabIndex={-1} autoComplete="off" />
+
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px' }}>
         <input
           ref={nameRef}
           type="text"
           name="name"
           placeholder="Your name"
           required
-          className={field}
+          style={fld('name')}
+          onFocus={() => setFocused('name')}
+          onBlur={() => setFocused(null)}
         />
         <input
           type="email"
           name="email"
           placeholder="your@email.com"
           required
-          className={field}
+          style={fld('email')}
+          onFocus={() => setFocused('email')}
+          onBlur={() => setFocused(null)}
         />
       </div>
       <textarea
@@ -71,25 +122,47 @@ export default function ContactForm() {
         placeholder="Tell me about your project…"
         required
         rows={6}
-        className={`${field} resize-none`}
+        style={{ ...fld('message'), resize: 'none' }}
+        onFocus={() => setFocused('message')}
+        onBlur={() => setFocused(null)}
       />
-
-      <div className="flex items-center gap-6 mt-1">
+      <div style={{ display: 'flex', alignItems: 'center', gap: '20px', marginTop: '8px' }}>
         <button
           type="submit"
           disabled={status === 'sending'}
-          className="text-sm text-[var(--color-ink)] border border-[var(--color-ink)] px-6 py-3 hover:bg-[var(--color-ink)] hover:text-[var(--color-bg)] transition-colors duration-200 disabled:opacity-40"
+          data-cursor="Send"
+          data-magnetic="0.3"
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '12px',
+            background: 'var(--color-ink)',
+            color: 'var(--color-paper)',
+            fontSize: '14px',
+            fontWeight: 500,
+            padding: '14px 28px',
+            border: 'none',
+            borderRadius: 0,
+            opacity: status === 'sending' ? 0.5 : 1,
+            transition: 'background 0.4s ease',
+            cursor: 'none',
+          }}
+          onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--color-accent)')}
+          onMouseLeave={(e) => (e.currentTarget.style.background = 'var(--color-ink)')}
         >
-          {status === 'sending' ? 'Sending…' : 'Send message →'}
+          {status === 'sending' ? 'Sending…' : 'Send message'}
+          <span>→</span>
         </button>
         {status === 'error' && (
-          <p className="text-sm" style={{ color: '#dc2626' }}>
+          <p style={{ fontSize: '13px', color: '#c2410c' }}>
             Something went wrong.{' '}
             <button
               type="button"
               onClick={() => setStatus('idle')}
-              className="underline"
-            >Try again</button>
+              style={{ textDecoration: 'underline', background: 'transparent', border: 'none', color: 'inherit', cursor: 'none' }}
+            >
+              Try again
+            </button>
           </p>
         )}
       </div>

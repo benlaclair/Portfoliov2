@@ -31,6 +31,7 @@ import { TOOLS } from '../data/tools';
 
     {TOOLS.map((tool, i) => {
       const num = String(i + 1).padStart(2, '0');
+      const statusLabel = tool.status === 'live' ? 'Live' : tool.status === 'beta' ? 'Beta' : 'Coming soon';
       return (
         <article
           class="tool-row"
@@ -44,7 +45,7 @@ import { TOOLS } from '../data/tools';
           <div style="padding-top: 4px">
             <div
               style={`font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.12em; color: ${tool.accentColor}; text-transform: uppercase; margin-bottom: 16px`}
-            >{tool.status === 'live' ? 'Live' : tool.status === 'beta' ? 'Beta' : 'Coming soon'} &middot; {tool.year}</div>
+            >{statusLabel}</div>
             <h3
               style="font-family: 'Inter Tight Variable', 'Inter Tight', sans-serif; font-weight: 500; font-size: clamp(36px, 4.4vw, 64px); line-height: 1.0; letter-spacing: -0.03em; margin-bottom: 24px"
             >
@@ -91,9 +92,7 @@ import { TOOLS } from '../data/tools';
             </span>
           </div>
 
-          <span
-            style="align-self: center; font-size: 18px; color: var(--color-ink-2)"
-          >→</span>
+          <span style="align-self: center; font-size: 18px; color: var(--color-ink-2)">→</span>
         </article>
       );
     })}
