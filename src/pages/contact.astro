@@ -7,51 +7,64 @@ import ContactForm from '../components/ContactForm.tsx';
   title="Contact — Ben LaClair"
   description="Get in touch to discuss a project or collaboration."
 >
-  <div class="px-5 md:px-12 lg:px-20 pt-28 pb-28" style="max-width: 1360px; margin-inline: auto">
+  <div style="padding: 140px 40px 80px; max-width: 880px; margin-inline: auto">
 
-    <!-- Header -->
-    <div class="border-b border-[var(--color-line)] pb-16 mb-16">
-      <p
-        class="text-[var(--color-muted)] mb-10"
-        style="font-family: 'Geist Mono', monospace; font-size: 0.6rem; letter-spacing: 0.14em; text-transform: uppercase"
-      >Say hello</p>
+    <div style="margin-bottom: 80px">
+      <div
+        style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-ink-2); margin-bottom: 40px"
+      >— 05 / Reach out</div>
       <h1
-        class="text-[var(--color-ink)]"
-        style="font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800; font-size: clamp(3.25rem, 9vw, 9.5rem); letter-spacing: -0.03em; line-height: 0.95"
-      >Let's talk.</h1>
+        class="contact-h1"
+        style="font-family: 'Inter Tight Variable', 'Inter Tight', sans-serif; font-weight: 500; font-size: clamp(64px, 11vw, 180px); letter-spacing: -0.045em; line-height: 0.92; margin-bottom: 32px"
+      >
+        <span class="line"><span>Have something</span></span>
+        <span class="line"><span><em>worth making?</em></span></span>
+      </h1>
+      <p style="font-size: 18px; line-height: 1.55; color: var(--color-ink-2); max-width: 540px">
+        Project, collaboration, or just hello — inbox is open. Replies usually within a day.
+      </p>
     </div>
 
-    <div class="grid md:grid-cols-[1fr_300px] gap-16 md:gap-24">
+    <div style="margin-bottom: 80px">
+      <ContactForm client:load />
+    </div>
 
-      <!-- Form -->
-      <div>
-        <p class="text-base text-[var(--color-muted)] leading-relaxed mb-10 max-w-md">
-          Have a project in mind, want to collaborate, or just want to say hi?
-          My inbox is open.
-        </p>
-        <ContactForm client:load />
-      </div>
+    <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 32px">
+      <div style="height: 1px; flex: 1; background: var(--color-line)"></div>
+      <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-ink-2)">Or find me here</span>
+      <div style="height: 1px; flex: 1; background: var(--color-line)"></div>
+    </div>
 
-      <!-- Direct links -->
-      <div class="md:pt-4">
-        <p
-          class="text-[var(--color-muted)] mb-6"
-          style="font-family: 'Geist Mono', monospace; font-size: 0.6rem; letter-spacing: 0.14em; text-transform: uppercase"
-        >Or find me here</p>
-        <div class="flex flex-col gap-4">
-          <a
-            href="https://www.linkedin.com/in/benlaclair"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="text-sm text-[var(--color-ink)] hover:text-[var(--color-accent)] transition-colors duration-200"
-          >LinkedIn ↗</a>
-          <a
-            href="mailto:hello@benlaclair.com"
-            class="text-sm text-[var(--color-ink)] hover:text-[var(--color-accent)] transition-colors duration-200"
-          >hello@benlaclair.com ↗</a>
-        </div>
-      </div>
+    <div style="display: flex; flex-wrap: wrap; gap: 32px; align-items: center">
+      <a
+        href="mailto:hello@benlaclair.com"
+        data-cursor="Mail"
+        data-magnetic="0.4"
+        class="contact-link"
+        style="display: inline-flex; align-items: center; gap: 16px; font-size: 20px; font-weight: 500; padding: 16px 0; border-bottom: 1px solid var(--color-ink); color: var(--color-ink)"
+      >
+        hello@benlaclair.com
+        <span class="contact-arrow" style="width: 40px; height: 40px; border-radius: 50%; background: var(--color-ink); color: var(--color-paper); display: grid; place-items: center; transition: transform 0.6s cubic-bezier(.7,0,.2,1), background 0.4s ease">→</span>
+      </a>
+      <a
+        href="https://www.linkedin.com/in/benlaclair"
+        target="_blank"
+        rel="noopener noreferrer"
+        data-cursor="Visit"
+        data-magnetic="0.3"
+        style="font-size: 16px; color: var(--color-ink-2); border-bottom: 1px solid var(--color-line); padding-bottom: 2px"
+      >LinkedIn ↗</a>
     </div>
 
   </div>
 </BaseLayout>
+
+<style>
+  .contact-link:hover .contact-arrow { transform: rotate(-45deg); background: var(--color-accent); }
+</style>
+
+<script>
+  import { gsap } from 'gsap';
+  gsap.set('.contact-h1 .line span', { y: '110%' });
+  gsap.to('.contact-h1 .line span', { y: '0%', duration: 1.1, stagger: 0.08, ease: 'expo.out', delay: 0.1 });
+</script>

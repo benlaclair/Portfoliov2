@@ -7,100 +7,126 @@ import { TOOLS } from '../data/tools';
   title="Tools — Ben LaClair"
   description="AI-powered tools built to solve real problems in design, content, and workflow."
 >
-  <div class="px-5 md:px-12 lg:px-20 pt-28 pb-28" style="max-width: 1360px; margin-inline: auto">
+  <div style="padding: 140px 40px 80px; max-width: 1440px; margin-inline: auto">
 
-    <!-- Header -->
-    <div class="border-b border-[var(--color-line)] pb-16 mb-16">
-      <p
-        class="text-[var(--color-muted)] mb-10"
-        style="font-family: 'Geist Mono', monospace; font-size: 0.6rem; letter-spacing: 0.14em; text-transform: uppercase"
-      >Built things &middot; 2025–2026</p>
-      <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
+    <div style="border-bottom: 1px solid var(--color-line); padding-bottom: 60px; margin-bottom: 0">
+      <div
+        style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-ink-2); margin-bottom: 40px"
+      >— Built things &middot; 2025–2026</div>
+      <div
+        class="tools-head"
+        style="display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: end"
+      >
         <h1
-          class="text-[var(--color-ink)]"
-          style="font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800; font-size: clamp(3.25rem, 9vw, 9.5rem); letter-spacing: -0.03em; line-height: 0.95"
-        >Tools</h1>
-        <p class="text-sm text-[var(--color-muted)] max-w-xs leading-relaxed md:mb-2">
-          Production tools built to solve real problems in design, content, and workflow.
+          class="tools-h1"
+          style="font-family: 'Inter Tight Variable', 'Inter Tight', sans-serif; font-weight: 500; font-size: clamp(72px, 13vw, 200px); letter-spacing: -0.045em; line-height: 0.92"
+        >
+          <span class="line"><span><em>Tools</em> I built.</span></span>
+        </h1>
+        <p style="font-size: 16px; line-height: 1.6; color: var(--color-ink-2); max-width: 460px; padding-bottom: 16px">
+          Production tools built to solve real problems in design, content, and workflow. Each one started as a pain point.
         </p>
       </div>
     </div>
 
-    <!-- Tool list -->
-    <div class="divide-y divide-[var(--color-line)]">
-      {TOOLS.map((tool, i) => (
-        <article class="tool-detail py-12 md:py-14" data-index={i}>
-          <div class="grid md:grid-cols-[120px_1fr] gap-8 md:gap-14">
+    {TOOLS.map((tool, i) => {
+      const num = String(i + 1).padStart(2, '0');
+      return (
+        <article
+          class="tool-row"
+          data-tool
+          style="display: grid; grid-template-columns: 80px 1fr 1fr 40px; gap: 60px; padding: 60px 0; border-top: 1px solid var(--color-line); align-items: start"
+        >
+          <div
+            style="font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.12em; color: var(--color-ink-2); padding-top: 8px"
+          >/{num}</div>
 
-            <!-- Number + status -->
-            <div>
-              <p
-                class="text-[var(--color-muted)] mb-3"
-                style="font-family: 'Geist Mono', monospace; font-size: 0.7rem"
-              >{tool.number}</p>
-              <p
-                class="text-[var(--color-muted)]"
-                style={`font-family: 'Geist Mono', monospace; font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: ${tool.accentColor}`}
-              >{tool.status === 'live' ? 'Live' : tool.status === 'beta' ? 'Beta' : 'Soon'}</p>
+          <div style="padding-top: 4px">
+            <div
+              style={`font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.12em; color: ${tool.accentColor}; text-transform: uppercase; margin-bottom: 16px`}
+            >{tool.status === 'live' ? 'Live' : tool.status === 'beta' ? 'Beta' : 'Coming soon'} &middot; {tool.year}</div>
+            <h3
+              style="font-family: 'Inter Tight Variable', 'Inter Tight', sans-serif; font-weight: 500; font-size: clamp(36px, 4.4vw, 64px); line-height: 1.0; letter-spacing: -0.03em; margin-bottom: 24px"
+            >
+              {tool.name}
+            </h3>
+            <p style="font-size: 16px; line-height: 1.6; color: var(--color-ink-2); max-width: 540px; margin-bottom: 24px">
+              {tool.tagline}
+            </p>
+            <div
+              style={`border-left: 2px solid ${tool.accentColor}80; padding-left: 20px; margin-bottom: 28px`}
+            >
+              <p style="font-size: 14px; line-height: 1.55; color: var(--color-ink-2); font-style: italic">
+                “{tool.problem}”
+              </p>
             </div>
-
-            <!-- Content -->
-            <div>
-              <h2
-                class="text-[var(--color-ink)] mb-3"
-                style="font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800; font-size: clamp(1.5rem, 3vw, 2.5rem); letter-spacing: -0.025em; line-height: 1.1"
-              >{tool.name}</h2>
-
-              <p class="text-base text-[var(--color-muted)] leading-relaxed mb-6 max-w-2xl">{tool.tagline}</p>
-
-              <!-- Problem quote -->
-              <div
-                class="border-l-2 pl-5 mb-8"
-                style={`border-color: ${tool.accentColor}`}
-              >
-                <p class="text-sm text-[var(--color-muted)] leading-relaxed italic">&ldquo;{tool.problem}&rdquo;</p>
-              </div>
-
-              <!-- Tech + link -->
-              <div class="flex flex-wrap items-center gap-6">
-                {tool.url && (
-                  <a
-                    href={tool.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="text-sm text-[var(--color-ink)] hover:text-[var(--color-accent)] transition-colors duration-200"
-                  >Open tool ↗</a>
-                )}
-                <div class="flex flex-wrap gap-x-4 gap-y-1">
-                  {tool.tech.map((t) => (
-                    <span
-                      class="text-[var(--color-muted)]"
-                      style="font-family: 'Geist Mono', monospace; font-size: 0.65rem"
-                    >{t}</span>
-                  ))}
-                </div>
+            <div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center">
+              {tool.url && (
+                <a
+                  href={tool.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  data-cursor="Open"
+                  data-magnetic="0.3"
+                  style="display: inline-flex; align-items: center; gap: 12px; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-ink); border-bottom: 1px solid var(--color-ink); padding-bottom: 4px"
+                >Open tool ↗</a>
+              )}
+              <div style="display: flex; flex-wrap: wrap; gap: 6px">
+                {tool.tech.map((t) => (
+                  <span
+                    style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.06em; padding: 4px 10px; border: 1px solid var(--color-line); color: var(--color-muted)"
+                  >{t}</span>
+                ))}
               </div>
             </div>
           </div>
+
+          <div
+            style={`aspect-ratio: 4/3; background: linear-gradient(135deg, ${tool.accentColor}25, ${tool.accentColor}08); position: relative; overflow: hidden; display: grid; place-items: center`}
+          >
+            <span
+              style={`color: ${tool.accentColor}; font-family: 'Instrument Serif', serif; font-style: italic; font-size: clamp(48px, 6vw, 96px); letter-spacing: -0.04em; opacity: 0.6; text-align: center; padding: 20px`}
+            >
+              {tool.name.split(' ')[0]}
+            </span>
+          </div>
+
+          <span
+            style="align-self: center; font-size: 18px; color: var(--color-ink-2)"
+          >→</span>
         </article>
-      ))}
-    </div>
+      );
+    })}
 
   </div>
 </BaseLayout>
+
+<style>
+  @media (max-width: 900px) {
+    .tools-head { grid-template-columns: 1fr !important; gap: 24px !important; }
+    .tool-row { grid-template-columns: 60px 1fr !important; gap: 24px !important; }
+    .tool-row > :nth-child(3), .tool-row > :nth-child(4) {
+      grid-column: 1 / -1; margin-top: 16px;
+    }
+    .tool-row > :nth-child(4) { display: none; }
+  }
+</style>
 
 <script>
   import { gsap } from 'gsap';
   import { ScrollTrigger } from 'gsap/ScrollTrigger';
   gsap.registerPlugin(ScrollTrigger);
 
-  document.querySelectorAll<HTMLElement>('.tool-detail').forEach((el) => {
+  gsap.set('.tools-h1 .line span', { y: '110%' });
+  gsap.to('.tools-h1 .line span', { y: '0%', duration: 1.1, ease: 'expo.out', delay: 0.1 });
+
+  document.querySelectorAll<HTMLElement>('[data-tool]').forEach((el) => {
     gsap.from(el, {
+      y: 40,
       opacity: 0,
-      y: 24,
-      duration: 0.65,
-      ease: 'power3.out',
-      scrollTrigger: { trigger: el, start: 'top 92%', once: true },
+      duration: 0.9,
+      ease: 'expo.out',
+      scrollTrigger: { trigger: el, start: 'top 85%' },
     });
   });
 </script>
