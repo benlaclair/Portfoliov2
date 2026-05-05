@@ -1,0 +1,362 @@
+---
+import type { Project } from '../data/projects';
+import { PROJECTS } from '../data/projects';
+
+const featured: Project[] = PROJECTS.slice(0, 3);
+---
+
+<section class="hwork" id="hwork">
+  <!-- Section header (above the pinned region) -->
+  <div class="wrap hwork-header">
+    <div class="hwork-header-left">
+      <div class="section-num hwork-num">— 02 / Selected work</div>
+      <h2 class="hwork-h2">
+        Three projects.<br/>
+        <em>Three problems</em><br/>
+        worth solving.
+      </h2>
+    </div>
+    <p class="hwork-header-right">
+      A scroll through the most recent. Industrial UX, AI-generated broadcast, and the rebuild of this very site.
+    </p>
+  </div>
+
+  <!-- Pinned horizontal scroll stage (desktop only) -->
+  <div class="hwork-stage" id="hwork-stage">
+    <div class="hwork-track" id="hwork-track">
+      {featured.map((p, i) => {
+        const num = String(i + 1).padStart(2, '0');
+        return (
+          <article class="hwork-panel" data-panel data-index={i}>
+            <a href={`/work/${p.slug}`} data-cursor="Read case" class="hwork-panel-inner">
+              <div class="hwork-meta">
+                <div class="hwork-meta-num">{num} / 03</div>
+                <div class="hwork-meta-cat">{p.category} &middot; {p.year}</div>
+                <h3 class="hwork-title" data-title>
+                  <span class="line"><span>{p.shortTitle}</span></span>
+                </h3>
+                <p class="hwork-desc">{p.description}</p>
+                <span class="hwork-link">
+                  Read case
+                  <span class="arrow">→</span>
+                </span>
+              </div>
+              <div class="hwork-visual" data-visual>
+                <div class="hwork-visual-inner" data-inner>
+                  {p.coverImage ? (
+                    <img src={p.coverImage} alt={p.shortTitle} loading="lazy" />
+                  ) : (
+                    <div
+                      class="hwork-fallback"
+                      style={`background: linear-gradient(135deg, ${p.coverColor}25, ${p.coverColor}08)`}
+                    >
+                      <span style={`color: ${p.coverColor}; font-family: 'Instrument Serif', serif; font-style: italic`}>
+                        {p.shortTitle}
+                      </span>
+                    </div>
+                  )}
+                </div>
+                <div class="hwork-visual-label">[ {p.shortTitle} hero — drop-in ]</div>
+              </div>
+            </a>
+          </article>
+        );
+      })}
+    </div>
+
+    <!-- Side rail wayfinding -->
+    <div class="hwork-rail" id="hwork-rail">
+      {featured.map((_, i) => (
+        <span class="rail-tick" data-rail-tick data-index={i}>
+          {String(i + 1).padStart(2, '0')}
+        </span>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .hwork { position: relative; }
+  .hwork-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: end;
+    padding-block: 120px 80px;
+  }
+  .hwork-num {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    color: var(--color-ink-2);
+    text-transform: uppercase;
+    margin-bottom: 24px;
+  }
+  .hwork-h2 {
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: clamp(48px, 6.6vw, 100px);
+    line-height: 0.96;
+    letter-spacing: -0.04em;
+  }
+  .hwork-header-right {
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--color-ink-2);
+    max-width: 460px;
+    padding-bottom: 16px;
+  }
+
+  /* Stage — desktop horizontal pinned scroll */
+  .hwork-stage {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+  }
+  .hwork-track {
+    display: flex;
+    flex-wrap: nowrap;
+    width: max-content;
+    will-change: transform;
+  }
+  .hwork-panel {
+    width: 100vw;
+    height: 100vh;
+    flex-shrink: 0;
+    padding: 80px 40px;
+  }
+  .hwork-panel-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    height: 100%;
+    align-items: center;
+  }
+  .hwork-meta-num {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    color: var(--color-ink-2);
+    text-transform: uppercase;
+    margin-bottom: 32px;
+  }
+  .hwork-meta-cat {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    color: var(--color-accent);
+    text-transform: uppercase;
+    margin-bottom: 24px;
+  }
+  .hwork-title {
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: clamp(48px, 6vw, 96px);
+    line-height: 1.0;
+    letter-spacing: -0.035em;
+    margin-bottom: 32px;
+  }
+  .hwork-title em {
+    font-family: var(--font-serif);
+    font-style: italic;
+    color: var(--color-accent);
+  }
+  .hwork-desc {
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--color-ink-2);
+    max-width: 480px;
+    margin-bottom: 32px;
+  }
+  .hwork-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-ink);
+  }
+  .hwork-link .arrow {
+    transition: transform 0.5s cubic-bezier(.7,0,.2,1);
+  }
+  .hwork-panel-inner:hover .hwork-link .arrow { transform: translateX(8px); }
+
+  .hwork-visual {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 4/3;
+    background: var(--color-paper);
+    overflow: hidden;
+    border-radius: 2px;
+    clip-path: inset(0 100% 0 0);
+  }
+  .hwork-visual.in { clip-path: inset(0 0 0 0); }
+  .hwork-visual-inner {
+    position: absolute;
+    inset: -8%;
+    will-change: transform;
+  }
+  .hwork-visual-inner img {
+    width: 100%; height: 100%; object-fit: cover;
+  }
+  .hwork-fallback {
+    width: 100%; height: 100%;
+    display: grid; place-items: center;
+    font-size: clamp(56px, 8vw, 120px);
+    font-style: italic;
+    letter-spacing: -0.04em;
+    opacity: 0.5;
+  }
+  .hwork-visual-label {
+    position: absolute;
+    left: 16px; bottom: 14px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: rgba(22,20,15,0.45);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    z-index: 2;
+  }
+
+  /* Side rail */
+  .hwork-rail {
+    position: absolute;
+    right: 32px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    z-index: 5;
+    pointer-events: none;
+  }
+  .rail-tick {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    color: var(--color-muted);
+    text-transform: uppercase;
+    transition: color 0.4s ease, transform 0.4s ease;
+  }
+  .rail-tick.active {
+    color: var(--color-accent);
+    transform: translateX(-4px);
+  }
+
+  @media (max-width: 900px) {
+    .hwork-header { grid-template-columns: 1fr; gap: 32px; padding-block: 80px 40px; }
+    .hwork-stage { overflow: visible; }
+    .hwork-track {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      transform: none !important;
+    }
+    .hwork-panel {
+      width: 100%;
+      height: auto;
+      padding: 40px 24px 80px;
+    }
+    .hwork-panel-inner {
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+    .hwork-rail { display: none; }
+    .hwork-visual { clip-path: none !important; }
+  }
+</style>
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  gsap.registerPlugin(ScrollTrigger);
+
+  const isMobile = window.matchMedia('(max-width: 900px)').matches;
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const stage = document.getElementById('hwork-stage');
+  const track = document.getElementById('hwork-track') as HTMLElement;
+  const panels = gsap.utils.toArray<HTMLElement>('[data-panel]');
+  const ticks = gsap.utils.toArray<HTMLElement>('[data-rail-tick]');
+
+  if (stage && track && panels.length && !isMobile && !reduceMotion) {
+    const total = panels.length;
+    const distance = (total - 1) * window.innerWidth;
+
+    // Pin + horizontal scroll
+    const tween = gsap.to(track, {
+      x: -distance,
+      ease: 'none',
+      scrollTrigger: {
+        trigger: stage,
+        pin: true,
+        scrub: 0.6,
+        end: () => `+=${distance}`,
+        invalidateOnRefresh: true,
+      },
+    });
+
+    // Active panel detection — set rail tick + reveal title/visual
+    panels.forEach((panel, i) => {
+      const titleSpan = panel.querySelector<HTMLElement>('[data-title] .line > span');
+      const visual = panel.querySelector<HTMLElement>('[data-visual]');
+      const inner = panel.querySelector<HTMLElement>('[data-inner]');
+      if (titleSpan) gsap.set(titleSpan, { y: '110%' });
+
+      ScrollTrigger.create({
+        trigger: stage,
+        start: () => `top+=${i * (distance / (total - 1 || 1))} top`,
+        end: () => `top+=${(i + 1) * (distance / (total - 1 || 1))} top`,
+        onToggle: (self) => {
+          ticks.forEach((t, ti) => t.classList.toggle('active', ti === i && self.isActive));
+          if (self.isActive) {
+            if (titleSpan) gsap.to(titleSpan, { y: '0%', duration: 0.9, ease: 'expo.out' });
+            if (visual) visual.classList.add('in');
+          }
+        },
+      });
+
+      // Inner image parallax across panel scroll
+      if (inner) {
+        gsap.fromTo(
+          inner,
+          { yPercent: -8 },
+          {
+            yPercent: 8,
+            ease: 'none',
+            scrollTrigger: {
+              trigger: panel,
+              start: 'top top',
+              end: 'bottom top',
+              scrub: true,
+            },
+          }
+        );
+      }
+    });
+
+    // Initial: first panel active
+    ticks[0]?.classList.add('active');
+    const firstTitle = panels[0]?.querySelector<HTMLElement>('[data-title] .line > span');
+    if (firstTitle) gsap.to(firstTitle, { y: '0%', duration: 0.9, ease: 'expo.out', delay: 0.3 });
+    const firstVisual = panels[0]?.querySelector<HTMLElement>('[data-visual]');
+    if (firstVisual) gsap.delayedCall(0.4, () => firstVisual.classList.add('in'));
+  } else if (panels.length) {
+    // Mobile / reduced motion: simple stagger reveal
+    panels.forEach((panel) => {
+      const titleSpan = panel.querySelector<HTMLElement>('[data-title] .line > span');
+      const visual = panel.querySelector<HTMLElement>('[data-visual]');
+      if (titleSpan) gsap.set(titleSpan, { y: 0 });
+      if (visual) visual.classList.add('in');
+      gsap.from(panel, {
+        opacity: 0,
+        y: 30,
+        duration: 0.8,
+        ease: 'expo.out',
+        scrollTrigger: { trigger: panel, start: 'top 85%' },
+      });
+    });
+  }
+</script>

@@ -1,214 +1,348 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import ProjectCard from '../components/ProjectCard.astro';
-import { PROJECTS } from '../data/projects';
-import { SITE } from '../data/constants';
-
-const featuredProjects = PROJECTS.slice(0, 4);
+import HorizontalWork from '../components/HorizontalWork.astro';
+import Marquee from '../components/Marquee.astro';
 ---
 
 <BaseLayout>
 
-  <!-- ===================== HERO ===================== -->
-  <section
-    class="min-h-screen flex flex-col px-5 md:px-12 lg:px-20 pt-20 pb-10"
-    style="max-width: 1360px; margin-inline: auto; width: 100%"
-    id="hero"
-  >
-    <!-- Top label row -->
-    <div class="flex items-center justify-between mb-auto pt-10">
-      <span
-        id="hero-label"
-        class="text-[var(--color-muted)]"
-        style="font-family: 'Geist Mono', monospace; font-size: 0.6rem; letter-spacing: 0.14em; text-transform: uppercase"
-      >UX / UI &amp; Graphic Design</span>
-      {SITE.available && (
-        <span
-          id="hero-status"
-          class="flex items-center gap-2 text-[var(--color-muted)]"
-          style="font-family: 'Geist Mono', monospace; font-size: 0.6rem; letter-spacing: 0.08em"
-        >
-          <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block"></span>
-          Available 2026
-        </span>
-      )}
+  <!-- ============ LOADER ============ -->
+  <div class="loader" id="loader">
+    <div class="loader-top">
+      <span>Index — 2026</span>
+      <span id="loader-pct">000</span>
     </div>
-
-    <!-- Headline -->
-    <div class="flex-1 flex flex-col justify-center py-12 md:py-16">
-      <h1
-        id="hero-headline"
-        class="text-[var(--color-ink)]"
-        style="font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800; font-size: clamp(3.25rem, 9vw, 9.5rem); letter-spacing: -0.03em; line-height: 0.95"
-      >
-        Design that makes<br />
-        complexity
-        <span class="text-[var(--color-muted)]"> feel obvious.</span>
-      </h1>
+    <div class="loader-mid">
+      <div class="loader-word"><span class="loader-word-inner">Ben<em>.</em></span></div>
     </div>
-
-    <!-- Bottom row: bio + CTAs -->
-    <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-8 pb-10">
-      <p
-        id="hero-bio"
-        class="text-base text-[var(--color-muted)] max-w-sm leading-relaxed"
-      >
-        I'm Ben LaClair — {SITE.yearsExperience} years designing user-centered products,
-        brand systems, and AI-driven creative work.
-      </p>
-      <div id="hero-cta" class="flex items-center gap-8">
-        <a
-          href="/work"
-          class="text-sm text-[var(--color-ink)] hover:text-[var(--color-accent)] transition-colors duration-200"
-        >View work →</a>
-        <a
-          href="/contact"
-          class="text-sm text-[var(--color-muted)] hover:text-[var(--color-ink)] transition-colors duration-200"
-        >Get in touch</a>
+    <div class="loader-foot">
+      <div class="loader-bar"><i id="loader-bar-fill"></i></div>
+      <div class="loader-bot">
+        <span>Loading portfolio</span>
+        <span>Astro &middot; GSAP</span>
       </div>
     </div>
+  </div>
 
-    <!-- Scroll rule -->
-    <div
-      id="hero-rule"
-      class="border-t border-[var(--color-line)] pt-5 flex items-center justify-between"
-    >
-      <span
-        class="text-[var(--color-muted)]"
-        style="font-family: 'Geist Mono', monospace; font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase"
-      >Scroll</span>
-      <span class="text-[var(--color-muted)] text-sm">↓</span>
+  <!-- ============ HERO ============ -->
+  <section class="hero" id="hero">
+    <div class="hero-eyebrow" id="hero-eyebrow">
+      <span class="ind">Available &middot; Spring 2026</span>
+      <span>Newark, NJ — 40.7357° N</span>
+      <span>Portfolio v2 &middot; Index 26</span>
     </div>
-  </section>
 
-  <!-- ===================== WORK ===================== -->
-  <section class="px-5 md:px-12 lg:px-20 pb-4" id="work">
-    <div style="max-width: 1360px; margin-inline: auto">
-      <div class="flex items-baseline justify-between py-9 border-t border-[var(--color-line)]">
-        <span
-          class="text-[var(--color-muted)]"
-          style="font-family: 'Geist Mono', monospace; font-size: 0.6rem; letter-spacing: 0.14em; text-transform: uppercase"
-        >Selected work</span>
-        <a
-          href="/work"
-          class="text-[var(--color-muted)] hover:text-[var(--color-accent)] transition-colors duration-200"
-          style="font-family: 'Geist Mono', monospace; font-size: 0.6rem; letter-spacing: 0.06em"
-        >All projects →</a>
-      </div>
+    <h1 class="hero-title" id="hero-title">
+      <span class="line"><span>Designer</span></span>
+      <span class="line"><span><em>shaping</em> interfaces,</span></span>
+      <span class="line"><span>brands &amp; <em>moving</em></span></span>
+      <span class="line"><span>pictures.</span></span>
+    </h1>
 
-      {featuredProjects.map((project, i) => (
-        <ProjectCard project={project} index={i} />
-      ))}
-    </div>
-  </section>
-
-  <!-- ===================== ABOUT STRIP ===================== -->
-  <section
-    class="px-5 md:px-12 lg:px-20 py-20 md:py-32 mt-20 md:mt-28"
-    style="background: var(--color-surface)"
-    id="about-strip"
-  >
-    <div
-      class="grid md:grid-cols-[1fr_auto] gap-10 md:gap-16 items-end"
-      style="max-width: 1360px; margin-inline: auto"
-    >
+    <div class="hero-foot" id="hero-foot">
       <div>
-        <p
-          id="about-label"
-          class="text-[var(--color-muted)] mb-10"
-          style="font-family: 'Geist Mono', monospace; font-size: 0.6rem; letter-spacing: 0.14em; text-transform: uppercase"
-        >About</p>
-        <h2
-          id="about-text"
-          class="text-[var(--color-ink)]"
-          style="font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800; font-size: clamp(1.75rem, 4.5vw, 4rem); letter-spacing: -0.03em; line-height: 1.1"
-        >
-          5+ years designing user-centered products, brand systems, and AI-driven creative work.
-        </h2>
+        <div class="col-label">Currently</div>
+        <div class="col-value"><strong>Graphic / AI Designer</strong> at Market Mentors LLC. Building this site in <strong>Astro + GSAP</strong>.</div>
       </div>
-      <a
-        href="/about"
-        class="shrink-0 text-sm text-[var(--color-muted)] hover:text-[var(--color-accent)] transition-colors duration-200 whitespace-nowrap"
-      >More about me →</a>
+      <div>
+        <div class="col-label">Practice</div>
+        <div class="col-value">UX/UI &middot; brand systems &middot; AI-led video &middot; web development.</div>
+      </div>
+      <div>
+        <div class="col-label">Recent</div>
+        <div class="col-value"><strong>VEO Olympics spot</strong> — Feb 2026. <strong>Vlier.com</strong> — Q4 2025.</div>
+      </div>
+      <div>
+        <div class="col-label">↳ Next</div>
+        <div class="col-value"><a href="#hwork" data-cursor="Browse">Three case studies, eighty-six designs, five years</a>.</div>
+      </div>
     </div>
   </section>
 
-  <!-- ===================== CTA ===================== -->
-  <section class="px-5 md:px-12 lg:px-20 py-24 md:py-40" id="cta">
-    <div style="max-width: 1360px; margin-inline: auto">
-      <div class="border-t border-[var(--color-line)] pt-16 md:pt-20 flex flex-col md:flex-row md:items-end md:justify-between gap-10">
-        <h2
-          id="cta-text"
-          class="text-[var(--color-ink)]"
-          style="font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800; font-size: clamp(2.75rem, 7vw, 7.5rem); letter-spacing: -0.03em; line-height: 0.95"
-        >
-          Got a project<br />in mind?
-        </h2>
-        <div class="shrink-0 flex flex-col gap-4 items-start md:items-end pb-1">
-          <a
-            href="/contact"
-            class="text-sm text-[var(--color-ink)] hover:text-[var(--color-accent)] transition-colors duration-200"
-          >Start a conversation →</a>
-          <a
-            href="/work"
-            class="text-sm text-[var(--color-muted)] hover:text-[var(--color-ink)] transition-colors duration-200"
-          >See the work →</a>
+  <div class="divider"></div>
+
+  <!-- ============ TAGLINE ============ -->
+  <section class="tagline">
+    <div class="tagline-num section-num">— 01 / Statement</div>
+    <p class="tagline-text" id="tagline-text">
+      I help teams turn complicated ideas into <em>measurably simpler</em> products — with type that reads, motion that means something, and details that hold up under scrutiny.
+    </p>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ============ SELECTED WORK (horizontal pinned) ============ -->
+  <HorizontalWork />
+
+  <!-- ============ MARQUEE ============ -->
+  <Marquee />
+
+  <!-- ============ TIMELINE ============ -->
+  <section class="timeline" id="timeline">
+    <div class="timeline-stage" id="timeline-stage">
+      <div class="timeline-pin" id="timeline-pin">
+        <div class="timeline-top">
+          <span>— 04 / On the record</span>
+          <span id="timeline-progress">01 / 05</span>
+        </div>
+        <div class="timeline-mid">
+          <div class="timeline-num" id="timeline-num">2018</div>
+        </div>
+        <div>
+          <div class="timeline-cap">
+            <div class="label">Marker</div>
+            <div class="text" id="timeline-text">First freelance esports overlay. Discord DMs, forty bucks, learning Photoshop the hard way.</div>
+            <div class="right" id="timeline-tag">Self-taught</div>
+          </div>
+          <div class="timeline-bar"><i id="timeline-fill"></i></div>
+          <div class="timeline-ticks" id="timeline-ticks">
+            <span class="active">2018</span><span>2019</span><span>2021</span><span>2024</span><span>2026</span>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
+  <!-- ============ CTA ============ -->
+  <section class="cta" id="cta">
+    <div class="cta-num section-num">— 05 / Reach out</div>
+    <h2 class="cta-title" id="cta-title">
+      <span class="line"><span>Have something</span></span>
+      <span class="line"><span><em>worth making?</em></span></span>
+    </h2>
+    <div class="cta-row">
+      <a href="mailto:hello@benlaclair.com" data-cursor="Mail" data-magnetic="0.4" class="cta-link">
+        hello@benlaclair.com
+        <span class="cta-arrow">→</span>
+      </a>
+      <p class="cta-side">Replies usually within a day. The shorter your brief, the faster I can be useful — three sentences is plenty.</p>
+    </div>
+  </section>
+
 </BaseLayout>
+
+<style is:global>
+  /* loader */
+  .loader { position: fixed; inset: 0; background: var(--color-bg); z-index: 10000; display: flex; flex-direction: column; justify-content: space-between; padding: 40px; }
+  .loader-top, .loader-bot { display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-ink-2); }
+  .loader-mid { flex: 1; display: grid; place-items: center; }
+  .loader-word { overflow: hidden; }
+  .loader-word-inner {
+    display: inline-block;
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: clamp(80px, 14vw, 220px);
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    transform: translateY(110%);
+    color: var(--color-ink);
+  }
+  .loader-word-inner em {
+    color: var(--color-accent);
+    font-style: normal;
+    font-family: var(--font-serif);
+  }
+  .loader-foot { display: flex; flex-direction: column; gap: 20px; }
+  .loader-bar { height: 1px; background: rgba(22,20,15,0.1); position: relative; overflow: hidden; }
+  .loader-bar i { position: absolute; left: 0; top: 0; bottom: 0; width: 0%; background: var(--color-ink); }
+
+  /* hero */
+  .hero { min-height: 100vh; padding: 140px 40px 60px; display: flex; flex-direction: column; justify-content: space-between; position: relative; }
+  .hero-eyebrow { display: flex; justify-content: space-between; gap: 24px; flex-wrap: wrap; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em; color: var(--color-ink-2); text-transform: uppercase; opacity: 0; }
+  .hero-eyebrow .ind { display: inline-flex; align-items: center; gap: 10px; }
+  .hero-eyebrow .ind::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--color-accent); }
+
+  .hero-title { font-family: var(--font-sans); font-weight: 500; font-size: clamp(64px, 13.2vw, 200px); line-height: 0.92; letter-spacing: -0.045em; margin-top: 60px; color: var(--color-ink); }
+  .hero-title em { font-family: var(--font-serif); font-style: italic; font-weight: 400; color: var(--color-accent); }
+
+  .hero-foot { display: grid; grid-template-columns: repeat(4, 1fr); gap: 40px; align-items: end; margin-top: 80px; opacity: 0; }
+  .col-label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.14em; color: var(--color-muted); margin-bottom: 12px; text-transform: uppercase; }
+  .col-value { font-size: 14px; line-height: 1.55; color: var(--color-ink-2); }
+  .col-value strong { color: var(--color-ink); font-weight: 600; }
+  .col-value a { border-bottom: 1px solid currentColor; padding-bottom: 1px; }
+
+  .divider { height: 1px; background: var(--color-line); margin: 0 40px; }
+
+  /* tagline */
+  .tagline { padding: 80px 40px; display: grid; grid-template-columns: 1fr 2fr; gap: 80px; align-items: start; }
+  .tagline-num { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em; color: var(--color-ink-2); text-transform: uppercase; }
+  .tagline-text { font-family: var(--font-sans); font-weight: 400; font-size: clamp(28px, 3.4vw, 52px); line-height: 1.15; letter-spacing: -0.025em; color: var(--color-ink); }
+  .tagline-text em { font-family: var(--font-serif); font-style: italic; font-weight: 400; color: var(--color-accent); }
+  .tagline-text .word { display: inline-block; opacity: 0.18; transition: opacity 0.4s ease; will-change: opacity; }
+
+  /* timeline */
+  .timeline { padding: 200px 40px 200px; position: relative; }
+  .timeline-stage { height: 280vh; position: relative; }
+  .timeline-pin { height: 100vh; display: grid; grid-template-rows: auto 1fr auto; gap: 40px; align-items: stretch; padding-block: 40px; }
+  .timeline-top { display: flex; justify-content: space-between; align-items: baseline; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em; color: var(--color-ink-2); text-transform: uppercase; }
+  .timeline-mid { display: grid; place-items: center; position: relative; }
+  .timeline-num { font-family: var(--font-serif); font-style: italic; font-size: clamp(160px, 30vw, 460px); line-height: 0.85; letter-spacing: -0.04em; color: var(--color-ink); position: relative; }
+  .timeline-cap { display: grid; grid-template-columns: 1fr 2fr 1fr; gap: 40px; align-items: end; padding-bottom: 20px; }
+  .timeline-cap .label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.12em; color: var(--color-ink-2); text-transform: uppercase; }
+  .timeline-cap .text { font-size: clamp(18px, 2.2vw, 28px); line-height: 1.3; letter-spacing: -0.015em; max-width: 700px; }
+  .timeline-cap .right { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.12em; color: var(--color-muted); text-transform: uppercase; text-align: right; }
+  .timeline-bar { height: 1px; background: var(--color-line); position: relative; }
+  .timeline-bar i { position: absolute; left: 0; top: 0; bottom: 0; width: 0%; background: var(--color-ink); }
+  .timeline-ticks { display: flex; justify-content: space-between; margin-top: 12px; font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.1em; color: var(--color-muted); }
+  .timeline-ticks span { transition: color 0.5s ease; }
+  .timeline-ticks span.active { color: var(--color-accent); }
+
+  /* cta */
+  .cta { padding: 200px 40px 120px; }
+  .cta-num { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em; color: var(--color-ink-2); text-transform: uppercase; margin-bottom: 40px; }
+  .cta-title { font-family: var(--font-sans); font-weight: 500; font-size: clamp(64px, 11.5vw, 200px); line-height: 0.92; letter-spacing: -0.05em; color: var(--color-ink); }
+  .cta-title em { font-family: var(--font-serif); font-style: italic; font-weight: 400; color: var(--color-accent); }
+  .cta-row { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: end; margin-top: 80px; }
+  .cta-link { display: inline-flex; align-items: center; gap: 18px; font-size: 22px; font-weight: 500; letter-spacing: -0.01em; padding: 18px 0; border-bottom: 1px solid var(--color-ink); color: var(--color-ink); }
+  .cta-arrow { width: 44px; height: 44px; border-radius: 50%; background: var(--color-ink); color: var(--color-paper); display: grid; place-items: center; transition: transform 0.6s cubic-bezier(.7,0,.2,1), background 0.4s ease; flex-shrink: 0; }
+  .cta-link:hover .cta-arrow { transform: rotate(-45deg); background: var(--color-accent); }
+  .cta-side { font-size: 14px; line-height: 1.6; color: var(--color-ink-2); max-width: 360px; padding-bottom: 24px; }
+
+  @media (max-width: 900px) {
+    .hero-foot, .tagline, .cta-row { grid-template-columns: 1fr !important; gap: 32px !important; }
+    .timeline-cap { grid-template-columns: 1fr !important; }
+    .hero-eyebrow { flex-direction: column; gap: 12px; }
+    .timeline-num { font-size: clamp(120px, 22vw, 280px) !important; }
+  }
+</style>
 
 <script>
   import { gsap } from 'gsap';
   import { ScrollTrigger } from 'gsap/ScrollTrigger';
   gsap.registerPlugin(ScrollTrigger);
 
-  // Hero entrance — staggered, snappy
-  const tl = gsap.timeline({ delay: 0.05 });
-  tl.from(['#hero-label', '#hero-status'], {
-    opacity: 0,
-    duration: 0.4,
-    ease: 'power2.out',
-  })
-  .from('#hero-headline', {
-    opacity: 0,
-    y: 48,
-    duration: 0.9,
-    ease: 'power4.out',
-  }, '-=0.1')
-  .from('#hero-bio', {
-    opacity: 0,
-    y: 20,
-    duration: 0.5,
-    ease: 'power3.out',
-  }, '-=0.5')
-  .from('#hero-cta', {
-    opacity: 0,
-    y: 20,
-    duration: 0.5,
-    ease: 'power3.out',
-  }, '-=0.4')
-  .from('#hero-rule', {
-    opacity: 0,
-    duration: 0.4,
-    ease: 'power2.out',
-  }, '-=0.3');
+  const E_OUT = 'power3.out';
+  const E_EXPO = 'expo.out';
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  // About strip
-  gsap.from('#about-label', {
-    opacity: 0, y: 12, duration: 0.5, ease: 'power3.out',
-    scrollTrigger: { trigger: '#about-label', start: 'top 90%', once: true },
-  });
-  gsap.from('#about-text', {
-    opacity: 0, y: 36, duration: 0.85, ease: 'power4.out',
-    scrollTrigger: { trigger: '#about-text', start: 'top 88%', once: true },
+  // ============ LOADER → HERO INTRO ============
+  if (!reduceMotion) {
+    const intro = gsap.timeline({ defaults: { ease: E_EXPO } });
+    const pct = { v: 0 };
+    intro
+      .to(pct, {
+        v: 100, duration: 1.4, ease: 'power1.inOut',
+        onUpdate: () => {
+          const el = document.getElementById('loader-pct');
+          if (el) el.textContent = Math.floor(pct.v).toString().padStart(3, '0');
+        }
+      }, 0)
+      .to('#loader-bar-fill', { width: '100%', duration: 1.4, ease: 'power1.inOut' }, 0)
+      .to('.loader-word-inner', { y: '0%', duration: 0.9, ease: E_EXPO }, 0.3)
+      .to('.loader-word-inner', { y: '-110%', duration: 0.7, ease: E_EXPO }, '+=0.4')
+      .to('#loader', { yPercent: -100, duration: 1.0, ease: 'expo.inOut' }, '-=0.2')
+      .set('#loader', { display: 'none' })
+      .to('#site-nav', { opacity: 1, duration: 0.6, ease: E_OUT }, '-=0.5')
+      .to('#hero-eyebrow', { opacity: 1, duration: 0.6, ease: E_OUT }, '-=0.4')
+      .to('.hero-title .line span', { y: '0%', duration: 1.1, stagger: 0.08, ease: E_EXPO }, '-=0.3')
+      .to('#hero-foot', { opacity: 1, duration: 0.7, ease: E_OUT }, '-=0.5');
+  } else {
+    const loader = document.getElementById('loader');
+    if (loader) loader.style.display = 'none';
+    gsap.set('#site-nav, #hero-eyebrow, #hero-foot', { opacity: 1 });
+    gsap.set('.hero-title .line span', { y: 0 });
+  }
+
+  // ============ HERO SCRUB-OUT ============
+  if (!reduceMotion) {
+    gsap.to('#hero-title', {
+      scale: 0.96,
+      yPercent: -8,
+      opacity: 0.4,
+      ease: 'none',
+      scrollTrigger: { trigger: '#hero', start: 'bottom bottom', end: 'bottom 30%', scrub: true },
+    });
+  }
+
+  // ============ TAGLINE WORD SCRUB ============
+  (function setupTagline() {
+    const el = document.getElementById('tagline-text');
+    if (!el) return;
+    const html = el.innerHTML;
+    const tmp = document.createElement('div'); tmp.innerHTML = html;
+    let out = '';
+    tmp.childNodes.forEach((node) => {
+      if (node.nodeType === 3) {
+        out += (node.nodeValue || '').split(/(\s+)/).map((w) => /\s+/.test(w) ? w : (w ? `<span class="word">${w}</span>` : '')).join('');
+      } else if (node.nodeType === 1) {
+        out += `<span class="word">${(node as HTMLElement).outerHTML}</span>`;
+      }
+    });
+    el.innerHTML = out;
+    const words = el.querySelectorAll('.word');
+    gsap.to(words, {
+      opacity: 1,
+      stagger: { each: 0.04 },
+      ease: 'none',
+      scrollTrigger: { trigger: el, start: 'top 80%', end: 'top 30%', scrub: 0.6 },
+    });
+    // Italic em words flash accent on full opacity
+    words.forEach((w) => {
+      if (w.querySelector('em')) {
+        ScrollTrigger.create({
+          trigger: w as HTMLElement,
+          start: 'top 40%',
+          onEnter: () => {
+            const em = w.querySelector('em');
+            if (!em) return;
+            gsap.fromTo(em, { color: 'var(--color-ink)' }, { color: 'var(--color-accent)', duration: 0.4, ease: 'power3.out' });
+          },
+        });
+      }
+    });
+  })();
+
+  // ============ TIMELINE PINNED ============
+  const tlData = [
+    { y: '2018', text: 'First freelance esports overlay. Discord DMs, forty bucks, learning Photoshop the hard way.', tag: 'Self-taught' },
+    { y: '2019', text: 'Pivot to UX. First paid web project for a community nonprofit; learned Figma overnight.', tag: 'Pivot' },
+    { y: '2021', text: 'Joined the Gazelle Group. Brand systems for ESPN-affiliated tournaments touching ten million screens.', tag: 'Studio' },
+    { y: '2024', text: 'Vlier and YMCA — first proper enterprise UX engagements. Deliverables that actually shipped.', tag: 'Enterprise' },
+    { y: '2026', text: 'AI-generated TV spot for the Winter Olympics. Now rebuilding everything — in public.', tag: 'Today' },
+  ];
+  const tlNum = document.getElementById('timeline-num');
+  const tlText = document.getElementById('timeline-text');
+  const tlTag = document.getElementById('timeline-tag');
+  const tlFill = document.getElementById('timeline-fill') as HTMLElement | null;
+  const tlProg = document.getElementById('timeline-progress');
+  const tlTicks = document.querySelectorAll<HTMLElement>('#timeline-ticks span');
+  let tlIdx = 0;
+
+  function setTimeline(idx: number) {
+    if (idx === tlIdx || !tlNum || !tlText || !tlTag || !tlProg) return;
+    tlIdx = idx;
+    const cur = tlData[idx];
+    gsap.fromTo(tlNum, { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.65, ease: E_EXPO });
+    gsap.fromTo([tlText, tlTag], { y: 18, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, stagger: 0.05, ease: E_EXPO, delay: 0.08 });
+    tlNum.textContent = cur.y;
+    tlText.textContent = cur.text;
+    tlTag.textContent = cur.tag;
+    tlProg.textContent = `${(idx + 1).toString().padStart(2, '0')} / ${tlData.length.toString().padStart(2, '0')}`;
+    tlTicks.forEach((s, i) => s.classList.toggle('active', i === idx));
+  }
+
+  ScrollTrigger.create({
+    trigger: '#timeline-stage',
+    start: 'top top',
+    end: 'bottom bottom',
+    pin: '#timeline-pin',
+    onUpdate: (self) => {
+      const idx = Math.min(tlData.length - 1, Math.floor(self.progress * tlData.length));
+      setTimeline(idx);
+      if (tlFill) tlFill.style.width = (self.progress * 100).toFixed(2) + '%';
+    },
   });
 
-  // CTA
-  gsap.from('#cta-text', {
-    opacity: 0, y: 48, duration: 0.85, ease: 'power4.out',
-    scrollTrigger: { trigger: '#cta-text', start: 'top 86%', once: true },
+  // ============ CTA ============
+  gsap.set('.cta-title .line span', { y: '110%' });
+  gsap.to('.cta-title .line span', {
+    y: '0%', duration: 1.2, stagger: 0.1, ease: E_EXPO,
+    scrollTrigger: { trigger: '.cta-title', start: 'top 80%' },
   });
+  gsap.from('.cta-row > *', {
+    y: 30, opacity: 0, duration: 0.9, stagger: 0.1, ease: E_OUT,
+    scrollTrigger: { trigger: '.cta-row', start: 'top 85%' },
+  });
+
+  window.addEventListener('resize', () => ScrollTrigger.refresh());
 </script>
