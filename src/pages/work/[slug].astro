@@ -41,9 +41,6 @@ if (project.slug === 'vlier') {
 const isVeo = project.slug === 'veo-olympics';
 const isVlier = project.slug === 'vlier';
 const isGraphicDesign = project.slug === 'graphic-design';
-
-const mono = "font-family: 'Geist Mono', monospace; font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase";
-const displayStyle = "font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800; letter-spacing: -0.03em; line-height: 1.0";
 ---
 
 <BaseLayout
@@ -52,75 +49,88 @@ const displayStyle = "font-family: 'Plus Jakarta Sans', sans-serif; font-weight:
   pageType="article"
 >
   <!-- Back -->
-  <div class="px-5 md:px-12 lg:px-20 pt-20" style="max-width: 1360px; margin-inline: auto">
+  <div style="padding: 100px 40px 0; max-width: 1440px; margin-inline: auto">
     <a
       href="/work"
-      class="inline-flex items-center gap-2 text-sm text-[var(--color-muted)] hover:text-[var(--color-ink)] transition-colors duration-200"
+      data-cursor="Back"
+      style="display: inline-flex; align-items: center; gap: 8px; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-ink-2)"
     >← All work</a>
   </div>
 
   <!-- Hero -->
-  <header class="px-5 md:px-12 lg:px-20 pt-12 pb-16 md:pb-20" style="max-width: 1360px; margin-inline: auto" id="cs-hero">
-    <p
-      class="text-[var(--color-muted)] mb-6 cs-el"
-      style={mono}
-    >{project.category} &middot; {project.year}</p>
+  <header style="padding: 60px 40px 100px; max-width: 1440px; margin-inline: auto">
+    <div
+      class="cs-meta"
+      style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-accent); margin-bottom: 32px"
+    >{project.category} &middot; {project.year}</div>
     <h1
-      class="text-[var(--color-ink)] max-w-5xl cs-el"
-      style={`${displayStyle}; font-size: clamp(2.25rem, 6vw, 5.5rem); line-height: 1.0`}
-    >{project.title}</h1>
-    <p class="text-lg text-[var(--color-muted)] max-w-2xl mt-8 leading-relaxed cs-el">
+      class="cs-title"
+      style="font-family: 'Inter Tight Variable', 'Inter Tight', sans-serif; font-weight: 500; font-size: clamp(48px, 8vw, 128px); letter-spacing: -0.04em; line-height: 0.96; max-width: 1100px; margin-bottom: 32px"
+    >
+      <span class="line"><span>{project.title}</span></span>
+    </h1>
+    <p
+      class="cs-desc"
+      style="font-size: clamp(18px, 2.2vw, 28px); line-height: 1.4; color: var(--color-ink-2); max-width: 800px; letter-spacing: -0.01em"
+    >
       {project.description}
     </p>
   </header>
 
   <!-- Cover image -->
   {project.coverImage && (
-    <div class="px-5 md:px-12 lg:px-20 mb-16 md:mb-24" style="max-width: 1360px; margin-inline: auto">
-      <div class="overflow-hidden aspect-[16/9] bg-[var(--color-surface)]">
+    <div style="padding: 0 40px 100px; max-width: 1440px; margin-inline: auto">
+      <div
+        class="cs-cover"
+        style="aspect-ratio: 16/9; overflow: hidden; background: var(--color-paper); position: relative; clip-path: inset(0 100% 0 0)"
+      >
         <img
           src={project.coverImage}
           alt={project.shortTitle}
-          width="1360"
-          height="765"
-          class="w-full h-full object-cover"
+          width="1440"
+          height="810"
+          style="width: 100%; height: 100%; object-fit: cover"
         />
       </div>
     </div>
   )}
 
-  <!-- VEO: Video -->
+  <!-- VEO video -->
   {isVeo && project.videoUrl && (
-    <div class="px-5 md:px-12 lg:px-20 mb-16 md:mb-24" style="max-width: 1360px; margin-inline: auto">
-      <p class="text-[var(--color-muted)] mb-5" style={mono}>The spot</p>
-      <div class="overflow-hidden aspect-video bg-[var(--color-ink)]">
+    <div style="padding: 0 40px 100px; max-width: 1440px; margin-inline: auto">
+      <div
+        style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-ink-2); margin-bottom: 24px"
+      >— The spot</div>
+      <div style="aspect-ratio: 16/9; overflow: hidden; background: var(--color-ink); position: relative">
         <video
           src={project.videoUrl}
           controls
           poster={project.coverImage}
-          class="w-full h-full object-cover"
           preload="metadata"
-        >
-          Your browser doesn’t support HTML5 video.
-        </video>
+          style="width: 100%; height: 100%; object-fit: cover"
+        />
       </div>
-      <p class="text-xs text-[var(--color-muted)] mt-4" style="font-family: 'Geist Mono', monospace; font-size: 0.65rem">
-        15-second AI-generated broadcast spot. Aired on traditional TV and CTV during Winter Olympics coverage.
+      <p style="font-size: 13px; color: var(--color-muted); margin-top: 16px; font-family: 'JetBrains Mono', monospace; letter-spacing: 0.04em">
+        15-second AI-generated broadcast spot — aired during Winter Olympics coverage.
       </p>
     </div>
   )}
 
   <!-- Stats -->
   {stats.length > 0 && (
-    <div class="px-5 md:px-12 lg:px-20 mb-16 md:mb-24" style="max-width: 1360px; margin-inline: auto">
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-px bg-[var(--color-line)]">
-        {stats.map((stat) => (
-          <div class="bg-[var(--color-bg)] px-8 py-10 stat-item">
+    <div style="padding: 0 40px 100px; max-width: 1440px; margin-inline: auto">
+      <div
+        class="cs-stats"
+        style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--color-line)"
+      >
+        {stats.map((s) => (
+          <div class="cs-stat" style="background: var(--color-bg); padding: 40px 32px">
             <p
-              class="text-[var(--color-ink)] mb-2"
-              style={`${displayStyle}; font-size: clamp(2rem, 4vw, 3.5rem)`}
-            >{stat.value}</p>
-            <p class="text-[var(--color-muted)]" style={mono}>{stat.label}</p>
+              style="font-family: 'Inter Tight Variable', 'Inter Tight', sans-serif; font-weight: 500; font-size: clamp(40px, 5vw, 72px); line-height: 1; letter-spacing: -0.04em; color: var(--color-ink); margin-bottom: 12px"
+            >{s.value}</p>
+            <p
+              style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-ink-2)"
+            >{s.label}</p>
           </div>
         ))}
       </div>
@@ -128,116 +138,109 @@ const displayStyle = "font-family: 'Plus Jakarta Sans', sans-serif; font-weight:
   )}
 
   <!-- Metadata + Overview -->
-  <div class="px-5 md:px-12 lg:px-20 mb-16 md:mb-24 border-y border-[var(--color-line)] py-12" style="max-width: 1360px; margin-inline: auto">
-    <div class="grid md:grid-cols-[200px_1fr] gap-12 md:gap-16">
-      <!-- Sidebar -->
-      <aside class="flex flex-col gap-7">
-        <div>
-          <p class="text-[var(--color-muted)] mb-2" style={mono}>Role</p>
-          <p class="text-sm text-[var(--color-ink)]">{project.role}</p>
-        </div>
-        {project.client && (
-          <div>
-            <p class="text-[var(--color-muted)] mb-2" style={mono}>Client</p>
-            <p class="text-sm text-[var(--color-ink)]">{project.client}</p>
-          </div>
-        )}
-        <div>
-          <p class="text-[var(--color-muted)] mb-2" style={mono}>Year</p>
-          <p class="text-sm text-[var(--color-ink)]">{project.year}</p>
-        </div>
-        <div>
-          <p class="text-[var(--color-muted)] mb-2" style={mono}>Tools</p>
-          <ul class="flex flex-col gap-1.5">
-            {project.tools.map((t) => (
-              <li class="text-sm text-[var(--color-ink)]">{t}</li>
-            ))}
-          </ul>
-        </div>
-      </aside>
-
-      <!-- Overview -->
+  <div
+    class="cs-meta-grid"
+    style="padding: 0 40px 100px; max-width: 1440px; margin-inline: auto; display: grid; grid-template-columns: 240px 1fr; gap: 80px"
+  >
+    <aside style="display: flex; flex-direction: column; gap: 28px; padding-top: 8px">
       <div>
-        <p class="text-[var(--color-muted)] mb-5" style={mono}>Overview</p>
-        <p class="text-base md:text-lg leading-relaxed mb-8" style="color: var(--color-ink-2)">{project.overview}</p>
-        {project.problem && (
-          <>
-            <p class="text-[var(--color-muted)] mb-5" style={mono}>The challenge</p>
-            <p class="text-base text-[var(--color-muted)] leading-relaxed">{project.problem}</p>
-          </>
-        )}
+        <div style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-muted); margin-bottom: 6px">Role</div>
+        <p style="font-size: 14px; color: var(--color-ink)">{project.role}</p>
       </div>
+      {project.client && (
+        <div>
+          <div style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-muted); margin-bottom: 6px">Client</div>
+          <p style="font-size: 14px; color: var(--color-ink)">{project.client}</p>
+        </div>
+      )}
+      <div>
+        <div style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-muted); margin-bottom: 6px">Year</div>
+        <p style="font-size: 14px; color: var(--color-ink)">{project.year}</p>
+      </div>
+      <div>
+        <div style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-muted); margin-bottom: 6px">Tools</div>
+        <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 6px">
+          {project.tools.map((t) => (<li style="font-size: 13px; color: var(--color-ink-2)">{t}</li>))}
+        </ul>
+      </div>
+    </aside>
+
+    <div>
+      <div
+        style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-ink-2); margin-bottom: 24px"
+      >— Overview</div>
+      <p style="font-size: 18px; line-height: 1.55; color: var(--color-ink-2); margin-bottom: 32px">{project.overview}</p>
+      {project.problem && (
+        <>
+          <div
+            style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-ink-2); margin: 40px 0 24px"
+          >— The challenge</div>
+          <p style="font-size: 16px; line-height: 1.65; color: var(--color-ink-2)">{project.problem}</p>
+        </>
+      )}
     </div>
   </div>
 
-  <!-- VEO: Scenes -->
+  <!-- VEO scenes -->
   {isVeo && extraSections.scenes && (
-    <div class="px-5 md:px-12 lg:px-20 mb-16 md:mb-24" style="max-width: 1360px; margin-inline: auto">
-      <p class="text-[var(--color-muted)] mb-10" style={mono}>Scene breakdown</p>
-      <div class="grid md:grid-cols-2 gap-px bg-[var(--color-line)]">
+    <div style="padding: 0 40px 100px; max-width: 1440px; margin-inline: auto">
+      <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-ink-2); margin-bottom: 32px">— Scene breakdown</div>
+      <div class="cs-cards" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: var(--color-line)">
         {(extraSections.scenes as {number:string;title:string;description:string}[]).map((scene) => (
-          <div class="bg-[var(--color-bg)] p-8">
-            <p class="text-[var(--color-muted)] mb-3" style="font-family: 'Geist Mono', monospace; font-size: 0.65rem">Scene {scene.number}</p>
-            <h3
-              class="text-[var(--color-ink)] mb-3"
-              style="font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800; font-size: 1.15rem; letter-spacing: -0.02em"
-            >{scene.title}</h3>
-            <p class="text-sm text-[var(--color-muted)] leading-relaxed">{scene.description}</p>
+          <div style="background: var(--color-bg); padding: 32px">
+            <p style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--color-accent); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 16px">Scene {scene.number}</p>
+            <h3 style="font-family: 'Inter Tight Variable', 'Inter Tight', sans-serif; font-weight: 500; font-size: 24px; letter-spacing: -0.025em; line-height: 1.1; margin-bottom: 12px">{scene.title}</h3>
+            <p style="font-size: 14px; line-height: 1.6; color: var(--color-ink-2)">{scene.description}</p>
           </div>
         ))}
       </div>
     </div>
   )}
 
-  <!-- Vlier: Personas -->
+  <!-- Vlier personas -->
   {isVlier && extraSections.personas && (
-    <div class="px-5 md:px-12 lg:px-20 mb-16 md:mb-24" style="max-width: 1360px; margin-inline: auto">
-      <p class="text-[var(--color-muted)] mb-10" style={mono}>Two users, one page</p>
-      <div class="grid md:grid-cols-2 gap-px bg-[var(--color-line)]">
+    <div style="padding: 0 40px 100px; max-width: 1440px; margin-inline: auto">
+      <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-ink-2); margin-bottom: 32px">— Two users, one page</div>
+      <div class="cs-cards" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: var(--color-line)">
         {(extraSections.personas as {role:string;description:string}[]).map((persona) => (
-          <div class="bg-[var(--color-bg)] p-8">
-            <h3
-              class="text-[var(--color-ink)] mb-3"
-              style="font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800; font-size: 1.15rem; letter-spacing: -0.02em"
-            >{persona.role}</h3>
-            <p class="text-sm text-[var(--color-muted)] leading-relaxed">{persona.description}</p>
+          <div style="background: var(--color-bg); padding: 32px">
+            <h3 style="font-family: 'Inter Tight Variable', 'Inter Tight', sans-serif; font-weight: 500; font-size: 28px; letter-spacing: -0.03em; line-height: 1.1; margin-bottom: 12px">{persona.role}</h3>
+            <p style="font-size: 14px; line-height: 1.6; color: var(--color-ink-2)">{persona.description}</p>
           </div>
         ))}
       </div>
     </div>
   )}
 
-  <!-- Key decisions -->
+  <!-- Decisions -->
   {decisions.length > 0 && (
-    <div class="px-5 md:px-12 lg:px-20 mb-16 md:mb-24" style="max-width: 1360px; margin-inline: auto">
-      <p class="text-[var(--color-muted)] mb-10" style={mono}>Key decisions</p>
-      <div class="divide-y divide-[var(--color-line)]">
+    <div style="padding: 0 40px 100px; max-width: 1440px; margin-inline: auto">
+      <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-ink-2); margin-bottom: 32px">— Key decisions</div>
+      <div style="display: flex; flex-direction: column">
         {decisions.map((d) => (
-          <div class="py-10">
-            <div class="grid md:grid-cols-[160px_1fr] gap-6 md:gap-12">
-              <div>
-                <p class="text-[var(--color-muted)] mb-1" style="font-family: 'Geist Mono', monospace; font-size: 0.7rem">{d.number}</p>
-                <p class="text-[var(--color-muted)]" style={mono}>{d.label}</p>
-              </div>
-              <div>
-                <h3
-                  class="text-[var(--color-ink)] mb-3"
-                  style="font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800; font-size: clamp(1.15rem, 2vw, 1.5rem); letter-spacing: -0.02em; line-height: 1.2"
-                >{d.title}</h3>
-                <p class="text-sm text-[var(--color-muted)] leading-relaxed mb-6">{d.description}</p>
-                {d.before && d.after && (
-                  <div class="grid md:grid-cols-2 gap-px bg-[var(--color-line)]">
-                    <div class="bg-[var(--color-bg)] border-t-2 border-red-400 px-6 py-5">
-                      <p class="mb-2" style="font-family: 'Geist Mono', monospace; font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: #ef4444">Before</p>
-                      <p class="text-sm leading-relaxed" style="color: var(--color-ink-2)">{d.before}</p>
-                    </div>
-                    <div class="bg-[var(--color-bg)] border-t-2 border-emerald-500 px-6 py-5">
-                      <p class="mb-2" style="font-family: 'Geist Mono', monospace; font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: #10b981">After</p>
-                      <p class="text-sm leading-relaxed" style="color: var(--color-ink-2)">{d.after}</p>
-                    </div>
+          <div
+            class="cs-decision"
+            style="display: grid; grid-template-columns: 200px 1fr; gap: 60px; padding: 40px 0; border-top: 1px solid var(--color-line)"
+          >
+            <div>
+              <p style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--color-ink-2); margin-bottom: 6px">{d.number}</p>
+              <p style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-accent)">{d.label}</p>
+            </div>
+            <div>
+              <h3 style="font-family: 'Inter Tight Variable', 'Inter Tight', sans-serif; font-weight: 500; font-size: clamp(24px, 3vw, 40px); letter-spacing: -0.03em; line-height: 1.1; margin-bottom: 16px">{d.title}</h3>
+              <p style="font-size: 15px; line-height: 1.65; color: var(--color-ink-2); margin-bottom: 20px">{d.description}</p>
+              {d.before && d.after && (
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--color-line); margin-top: 20px">
+                  <div style="background: var(--color-paper); padding: 20px">
+                    <p style="font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--color-muted); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 10px">Before</p>
+                    <p style="font-size: 14px; color: var(--color-ink-2)">{d.before}</p>
                   </div>
-                )}
-              </div>
+                  <div style="background: var(--color-paper); padding: 20px; border-left: 2px solid var(--color-accent)">
+                    <p style="font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--color-accent); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 10px">After</p>
+                    <p style="font-size: 14px; color: var(--color-ink)">{d.after}</p>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         ))}
@@ -245,20 +248,22 @@ const displayStyle = "font-family: 'Plus Jakarta Sans', sans-serif; font-weight:
     </div>
   )}
 
-  <!-- Process -->
+  <!-- Process steps -->
   {process.length > 0 && (
-    <div class="px-5 md:px-12 lg:px-20 mb-16 md:mb-24" style="max-width: 1360px; margin-inline: auto">
-      <p class="text-[var(--color-muted)] mb-10" style={mono}>Process</p>
-      <div class="divide-y divide-[var(--color-line)]">
-        {process.map((step) => (
-          <div class="grid md:grid-cols-[160px_1fr] gap-6 md:gap-12 py-8">
-            <p class="text-[var(--color-muted)]" style="font-family: 'Geist Mono', monospace; font-size: 0.7rem">{step.step}</p>
+    <div style="padding: 0 40px 100px; max-width: 1440px; margin-inline: auto">
+      <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-ink-2); margin-bottom: 32px">— Process</div>
+      <div style="display: flex; flex-direction: column">
+        {process.map((step, i) => (
+          <div
+            class="cs-process"
+            style="display: grid; grid-template-columns: 80px 1fr; gap: 40px; padding: 32px 0; border-top: 1px solid var(--color-line); align-items: start"
+          >
+            <div
+              style="font-family: 'Instrument Serif', serif; font-style: italic; font-size: 56px; line-height: 1; color: var(--color-accent); letter-spacing: -0.04em"
+            >{step.step}</div>
             <div>
-              <h3
-                class="text-[var(--color-ink)] mb-2"
-                style="font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800; font-size: 1.1rem; letter-spacing: -0.02em"
-              >{step.title}</h3>
-              <p class="text-sm text-[var(--color-muted)] leading-relaxed">{step.description}</p>
+              <h3 style="font-family: 'Inter Tight Variable', 'Inter Tight', sans-serif; font-weight: 500; font-size: 22px; letter-spacing: -0.025em; line-height: 1.2; margin-bottom: 10px">{step.title}</h3>
+              <p style="font-size: 15px; line-height: 1.6; color: var(--color-ink-2); max-width: 720px">{step.description}</p>
             </div>
           </div>
         ))}
@@ -266,20 +271,20 @@ const displayStyle = "font-family: 'Plus Jakarta Sans', sans-serif; font-weight:
     </div>
   )}
 
-  <!-- VEO: Challenges -->
+  <!-- VEO challenges -->
   {isVeo && extraSections.challenges && (
-    <div class="px-5 md:px-12 lg:px-20 mb-16 md:mb-24" style="max-width: 1360px; margin-inline: auto">
-      <p class="text-[var(--color-muted)] mb-10" style={mono}>Constraints &amp; solutions</p>
-      <div class="divide-y divide-[var(--color-line)]">
+    <div style="padding: 0 40px 100px; max-width: 1440px; margin-inline: auto">
+      <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-ink-2); margin-bottom: 32px">— Constraints &amp; solutions</div>
+      <div style="display: flex; flex-direction: column">
         {(extraSections.challenges as {number:string;title:string;body:string}[]).map((c) => (
-          <div class="grid md:grid-cols-[160px_1fr] gap-6 md:gap-12 py-8">
-            <p class="text-[var(--color-muted)]" style="font-family: 'Geist Mono', monospace; font-size: 0.7rem">{c.number}</p>
+          <div
+            class="cs-challenge"
+            style="display: grid; grid-template-columns: 80px 1fr; gap: 40px; padding: 28px 0; border-top: 1px solid var(--color-line); align-items: start"
+          >
+            <p style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--color-ink-2); letter-spacing: 0.12em; padding-top: 4px">{c.number}</p>
             <div>
-              <h3
-                class="text-[var(--color-ink)] mb-2"
-                style="font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800; font-size: 1.1rem; letter-spacing: -0.02em"
-              >{c.title}</h3>
-              <p class="text-sm text-[var(--color-muted)] leading-relaxed">{c.body}</p>
+              <h3 style="font-family: 'Inter Tight Variable', 'Inter Tight', sans-serif; font-weight: 500; font-size: 22px; letter-spacing: -0.025em; line-height: 1.2; margin-bottom: 10px">{c.title}</h3>
+              <p style="font-size: 15px; line-height: 1.6; color: var(--color-ink-2); max-width: 800px">{c.body}</p>
             </div>
           </div>
         ))}
@@ -289,70 +294,104 @@ const displayStyle = "font-family: 'Plus Jakarta Sans', sans-serif; font-weight:
 
   <!-- Outcomes -->
   {outcomes.length > 0 && (
-    <div class="px-5 md:px-12 lg:px-20 mb-16 md:mb-24" style="max-width: 1360px; margin-inline: auto">
-      <p class="text-[var(--color-muted)] mb-10" style={mono}>Outcomes</p>
-      <div class="grid md:grid-cols-3 gap-px bg-[var(--color-line)]">
+    <div style="padding: 0 40px 100px; max-width: 1440px; margin-inline: auto">
+      <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-ink-2); margin-bottom: 32px">— Outcomes</div>
+      <div class="cs-outcomes" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--color-line)">
         {outcomes.map((o) => (
-          <div class="bg-[var(--color-bg)] px-8 py-8">
-            <p class="text-[var(--color-muted)] mb-3" style={mono}>{o.label}</p>
-            <p
-              class="text-[var(--color-ink)] leading-snug"
-              style="font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 700; font-size: 1.05rem; letter-spacing: -0.01em"
-            >{o.value}</p>
+          <div style="background: var(--color-bg); padding: 32px">
+            <p style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--color-accent); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 16px">{o.label}</p>
+            <p style="font-family: 'Inter Tight Variable', 'Inter Tight', sans-serif; font-weight: 500; font-size: 22px; line-height: 1.25; letter-spacing: -0.02em; color: var(--color-ink)">{o.value}</p>
           </div>
         ))}
       </div>
     </div>
   )}
 
-  <!-- Graphic design: Gallery link -->
+  <!-- Graphic design link -->
   {isGraphicDesign && (
-    <div class="px-5 md:px-12 lg:px-20 mb-16 md:mb-24" style="max-width: 1360px; margin-inline: auto">
-      <p class="text-[var(--color-muted)] mb-6" style={mono}>Selected pieces</p>
+    <div style="padding: 0 40px 100px; max-width: 1440px; margin-inline: auto">
+      <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-ink-2); margin-bottom: 24px">— Selected pieces</div>
       <a
         href="/work/graphic-design"
-        class="text-sm text-[var(--color-ink)] hover:text-[var(--color-accent)] transition-colors duration-200"
+        data-cursor="Browse"
+        data-magnetic="0.3"
+        style="display: inline-flex; align-items: center; gap: 12px; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-ink); border-bottom: 1px solid var(--color-ink); padding-bottom: 4px"
       >Explore the full gallery →</a>
     </div>
   )}
 
   <!-- Next project -->
-  <div class="px-5 md:px-12 lg:px-20 py-16 md:py-24 border-t border-[var(--color-line)]" style="max-width: 1360px; margin-inline: auto">
-    <p class="text-[var(--color-muted)] mb-8" style={mono}>Next project</p>
-    <a href={`/work/${nextProject.slug}`} class="group block">
+  <div style="padding: 80px 40px 120px; max-width: 1440px; margin-inline: auto; border-top: 1px solid var(--color-line)">
+    <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-ink-2); margin-bottom: 24px">— Next project</div>
+    <a
+      href={`/work/${nextProject.slug}`}
+      data-cursor="Read case"
+      class="cs-next"
+      style="display: block"
+    >
       <h2
-        class="text-[var(--color-ink)] group-hover:text-[var(--color-accent)] transition-colors duration-300"
-        style={`${displayStyle}; font-size: clamp(2.5rem, 7vw, 7rem)`}
-      >
-        {nextProject.shortTitle}&nbsp;→
-      </h2>
-      <p class="text-sm text-[var(--color-muted)] mt-4 max-w-xl leading-relaxed">{nextProject.description}</p>
+        style="font-family: 'Inter Tight Variable', 'Inter Tight', sans-serif; font-weight: 500; font-size: clamp(40px, 6vw, 88px); letter-spacing: -0.04em; line-height: 1; color: var(--color-ink); transition: color 0.4s ease"
+      >{nextProject.title} <span style="color: var(--color-accent); font-family: 'Instrument Serif', serif; font-style: italic">→</span></h2>
+      <p style="font-size: 15px; line-height: 1.6; color: var(--color-ink-2); margin-top: 16px; max-width: 600px">{nextProject.description}</p>
     </a>
   </div>
-
 </BaseLayout>
+
+<style>
+  @media (max-width: 900px) {
+    .cs-stats { grid-template-columns: repeat(2, 1fr) !important; }
+    .cs-cards { grid-template-columns: 1fr !important; }
+    .cs-meta-grid { grid-template-columns: 1fr !important; gap: 32px !important; }
+    .cs-decision, .cs-process, .cs-challenge { grid-template-columns: 1fr !important; gap: 16px !important; }
+    .cs-outcomes { grid-template-columns: 1fr !important; }
+  }
+  .cs-next:hover h2 { color: var(--color-accent); }
+</style>
 
 <script>
   import { gsap } from 'gsap';
   import { ScrollTrigger } from 'gsap/ScrollTrigger';
   gsap.registerPlugin(ScrollTrigger);
 
-  gsap.from('.cs-el', {
-    opacity: 0,
-    y: 20,
-    duration: 0.65,
-    stagger: 0.1,
-    ease: 'power3.out',
-    delay: 0.05,
+  // Hero entrance
+  gsap.set('.cs-title .line span', { y: '110%' });
+  gsap.timeline({ delay: 0.1 })
+    .from('.cs-meta', { y: 20, opacity: 0, duration: 0.5, ease: 'power3.out' })
+    .to('.cs-title .line span', { y: '0%', duration: 1.1, ease: 'expo.out' }, '-=0.3')
+    .from('.cs-desc', { y: 20, opacity: 0, duration: 0.6, ease: 'power3.out' }, '-=0.5');
+
+  // Cover clip-path entrance
+  const cover = document.querySelector<HTMLElement>('.cs-cover');
+  if (cover) {
+    gsap.to(cover, {
+      clipPath: 'inset(0 0 0 0)',
+      duration: 1.2,
+      ease: 'expo.out',
+      delay: 0.4,
+    });
+  }
+
+  // Stat reveal
+  gsap.utils.toArray<HTMLElement>('.cs-stat').forEach((el) => {
+    gsap.from(el, {
+      y: 30,
+      opacity: 0,
+      duration: 0.7,
+      ease: 'expo.out',
+      scrollTrigger: { trigger: el, start: 'top 88%' },
+    });
   });
 
-  gsap.utils.toArray<HTMLElement>('.stat-item').forEach((el) => {
-    gsap.from(el, {
-      opacity: 0,
-      y: 16,
-      duration: 0.5,
-      ease: 'power3.out',
-      scrollTrigger: { trigger: el, start: 'top 90%', once: true },
+  // Decision/process/challenge rows
+  ['.cs-decision', '.cs-process', '.cs-challenge'].forEach((sel) => {
+    gsap.utils.toArray<HTMLElement>(sel).forEach((row) => {
+      gsap.from(row, {
+        y: 30,
+        opacity: 0,
+        duration: 0.7,
+        ease: 'expo.out',
+        scrollTrigger: { trigger: row, start: 'top 88%' },
+      });
     });
   });
 </script>
