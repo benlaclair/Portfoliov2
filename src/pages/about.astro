@@ -64,109 +64,119 @@ const experience = [
 ];
 
 const skills = [
-  { name: 'Figma', group: 'Design' },
-  { name: 'Photoshop', group: 'Design' },
-  { name: 'Illustrator', group: 'Design' },
-  { name: 'InDesign', group: 'Design' },
-  { name: 'UX Research', group: 'Strategy' },
-  { name: 'Wireframing', group: 'Strategy' },
-  { name: 'Prototyping', group: 'Strategy' },
-  { name: 'A/B Testing', group: 'Strategy' },
-  { name: 'Accessibility (WCAG)', group: 'Strategy' },
-  { name: 'HTML / CSS', group: 'Dev' },
-  { name: 'React', group: 'Dev' },
-  { name: 'Astro', group: 'Dev' },
-  { name: 'GSAP', group: 'Dev' },
-  { name: 'Google Flow', group: 'AI' },
-  { name: 'Gemini API', group: 'AI' },
-  { name: 'Claude', group: 'AI' },
+  'Figma', 'Photoshop', 'Illustrator', 'InDesign',
+  'UX Research', 'Wireframing', 'Prototyping', 'A/B Testing', 'Accessibility (WCAG)',
+  'HTML / CSS', 'React', 'Astro', 'GSAP',
+  'Google Flow', 'Gemini API', 'Claude',
 ];
 ---
 
-<BaseLayout title="About — Ben LaClair" description="5+ years of UX/UI and graphic design. Currently at Market Mentors LLC.">
-  <div class="px-6 md:px-12 pt-16 pb-24">
-    <div class="max-w-[1200px] mx-auto">
+<BaseLayout
+  title="About — Ben LaClair"
+  description="5+ years of UX/UI and graphic design. Currently at Market Mentors LLC."
+>
+  <div class="px-5 md:px-12 lg:px-20 pt-28 pb-28" style="max-width: 1360px; margin-inline: auto">
 
-      <!-- Header -->
-      <div class="mb-16">
-        <p class="eyebrow mb-5">About</p>
-        <h1 class="font-serif text-5xl md:text-6xl text-[var(--color-ink)] mb-8">Hey, I'm Ben.</h1>
-      </div>
-
-      <!-- Bio + Skills -->
-      <div class="grid md:grid-cols-2 gap-12 md:gap-20 mb-20">
-        <div>
-          <div class="inline-flex items-center gap-2 border border-emerald-200 bg-emerald-50 text-emerald-700 text-xs font-medium px-3 py-1.5 rounded-full mb-6">
-            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block animate-pulse"></span>
-            Open to new opportunities
-          </div>
-          <p class="text-base text-[var(--color-ink-soft)] leading-relaxed mb-4">
-            I'm a UX/UI and Graphic Designer with <strong class="text-[var(--color-ink)]">5+ years of experience</strong> in user-centered design,
-            research-based problem solving, and web content management.
-          </p>
-          <p class="text-base text-[var(--color-ink-soft)] leading-relaxed mb-4">
-            I've designed for <strong class="text-[var(--color-ink)]">ESPN-affiliated tournaments</strong>, redesigned program sites for the
-            <strong class="text-[var(--color-ink)]">Metropolitan YMCA of NJ</strong>, and currently lead graphic and AI design work at
-            <strong class="text-[var(--color-ink)]">Market Mentors LLC</strong> — serving 40+ clients across social, print, and digital.
-          </p>
-          <p class="text-base text-[var(--color-ink-soft)] leading-relaxed mb-8">
-            I actively integrate <strong class="text-[var(--color-ink)]">Generative AI</strong> into my workflow — treating it as an opportunity
-            to push design further, faster.
-          </p>
-          <div class="flex flex-wrap gap-3">
-            <a href="/contact" class="bg-[var(--color-ink)] text-[var(--color-bg)] text-sm font-medium px-6 py-3 rounded-full hover:bg-[var(--color-pop)] transition-colors">
-              Work with me
-            </a>
-            <a href="/resume.pdf" target="_blank" rel="noopener noreferrer" class="border border-[var(--color-line)] text-[var(--color-ink)] text-sm font-medium px-6 py-3 rounded-full hover:border-[var(--color-ink)] transition-colors">
-              View Resume
-            </a>
-          </div>
-        </div>
-
-        <div>
-          <p class="eyebrow mb-5">Tools & Skills</p>
-          <div class="flex flex-wrap gap-2">
-            {skills.map((s) => (
-              <span class="text-sm border border-[var(--color-line)] rounded-full px-3 py-1.5 text-[var(--color-ink)]">
-                {s.name}
-              </span>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      <!-- Timeline -->
-      <div class="border-t border-[var(--color-line)] pt-16">
-        <p class="eyebrow mb-10">Experience & Education</p>
-        <div class="flex flex-col">
-          {experience.map((item, i) => (
-            <div class="flex gap-6 pb-10 relative">
-              {i < experience.length - 1 && (
-                <div class="absolute left-2 top-6 bottom-0 w-px bg-[var(--color-line)]" />
-              )}
-              <div class={`shrink-0 w-4 h-4 rounded-full mt-1 z-10 ring-2 ring-[var(--color-bg)] ${
-                item.type === 'work' ? 'bg-[var(--color-pop)]' : 'bg-[var(--color-muted-soft)]'
-              }`} />
-              <div>
-                <p class="eyebrow mb-1">{item.period}</p>
-                <p class="font-medium text-[var(--color-ink)] mb-0.5">{item.role}</p>
-                <p class="text-sm text-[var(--color-muted)] mb-3">{item.org}</p>
-                {item.bullets.length > 0 && (
-                  <ul class="flex flex-col gap-1">
-                    {item.bullets.map((b) => (
-                      <li class="text-sm text-[var(--color-muted)] flex gap-2">
-                        <span class="text-[var(--color-muted-soft)] shrink-0">–</span>
-                        {b}
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
+    <!-- Page header -->
+    <div class="border-b border-[var(--color-line)] pb-16 mb-16">
+      <p
+        class="text-[var(--color-muted)] mb-10"
+        style="font-family: 'Geist Mono', monospace; font-size: 0.6rem; letter-spacing: 0.14em; text-transform: uppercase"
+      >About</p>
+      <h1
+        class="text-[var(--color-ink)]"
+        style="font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800; font-size: clamp(3.25rem, 9vw, 9.5rem); letter-spacing: -0.03em; line-height: 0.95"
+      >Hey, I'm Ben.</h1>
     </div>
+
+    <!-- Bio + Skills -->
+    <div class="grid md:grid-cols-[1fr_320px] gap-16 md:gap-24 mb-24">
+      <div>
+        <div class="flex items-center gap-2 mb-8">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block"></span>
+          <span class="text-sm text-emerald-700">Open to new opportunities</span>
+        </div>
+        <p class="text-lg leading-relaxed mb-5" style="color: var(--color-ink-2, #2C2C2A)">
+          I'm a UX/UI and Graphic Designer with
+          <strong class="text-[var(--color-ink)] font-semibold">5+ years of experience</strong>
+          in user-centered design, research-based problem solving, and web content management.
+        </p>
+        <p class="text-lg leading-relaxed mb-5" style="color: var(--color-ink-2, #2C2C2A)">
+          I've designed for <strong class="text-[var(--color-ink)] font-semibold">ESPN-affiliated tournaments</strong>,
+          redesigned program sites for the
+          <strong class="text-[var(--color-ink)] font-semibold">Metropolitan YMCA of NJ</strong>, and currently
+          lead graphic and AI design work at
+          <strong class="text-[var(--color-ink)] font-semibold">Market Mentors LLC</strong> serving 40+ clients.
+        </p>
+        <p class="text-lg leading-relaxed mb-10" style="color: var(--color-ink-2, #2C2C2A)">
+          I actively integrate <strong class="text-[var(--color-ink)] font-semibold">Generative AI</strong>
+          into my workflow — treating it as an opportunity to push design further, faster.
+        </p>
+        <div class="flex flex-wrap gap-6">
+          <a
+            href="/contact"
+            class="text-sm text-[var(--color-ink)] hover:text-[var(--color-accent)] transition-colors duration-200"
+          >Work with me →</a>
+          <a
+            href="/resume.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-sm text-[var(--color-muted)] hover:text-[var(--color-ink)] transition-colors duration-200"
+          >View résumé ↗</a>
+        </div>
+      </div>
+
+      <!-- Skills list -->
+      <div>
+        <p
+          class="text-[var(--color-muted)] mb-5"
+          style="font-family: 'Geist Mono', monospace; font-size: 0.6rem; letter-spacing: 0.14em; text-transform: uppercase"
+        >Tools &amp; Skills</p>
+        <ul class="divide-y divide-[var(--color-line)]">
+          {skills.map((s) => (
+            <li class="py-2.5 text-sm text-[var(--color-ink)]">{s}</li>
+          ))}
+        </ul>
+      </div>
+    </div>
+
+    <!-- Timeline -->
+    <div class="border-t border-[var(--color-line)] pt-16">
+      <p
+        class="text-[var(--color-muted)] mb-12"
+        style="font-family: 'Geist Mono', monospace; font-size: 0.6rem; letter-spacing: 0.14em; text-transform: uppercase"
+      >Experience &amp; Education</p>
+
+      <div class="divide-y divide-[var(--color-line)]">
+        {experience.map((item) => (
+          <div class="grid md:grid-cols-[180px_1fr] gap-4 md:gap-12 py-9">
+            <div>
+              <p
+                class="text-[var(--color-muted)] mb-1"
+                style="font-family: 'Geist Mono', monospace; font-size: 0.65rem"
+              >{item.period}</p>
+              <p
+                style={`font-family: 'Geist Mono', monospace; font-size: 0.65rem; color: ${item.type === 'work' ? 'var(--color-accent)' : 'var(--color-muted)'}`}
+              >{item.type === 'work' ? 'Work' : 'Education'}</p>
+            </div>
+            <div>
+              <p class="font-semibold text-[var(--color-ink)] mb-0.5 text-base">{item.role}</p>
+              <p class="text-sm text-[var(--color-muted)] mb-3">{item.org}</p>
+              {item.bullets.length > 0 && (
+                <ul class="flex flex-col gap-2 mt-3">
+                  {item.bullets.map((b) => (
+                    <li class="text-sm text-[var(--color-muted)] flex gap-2.5">
+                      <span class="shrink-0">—</span>
+                      <span>{b}</span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+
   </div>
 </BaseLayout>
