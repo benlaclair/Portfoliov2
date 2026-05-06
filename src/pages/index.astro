@@ -4,7 +4,7 @@ import HorizontalWork from '../components/HorizontalWork.astro';
 import Marquee from '../components/Marquee.astro';
 ---
 
-<BaseLayout>
+<BaseLayout initialMode="dark">
 
   <!-- ============ LOADER (dark) ============ -->
   <div class="loader" id="loader">
@@ -84,7 +84,7 @@ import Marquee from '../components/Marquee.astro';
   <div class="divider"></div>
 
   <!-- ============ VISUAL BREAK (dark parallax strip) ============ -->
-  <section class="vbreak" aria-hidden="true">
+  <section class="vbreak is-dark" data-section-mode="dark" aria-hidden="true">
     <div class="vbreak-bg" id="vbreak-bg">
       <p class="vbreak-quote" data-reveal>Type that reads. Motion that means something.</p>
     </div>

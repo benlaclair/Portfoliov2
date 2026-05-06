@@ -286,7 +286,7 @@ const featured: Project[] = PROJECTS.slice(0, 3);
     // Pin + horizontal scroll. onUpdate scales each panel's visual based on its
     // distance from active center — active panel sits at scale 1, neighbors
     // recede toward 0.72 with a slight upward lift, creating depth on transition.
-    const tween = gsap.to(track, {
+    gsap.to(track, {
       x: -distance,
       ease: 'none',
       scrollTrigger: {
