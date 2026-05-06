@@ -118,7 +118,7 @@ export default function Navbar({ pathname = '' }: Props) {
         </svg>
         <span
           style={{
-            fontFamily: "'Clash Display', sans-serif",
+            fontFamily: 'var(--font-display)',
             fontWeight: 600,
             fontSize: '15px',
             letterSpacing: '-0.02em',
@@ -141,7 +141,7 @@ export default function Navbar({ pathname = '' }: Props) {
             style={{
               fontSize: '13px',
               fontWeight: 500,
-              fontFamily: "'Satoshi', sans-serif",
+              fontFamily: 'var(--font-body)',
               color: isActive(href) ? 'var(--color-ink)' : 'var(--color-ink-2)',
               padding: '4px 0',
               transition: 'color 0.3s ease',
@@ -167,7 +167,7 @@ export default function Navbar({ pathname = '' }: Props) {
         <span
           data-coordinates
           style={{
-            fontFamily: "'JetBrains Mono', monospace",
+            fontFamily: 'var(--font-mono)',
             fontSize: '10px',
             letterSpacing: '0.08em',
             color: 'var(--color-muted)',
@@ -179,7 +179,7 @@ export default function Navbar({ pathname = '' }: Props) {
         </span>
         <span
           style={{
-            fontFamily: "'JetBrains Mono', monospace",
+            fontFamily: 'var(--font-mono)',
             fontSize: '11px',
             letterSpacing: '0.08em',
             color: 'var(--color-ink-2)',
@@ -239,7 +239,7 @@ export default function Navbar({ pathname = '' }: Props) {
               className="mobile-menu__link py-4 border-b"
               style={{
                 borderColor: 'var(--color-dark-line)',
-                fontFamily: "'Clash Display', sans-serif",
+                fontFamily: 'var(--font-display)',
                 fontWeight: 500,
                 fontSize: '40px',
                 letterSpacing: '-0.03em',
@@ -257,7 +257,7 @@ export default function Navbar({ pathname = '' }: Props) {
           style={{
             marginTop: 'auto',
             paddingTop: '40px',
-            fontFamily: "'JetBrains Mono', monospace",
+            fontFamily: 'var(--font-mono)',
             fontSize: '11px',
             letterSpacing: '0.08em',
             color: 'var(--color-dark-muted)',

@@ -13,12 +13,10 @@ import { DESIGN_GROUPS, totalImages } from '../../data/graphicDesign';
     <div style="margin-bottom: 80px">
       <a
         href="/work"
-        data-cursor="Back"
-        style="display: inline-flex; align-items: center; gap: 8px; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-ink-2); margin-bottom: 40px"
+        data-cursor="back"
+        style="display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-ink-2); margin-bottom: 40px"
       >← All work</a>
-      <div
-        style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-ink-2); margin-bottom: 32px"
-      >— Graphic Design &middot; 2020–2026</div>
+      <div class="section-num" style="margin-bottom: 32px">— Graphic Design &middot; 2020–2026</div>
       <h1
         class="gd-h1"
         style="font-family: var(--font-display); font-weight: 500; font-size: clamp(64px, 11vw, 180px); letter-spacing: -0.045em; line-height: 0.92; margin-bottom: 32px"
@@ -44,7 +42,7 @@ import { DESIGN_GROUPS, totalImages } from '../../data/graphicDesign';
             <p style="font-size: 14px; color: var(--color-ink-2); margin-top: 8px; max-width: 540px">{group.description}</p>
           </div>
           <span
-            style="flex-shrink: 0; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-ink-2)"
+            style="flex-shrink: 0; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-ink-2)"
           >{group.images.length} pieces</span>
         </div>
 
@@ -52,7 +50,7 @@ import { DESIGN_GROUPS, totalImages } from '../../data/graphicDesign';
           {group.images.map((img, i) => (
             <button
               class="gallery-thumb"
-              data-cursor="Zoom"
+              data-cursor="zoom"
               data-src={img.src}
               data-alt={img.alt}
               data-index={i}

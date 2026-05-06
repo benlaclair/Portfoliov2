@@ -10,9 +10,7 @@ import { TOOLS } from '../data/tools';
   <div style="padding: 140px 40px 80px; max-width: 1440px; margin-inline: auto">
 
     <div style="border-bottom: 1px solid var(--color-line); padding-bottom: 60px; margin-bottom: 0">
-      <div
-        style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-ink-2); margin-bottom: 40px"
-      >— Built things &middot; 2025–2026</div>
+      <div class="section-num" style="margin-bottom: 40px">— Built things &middot; 2025–2026</div>
       <div
         class="tools-head"
         style="display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: end"
@@ -39,12 +37,12 @@ import { TOOLS } from '../data/tools';
           style="display: grid; grid-template-columns: 80px 1fr 1fr 40px; gap: 60px; padding: 60px 0; border-top: 1px solid var(--color-line); align-items: start"
         >
           <div
-            style="font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.12em; color: var(--color-ink-2); padding-top: 8px"
+            style="font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.12em; color: var(--color-ink-2); padding-top: 8px"
           >/{num}</div>
 
           <div style="padding-top: 4px">
             <div
-              style={`font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.12em; color: ${tool.accentColor}; text-transform: uppercase; margin-bottom: 16px`}
+              style={`font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em; color: ${tool.accentColor}; text-transform: uppercase; margin-bottom: 16px`}
             >{statusLabel}</div>
             <h3
               style="font-family: var(--font-display); font-weight: 500; font-size: clamp(36px, 4.4vw, 64px); line-height: 1.0; letter-spacing: -0.03em; margin-bottom: 24px"
@@ -67,15 +65,15 @@ import { TOOLS } from '../data/tools';
                   href={tool.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  data-cursor="Open"
+                  data-cursor="open"
                   data-magnetic="0.3"
-                  style="display: inline-flex; align-items: center; gap: 12px; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-ink); border-bottom: 1px solid var(--color-ink); padding-bottom: 4px"
+                  style="display: inline-flex; align-items: center; gap: 12px; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-ink); border-bottom: 1px solid var(--color-ink); padding-bottom: 4px"
                 >Open tool ↗</a>
               )}
               <div style="display: flex; flex-wrap: wrap; gap: 6px">
                 {tool.tech.map((t) => (
                   <span
-                    style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.06em; padding: 4px 10px; border: 1px solid var(--color-line); color: var(--color-muted)"
+                    style="font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.06em; padding: 4px 10px; border: 1px solid var(--color-line); color: var(--color-muted)"
                   >{t}</span>
                 ))}
               </div>

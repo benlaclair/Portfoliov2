@@ -83,9 +83,7 @@ const stats = [
 
     <!-- Header -->
     <div style="border-bottom: 1px solid var(--color-line); padding-bottom: 80px; margin-bottom: 80px">
-      <div
-        style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-ink-2); margin-bottom: 40px"
-      >— About</div>
+      <div class="section-num" style="margin-bottom: 40px">— About</div>
       <h1
         class="about-h1"
         style="font-family: var(--font-display); font-weight: 500; font-size: clamp(72px, 13vw, 200px); letter-spacing: -0.045em; line-height: 0.92"
@@ -112,7 +110,7 @@ const stats = [
             style="font-family: var(--font-display); font-weight: 500; font-size: clamp(48px, 6vw, 88px); letter-spacing: -0.04em; line-height: 1"
           >0</div>
           <div
-            style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-ink-2); margin-top: 12px"
+            style="font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-ink-2); margin-top: 12px"
           >{s.label}</div>
         </div>
       ))}
@@ -137,17 +135,17 @@ const stats = [
           to push design further, faster.
         </p>
         <div style="display: flex; flex-wrap: wrap; gap: 28px">
-          <a href="/contact" data-cursor="Mail" data-magnetic="0.3" style="font-size: 14px; color: var(--color-ink); border-bottom: 1px solid var(--color-ink); padding-bottom: 2px">
+          <a href="/contact" data-cursor="email" data-magnetic="0.3" style="font-size: 14px; color: var(--color-ink); border-bottom: 1px solid var(--color-ink); padding-bottom: 2px">
             Work with me →
           </a>
-          <a href="/resume.pdf" target="_blank" rel="noopener noreferrer" data-cursor="PDF" style="font-size: 14px; color: var(--color-ink-2); border-bottom: 1px solid var(--color-line); padding-bottom: 2px">
+          <a href="/resume.pdf" target="_blank" rel="noopener noreferrer" data-cursor="download" style="font-size: 14px; color: var(--color-ink-2); border-bottom: 1px solid var(--color-line); padding-bottom: 2px">
             View résumé ↗
           </a>
         </div>
       </div>
 
       <div>
-        <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-ink-2); margin-bottom: 24px">Tools &amp; Skills</div>
+        <div class="section-num" style="margin-bottom: 24px">Tools &amp; Skills</div>
         <ul style="list-style: none; padding: 0; margin: 0">
           {skills.map((s) => (
             <li
@@ -160,14 +158,14 @@ const stats = [
 
     <!-- Timeline -->
     <div style="border-top: 1px solid var(--color-line); padding-top: 80px">
-      <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-ink-2); margin-bottom: 60px">— Experience &amp; Education</div>
+      <div class="section-num" style="margin-bottom: 60px">— Experience &amp; Education</div>
 
       <div>
         {experience.map((item) => (
           <div style="display: grid; grid-template-columns: 200px 1fr; gap: 60px; padding: 36px 0; border-bottom: 1px solid var(--color-line)" class="exp-row">
             <div>
-              <div style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--color-ink-2); margin-bottom: 4px">{item.period}</div>
-              <div style={`font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: ${item.type === 'work' ? 'var(--color-accent)' : 'var(--color-muted)'}`}>{item.type === 'work' ? 'Work' : 'Education'}</div>
+              <div style="font-family: var(--font-mono); font-size: 12px; color: var(--color-ink-2); margin-bottom: 4px">{item.period}</div>
+              <div style={`font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: ${item.type === 'work' ? 'var(--color-accent)' : 'var(--color-muted)'}`}>{item.type === 'work' ? 'Work' : 'Education'}</div>
             </div>
             <div>
               <div style="font-size: 18px; font-weight: 500; color: var(--color-ink); margin-bottom: 4px">{item.role}</div>

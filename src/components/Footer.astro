@@ -19,7 +19,7 @@ const year = new Date().getFullYear();
           <circle cx="70" cy="25" r="7" fill="var(--color-accent)" />
         </svg>
         <div
-          style="font-family: 'Clash Display', sans-serif; font-weight: 600; font-size: clamp(32px, 5vw, 56px); line-height: 0.95; letter-spacing: -0.03em; color: var(--color-dark-ink)"
+          style="font-family: var(--font-display); font-weight: 600; font-size: clamp(32px, 5vw, 56px); line-height: 0.95; letter-spacing: -0.03em; color: var(--color-dark-ink)"
         >
           Ben LaClair
         </div>
@@ -27,7 +27,7 @@ const year = new Date().getFullYear();
 
       <div
         class="footer-info"
-        style="display: grid; grid-template-columns: repeat(2, auto); gap: 32px 60px; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase"
+        style="display: grid; grid-template-columns: repeat(2, auto); gap: 32px 60px; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase"
       >
         <div data-reveal>
           <div style="color: var(--color-dark-muted); margin-bottom: 8px">Index</div>
@@ -43,7 +43,7 @@ const year = new Date().getFullYear();
             href="https://www.linkedin.com/in/benlaclair"
             target="_blank"
             rel="noopener noreferrer"
-            data-cursor="Visit"
+            data-cursor="open"
             style="color: var(--color-dark-ink); border-bottom: 1px solid currentColor; padding-bottom: 1px"
           >LinkedIn ↗</a>
         </div>
@@ -51,7 +51,7 @@ const year = new Date().getFullYear();
           <div style="color: var(--color-dark-muted); margin-bottom: 8px">Reach</div>
           <a
             href="mailto:hello@benlaclair.com"
-            data-cursor="Mail"
+            data-cursor="email"
             style="color: var(--color-dark-ink); border-bottom: 1px solid currentColor; padding-bottom: 1px"
           >hello@benlaclair.com</a>
         </div>
@@ -59,7 +59,7 @@ const year = new Date().getFullYear();
     </div>
 
     <div
-      style="margin-top: 80px; padding-top: 24px; border-top: 1px solid var(--color-dark-line); display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-dark-muted)"
+      style="margin-top: 80px; padding-top: 24px; border-top: 1px solid var(--color-dark-line); display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-dark-muted)"
     >
       <span>&copy; {year} Ben LaClair</span>
       <span>Designed &amp; built from scratch</span>

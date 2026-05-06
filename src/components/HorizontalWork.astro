@@ -28,7 +28,7 @@ const featured: Project[] = PROJECTS.slice(0, 3);
         const num = String(i + 1).padStart(2, '0');
         return (
           <article class="hwork-panel" data-panel data-index={i}>
-            <a href={`/work/${p.slug}`} data-cursor="Read case" class="hwork-panel-inner">
+            <a href={`/work/${p.slug}`} data-cursor="read" class="hwork-panel-inner">
               <div class="hwork-meta">
                 <div class="hwork-meta-num" data-reveal>{num} / 03</div>
                 <div class="hwork-meta-cat" data-reveal>{p.category} &middot; {p.year}</div>
@@ -56,7 +56,7 @@ const featured: Project[] = PROJECTS.slice(0, 3);
                     </div>
                   )}
                 </div>
-                <div class="hwork-visual-label">[ {p.shortTitle} hero — drop-in ]</div>
+                <div class="hwork-visual-label">{p.category} · {p.year}</div>
               </div>
             </a>
           </article>

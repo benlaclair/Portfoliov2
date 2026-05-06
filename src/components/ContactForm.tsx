@@ -69,7 +69,7 @@ export default function ContactForm() {
             requestAnimationFrame(() => nameRef.current?.focus());
           }}
           style={{
-            fontFamily: "'JetBrains Mono', monospace",
+            fontFamily: 'var(--font-mono)',
             fontSize: '11px',
             letterSpacing: '0.12em',
             textTransform: 'uppercase',
@@ -130,7 +130,7 @@ export default function ContactForm() {
         <button
           type="submit"
           disabled={status === 'sending'}
-          data-cursor="Send"
+          data-cursor="send"
           data-magnetic="0.3"
           style={{
             display: 'inline-flex',

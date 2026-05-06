@@ -13,17 +13,17 @@ const num = '/' + String(index + 1).padStart(2, '0');
 <article class="project-row" data-project>
   <a
     href={`/work/${project.slug}`}
-    data-cursor="Read case"
+    data-cursor="read"
     style="display: grid; grid-template-columns: 80px 1fr 1fr 40px; gap: 60px; padding: 60px 0; border-top: 1px solid var(--color-line); align-items: start"
   >
     <div
       class="project-num"
-      style="font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.12em; color: var(--color-ink-2); padding-top: 8px"
+      style="font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.12em; color: var(--color-ink-2); padding-top: 8px"
     >{num}</div>
 
     <div class="project-meta" style="padding-top: 4px">
       <div
-        style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.12em; color: var(--color-accent); text-transform: uppercase; margin-bottom: 16px"
+        style="font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em; color: var(--color-accent); text-transform: uppercase; margin-bottom: 16px"
       >{project.category} &middot; {project.year}</div>
       <h3
         class="project-title"
@@ -36,7 +36,7 @@ const num = '/' + String(index + 1).padStart(2, '0');
       </p>
       <span
         class="project-link"
-        style="display: inline-flex; align-items: center; gap: 12px; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-ink)"
+        style="display: inline-flex; align-items: center; gap: 12px; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-ink)"
       >
         Read case
         <span class="arrow" style="display: inline-block; transition: transform 0.5s cubic-bezier(.7,0,.2,1)">→</span>
@@ -71,8 +71,8 @@ const num = '/' + String(index + 1).padStart(2, '0');
         )}
       </div>
       <div
-        style="position: absolute; left: 16px; bottom: 14px; font-family: 'JetBrains Mono', monospace; font-size: 10px; color: rgba(22,20,15,0.45); letter-spacing: 0.08em; text-transform: uppercase; z-index: 2"
-      >[ {project.shortTitle} ]</div>
+        style="position: absolute; left: 16px; bottom: 14px; font-family: var(--font-mono); font-size: 10px; color: rgba(22,20,15,0.45); letter-spacing: 0.08em; text-transform: uppercase; z-index: 2"
+      >{project.category} · {project.year}</div>
     </div>
 
     <span

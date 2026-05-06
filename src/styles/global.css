@@ -277,15 +277,41 @@
   transition: background 0.3s ease;
 }
 
+/* Cursor label — appears next to ring on [data-cursor] hover */
+.cursor-label {
+  position: fixed;
+  /* Offset from cursor center so the label sits to the bottom-right of the ring */
+  top: 14px;
+  left: 22px;
+  pointer-events: none;
+  z-index: 9999;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-bg);
+  background: var(--color-ink);
+  padding: 6px 10px;
+  border-radius: 999px;
+  white-space: nowrap;
+  opacity: 0;
+  transition: background 0.3s ease, color 0.3s ease;
+  will-change: transform, opacity;
+}
+
 body[data-mode="dark"] .cursor-dot {
   background: var(--color-dark-ink);
 }
 body[data-mode="dark"] .cursor-ring {
   background: var(--color-dark-ink);
 }
+body[data-mode="dark"] .cursor-label {
+  background: var(--color-dark-ink);
+  color: var(--color-dark-bg);
+}
 
 @media (hover: none), (pointer: coarse) {
-  .cursor-dot, .cursor-ring { display: none; }
+  .cursor-dot, .cursor-ring, .cursor-label { display: none; }
 }
 
 /* Page transition curtain */
@@ -336,7 +362,7 @@ body[data-mode="dark"] .cursor-ring {
   .clip-wrap > span, .line > span, .word > span { transform: none; }
   .tag-word { opacity: 1; }
   [data-reveal] { opacity: 1; transform: none; transition: none; }
-  .cursor-dot, .cursor-ring { display: none; }
+  .cursor-dot, .cursor-ring, .cursor-label { display: none; }
   body { cursor: auto !important; }
   .vbreak-bg { transform: none !important; }
   .ind::before { animation: none; }
