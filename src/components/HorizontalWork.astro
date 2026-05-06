@@ -26,8 +26,9 @@ const featured: Project[] = PROJECTS.slice(0, 3);
     <div class="hwork-track" id="hwork-track">
       {featured.map((p, i) => {
         const num = String(i + 1).padStart(2, '0');
+        const theme = ['light', 'dark', 'cream'][i % 3];
         return (
-          <article class="hwork-panel" data-panel data-index={i}>
+          <article class={`hwork-panel theme-${theme}`} data-panel data-index={i}>
             <a href={`/work/${p.slug}`} data-cursor="Read case" class="hwork-panel-inner">
               <div class="hwork-meta">
                 <div class="hwork-meta-num">{num} / 03</div>
@@ -125,6 +126,17 @@ const featured: Project[] = PROJECTS.slice(0, 3);
     height: 100vh;
     flex-shrink: 0;
     padding: 80px 40px;
+  }
+
+  /* Panel tonal triptych — light · dark · cream */
+  .hwork-panel.theme-light { background: #ffffff; }
+  .hwork-panel.theme-cream { background: #f1ede4; }
+  .hwork-panel.theme-dark {
+    background: #0d0c0a;
+    --color-ink: #f4efe4;
+    --color-ink-2: #d6d1c4;
+    --color-muted: #898478;
+    --color-line: rgba(244, 239, 228, 0.14);
   }
   .hwork-panel-inner {
     display: grid;
