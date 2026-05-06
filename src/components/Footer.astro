@@ -73,8 +73,9 @@ const year = new Date().getFullYear();
   import { ScrollTrigger } from 'gsap/ScrollTrigger';
   gsap.registerPlugin(ScrollTrigger);
 
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const mark = document.querySelector<HTMLElement>('.footer-mark');
-  if (mark) {
+  if (mark && !reduceMotion) {
     gsap.from(mark, {
       y: 60,
       scale: 0.96,

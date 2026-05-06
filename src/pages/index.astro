@@ -186,6 +186,8 @@ import Marquee from '../components/Marquee.astro';
   /* timeline */
   .timeline { padding: 200px 40px 200px; position: relative; }
   .timeline-stage { height: 280vh; position: relative; }
+  .timeline-stage.is-static { height: auto; }
+  .timeline-stage.is-static .timeline-pin { height: auto; min-height: 60vh; }
   .timeline-pin { height: 100vh; display: grid; grid-template-rows: auto 1fr auto; gap: 40px; align-items: stretch; padding-block: 40px; }
   .timeline-top { display: flex; justify-content: space-between; align-items: baseline; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em; color: var(--color-ink-2); text-transform: uppercase; }
   .timeline-mid { display: grid; place-items: center; position: relative; }
@@ -230,6 +232,9 @@ import Marquee from '../components/Marquee.astro';
 
   // ============ LOADER → HERO INTRO ============
   if (!reduceMotion) {
+    // Loader controls #site-nav visibility on the homepage only;
+    // hide it now so the timeline can fade it in after the wipe.
+    gsap.set('#site-nav', { opacity: 0 });
     const intro = gsap.timeline({ defaults: { ease: E_EXPO } });
     const pct = { v: 0 };
     intro
@@ -319,19 +324,42 @@ import Marquee from '../components/Marquee.astro';
   (function setupTagline() {
     const el = document.getElementById('tagline-text');
     if (!el) return;
-    const html = el.innerHTML;
-    const tmp = document.createElement('div'); tmp.innerHTML = html;
-    let out = '';
-    tmp.childNodes.forEach((node) => {
-      if (node.nodeType === 3) {
-        out += (node.nodeValue || '').split(/(\s+)/).map((w) => /\s+/.test(w) ? w : (w ? `<span class="tag-word">${w}</span>` : '')).join('');
-      } else if (node.nodeType === 1) {
-        const el = node as HTMLElement;
-        // Preserve .accent spans — wrap the whole thing as one tag-word
-        out += `<span class="tag-word">${el.outerHTML}</span>`;
-      }
-    });
-    el.innerHTML = out;
+
+    // Wrap each word in a .tag-word, descending into element nodes (e.g. .accent)
+    // so phrases like "measurably simpler" scrub per-word instead of as a unit.
+    const wrapWords = (parent: Node) => {
+      const children = Array.from(parent.childNodes);
+      children.forEach((node) => {
+        if (node.nodeType === 3) {
+          const text = node.nodeValue || '';
+          if (!text.trim()) return;
+          const frag = document.createDocumentFragment();
+          text.split(/(\s+)/).forEach((part) => {
+            if (!part) return;
+            if (/^\s+$/.test(part)) {
+              frag.appendChild(document.createTextNode(part));
+            } else {
+              const span = document.createElement('span');
+              span.className = 'tag-word';
+              span.textContent = part;
+              frag.appendChild(span);
+            }
+          });
+          (node as ChildNode).replaceWith(frag);
+        } else if (node.nodeType === 1) {
+          // Recurse into element nodes (preserves .accent and other inline styling)
+          wrapWords(node);
+        }
+      });
+    };
+    wrapWords(el);
+
+    if (reduceMotion) {
+      // Static fallback: ensure all words are fully visible.
+      el.querySelectorAll<HTMLElement>('.tag-word').forEach((w) => { w.style.opacity = '1'; });
+      return;
+    }
+
     const words = el.querySelectorAll('.tag-word');
     gsap.to(words, {
       opacity: 1,
@@ -361,8 +389,10 @@ import Marquee from '../components/Marquee.astro';
     if (idx === tlIdx || !tlNum || !tlText || !tlTag || !tlProg) return;
     tlIdx = idx;
     const cur = tlData[idx];
-    gsap.fromTo(tlNum, { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.65, ease: E_EXPO });
-    gsap.fromTo([tlText, tlTag], { y: 18, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, stagger: 0.05, ease: E_EXPO, delay: 0.08 });
+    if (!reduceMotion) {
+      gsap.fromTo(tlNum, { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.65, ease: E_EXPO });
+      gsap.fromTo([tlText, tlTag], { y: 18, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, stagger: 0.05, ease: E_EXPO, delay: 0.08 });
+    }
     tlNum.textContent = cur.y;
     tlText.textContent = cur.text;
     tlTag.textContent = cur.tag;
@@ -370,28 +400,43 @@ import Marquee from '../components/Marquee.astro';
     tlTicks.forEach((s, i) => s.classList.toggle('active', i === idx));
   }
 
-  ScrollTrigger.create({
-    trigger: '#timeline-stage',
-    start: 'top top',
-    end: 'bottom bottom',
-    pin: '#timeline-pin',
-    onUpdate: (self) => {
-      const idx = Math.min(tlData.length - 1, Math.floor(self.progress * tlData.length));
-      setTimeline(idx);
-      if (tlFill) tlFill.style.width = (self.progress * 100).toFixed(2) + '%';
-    },
-  });
+  // Pinning is desktop-only and disabled under reduced motion; without the pin
+  // the timeline-stage still scrolls naturally and the entries swap in via the
+  // onUpdate progress mapping.
+  const isMobile = window.matchMedia('(max-width: 900px)').matches;
+  if (!reduceMotion && !isMobile) {
+    ScrollTrigger.create({
+      trigger: '#timeline-stage',
+      start: 'top top',
+      end: 'bottom bottom',
+      pin: '#timeline-pin',
+      onUpdate: (self) => {
+        const idx = Math.min(tlData.length - 1, Math.floor(self.progress * tlData.length));
+        setTimeline(idx);
+        if (tlFill) tlFill.style.width = (self.progress * 100).toFixed(2) + '%';
+      },
+    });
+  } else {
+    // Static fallback: render the final entry so reduced-motion / mobile users
+    // see populated copy instead of the 2018 placeholder, and collapse the
+    // 280vh pin runway so the section doesn't leave a blank scroll gap.
+    document.getElementById('timeline-stage')?.classList.add('is-static');
+    setTimeline(tlData.length - 1);
+    if (tlFill) tlFill.style.width = '100%';
+  }
 
   // ============ CTA ============
-  gsap.set('.cta-title .line span', { y: '110%' });
-  gsap.to('.cta-title .line span', {
-    y: '0%', duration: 1.2, stagger: 0.1, ease: E_EXPO,
-    scrollTrigger: { trigger: '.cta-title', start: 'top 80%' },
-  });
-  gsap.from('.cta-row > *', {
-    y: 30, opacity: 0, duration: 0.9, stagger: 0.1, ease: E_OUT,
-    scrollTrigger: { trigger: '.cta-row', start: 'top 85%' },
-  });
+  if (!reduceMotion) {
+    gsap.set('.cta-title .line span', { y: '110%' });
+    gsap.to('.cta-title .line span', {
+      y: '0%', duration: 1.2, stagger: 0.1, ease: E_EXPO,
+      scrollTrigger: { trigger: '.cta-title', start: 'top 80%' },
+    });
+    gsap.from('.cta-row > *', {
+      y: 30, opacity: 0, duration: 0.9, stagger: 0.1, ease: E_OUT,
+      scrollTrigger: { trigger: '.cta-row', start: 'top 85%' },
+    });
+  }
 
   window.addEventListener('resize', () => ScrollTrigger.refresh());
 </script>

@@ -341,45 +341,54 @@ const isVlier = project.slug === 'vlier';
   import { ScrollTrigger } from 'gsap/ScrollTrigger';
   gsap.registerPlugin(ScrollTrigger);
 
-  // Hero entrance
-  gsap.set('.cs-title .line span', { y: '110%' });
-  gsap.timeline({ delay: 0.1 })
-    .from('.cs-meta', { y: 20, opacity: 0, duration: 0.5, ease: 'power3.out' })
-    .to('.cs-title .line span', { y: '0%', duration: 1.1, ease: 'expo.out' }, '-=0.3')
-    .from('.cs-desc', { y: 20, opacity: 0, duration: 0.6, ease: 'power3.out' }, '-=0.5');
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  // Cover clip-path entrance
-  const cover = document.querySelector<HTMLElement>('.cs-cover');
-  if (cover) {
-    gsap.to(cover, {
-      clipPath: 'inset(0 0 0 0)',
-      duration: 1.2,
-      ease: 'expo.out',
-      delay: 0.4,
-    });
-  }
+  if (!reduceMotion) {
+    // Hero entrance
+    gsap.set('.cs-title .line span', { y: '110%' });
+    gsap.timeline({ delay: 0.1 })
+      .from('.cs-meta', { y: 20, opacity: 0, duration: 0.5, ease: 'power3.out' })
+      .to('.cs-title .line span', { y: '0%', duration: 1.1, ease: 'expo.out' }, '-=0.3')
+      .from('.cs-desc', { y: 20, opacity: 0, duration: 0.6, ease: 'power3.out' }, '-=0.5');
 
-  // Stat reveal
-  gsap.utils.toArray<HTMLElement>('.cs-stat').forEach((el) => {
-    gsap.from(el, {
-      y: 30,
-      opacity: 0,
-      duration: 0.7,
-      ease: 'expo.out',
-      scrollTrigger: { trigger: el, start: 'top 88%' },
-    });
-  });
+    // Cover clip-path entrance
+    const cover = document.querySelector<HTMLElement>('.cs-cover');
+    if (cover) {
+      gsap.to(cover, {
+        clipPath: 'inset(0 0 0 0)',
+        duration: 1.2,
+        ease: 'expo.out',
+        delay: 0.4,
+      });
+    }
 
-  // Decision/process/challenge rows
-  ['.cs-decision', '.cs-process', '.cs-challenge'].forEach((sel) => {
-    gsap.utils.toArray<HTMLElement>(sel).forEach((row) => {
-      gsap.from(row, {
+    // Stat reveal
+    gsap.utils.toArray<HTMLElement>('.cs-stat').forEach((el) => {
+      gsap.from(el, {
         y: 30,
         opacity: 0,
         duration: 0.7,
         ease: 'expo.out',
-        scrollTrigger: { trigger: row, start: 'top 88%' },
+        scrollTrigger: { trigger: el, start: 'top 88%' },
       });
     });
-  });
+
+    // Decision/process/challenge rows
+    ['.cs-decision', '.cs-process', '.cs-challenge'].forEach((sel) => {
+      gsap.utils.toArray<HTMLElement>(sel).forEach((row) => {
+        gsap.from(row, {
+          y: 30,
+          opacity: 0,
+          duration: 0.7,
+          ease: 'expo.out',
+          scrollTrigger: { trigger: row, start: 'top 88%' },
+        });
+      });
+    });
+  } else {
+    // Reduced-motion fallback: cover starts with clip-path: inset(0 100% 0 0);
+    // open it immediately so the image is visible.
+    const cover = document.querySelector<HTMLElement>('.cs-cover');
+    if (cover) cover.style.clipPath = 'inset(0 0 0 0)';
+  }
 </script>

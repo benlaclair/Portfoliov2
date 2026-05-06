@@ -57,19 +57,25 @@ const content = items.join(`  ${separator}  `);
 <script>
   import { gsap } from 'gsap';
 
-  document.querySelectorAll<HTMLElement>('.marquee').forEach((el) => {
-    const track = el.querySelector<HTMLElement>('[data-marquee-track]');
-    if (!track) return;
-    const speed = parseFloat(el.dataset.speed || '40');
-    const totalWidth = track.scrollWidth;
-    const distance = totalWidth / 4; // we duplicated 4x; one cycle is 1/4
-    const tween = gsap.to(track, {
-      x: -distance,
-      duration: distance / speed,
-      ease: 'none',
-      repeat: -1,
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduceMotion) {
+    // Static fallback: leave the track in place. The duplicated content is
+    // already visible; an infinite loop would conflict with reduced-motion intent.
+  } else {
+    document.querySelectorAll<HTMLElement>('.marquee').forEach((el) => {
+      const track = el.querySelector<HTMLElement>('[data-marquee-track]');
+      if (!track) return;
+      const speed = parseFloat(el.dataset.speed || '40');
+      const totalWidth = track.scrollWidth;
+      const distance = totalWidth / 4; // we duplicated 4x; one cycle is 1/4
+      const tween = gsap.to(track, {
+        x: -distance,
+        duration: distance / speed,
+        ease: 'none',
+        repeat: -1,
+      });
+      el.addEventListener('mouseenter', () => tween.timeScale(0.2));
+      el.addEventListener('mouseleave', () => tween.timeScale(1));
     });
-    el.addEventListener('mouseenter', () => tween.timeScale(0.2));
-    el.addEventListener('mouseleave', () => tween.timeScale(1));
-  });
+  }
 </script>

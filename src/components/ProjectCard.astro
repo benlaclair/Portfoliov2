@@ -104,36 +104,42 @@ const num = '/' + String(index + 1).padStart(2, '0');
   import { ScrollTrigger } from 'gsap/ScrollTrigger';
   gsap.registerPlugin(ScrollTrigger);
 
-  document.querySelectorAll<HTMLElement>('[data-project]').forEach((p) => {
-    const meta = p.querySelector('.project-meta');
-    const num = p.querySelector('.project-num');
-    const visual = p.querySelector<HTMLElement>('.project-visual');
-    const inner = p.querySelector<HTMLElement>('.pv-inner');
-    if (!meta || !num || !visual || !inner) return;
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduceMotion) {
+    // Without GSAP touching these, the markup renders fully visible already.
+    // Bail to avoid leaving inline opacity/transform from gsap.from().
+  } else {
+    document.querySelectorAll<HTMLElement>('[data-project]').forEach((p) => {
+      const meta = p.querySelector('.project-meta');
+      const num = p.querySelector('.project-num');
+      const visual = p.querySelector<HTMLElement>('.project-visual');
+      const inner = p.querySelector<HTMLElement>('.pv-inner');
+      if (!meta || !num || !visual || !inner) return;
 
-    gsap.from([num, meta], {
-      y: 30,
-      opacity: 0,
-      duration: 1.0,
-      stagger: 0.08,
-      ease: 'expo.out',
-      scrollTrigger: { trigger: p, start: 'top 75%' },
+      gsap.from([num, meta], {
+        y: 30,
+        opacity: 0,
+        duration: 1.0,
+        stagger: 0.08,
+        ease: 'expo.out',
+        scrollTrigger: { trigger: p, start: 'top 75%' },
+      });
+      gsap.from(visual, {
+        y: 60,
+        opacity: 0,
+        duration: 1.2,
+        ease: 'expo.out',
+        scrollTrigger: { trigger: p, start: 'top 75%' },
+      });
+      gsap.fromTo(
+        inner,
+        { yPercent: -8 },
+        {
+          yPercent: 8,
+          ease: 'none',
+          scrollTrigger: { trigger: visual, start: 'top bottom', end: 'bottom top', scrub: 0.8 },
+        }
+      );
     });
-    gsap.from(visual, {
-      y: 60,
-      opacity: 0,
-      duration: 1.2,
-      ease: 'expo.out',
-      scrollTrigger: { trigger: p, start: 'top 75%' },
-    });
-    gsap.fromTo(
-      inner,
-      { yPercent: -8 },
-      {
-        yPercent: 8,
-        ease: 'none',
-        scrollTrigger: { trigger: visual, start: 'top bottom', end: 'bottom top', scrub: 0.8 },
-      }
-    );
-  });
+  }
 </script>

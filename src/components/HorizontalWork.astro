@@ -354,19 +354,25 @@ const featured: Project[] = PROJECTS.slice(0, 3);
     const firstVisual = panels[0]?.querySelector<HTMLElement>('[data-visual]');
     if (firstVisual) gsap.delayedCall(0.4, () => firstVisual.classList.add('in'));
   } else if (panels.length) {
-    // Mobile / reduced motion: simple stagger reveal
+    // Mobile / reduced motion fallback: panels render fully visible. Make sure
+    // the line-reveal title and clip-path visual aren't left in their hidden
+    // states (the desktop path animates them in; we have to stage them here).
     panels.forEach((panel) => {
       const titleSpan = panel.querySelector<HTMLElement>('[data-title] .line > span');
       const visual = panel.querySelector<HTMLElement>('[data-visual]');
       if (titleSpan) gsap.set(titleSpan, { y: 0 });
       if (visual) visual.classList.add('in');
-      gsap.from(panel, {
-        opacity: 0,
-        y: 30,
-        duration: 0.8,
-        ease: 'expo.out',
-        scrollTrigger: { trigger: panel, start: 'top 85%' },
-      });
+      // Skip gsap.from on reduced motion — it would leave panels hidden until
+      // ScrollTrigger fires. On mobile, keep a soft entrance.
+      if (!reduceMotion) {
+        gsap.from(panel, {
+          opacity: 0,
+          y: 30,
+          duration: 0.8,
+          ease: 'expo.out',
+          scrollTrigger: { trigger: panel, start: 'top 85%' },
+        });
+      }
     });
   }
 </script>

@@ -47,6 +47,11 @@ export default function Navbar({ pathname = '' }: Props) {
   useEffect(() => {
     if (!open || !menuRef.current) return;
     const links = menuRef.current.querySelectorAll<HTMLElement>('.mobile-menu__link');
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduceMotion) {
+      gsap.set(links, { y: 0, autoAlpha: 1 });
+      return;
+    }
     gsap.fromTo(
       links,
       { y: 30, autoAlpha: 0 },
@@ -95,7 +100,6 @@ export default function Navbar({ pathname = '' }: Props) {
       ref={headerRef}
       id="site-nav"
       className="fixed top-0 inset-x-0 z-50 px-6 md:px-10 py-6 md:py-7 flex items-center justify-between"
-      style={{ opacity: 0 }}
     >
       {/* SVG B-mark + wordmark */}
       <a

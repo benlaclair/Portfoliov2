@@ -205,6 +205,22 @@ const jsonLd = {
         gsap.set(curtain, { yPercent: 0 });
         gsap.to(curtain, { yPercent: -100, duration: 0.85, ease: 'expo.inOut', delay: 0.05 });
 
+        // Snap any pointer-driven transforms (magnetic links, cursor scale)
+        // back to rest before/while the curtain wipes — otherwise a link the
+        // user clicked while hovering stays translated through the transition.
+        const resetPointerTransforms = () => {
+          document.querySelectorAll<HTMLElement>('[data-magnetic]').forEach((el) => {
+            gsap.killTweensOf(el);
+            gsap.to(el, { x: 0, y: 0, duration: 0.25, ease: 'power3.out', overwrite: true });
+          });
+          const dotEl = document.getElementById('cursor-dot');
+          const ringEl = document.getElementById('cursor-ring');
+          const labelEl = document.getElementById('cursor-label');
+          if (dotEl) gsap.to(dotEl, { scale: 1, duration: 0.2, ease: 'power3.out', overwrite: true });
+          if (ringEl) gsap.to(ringEl, { scale: 1, opacity: 0.12, duration: 0.2, ease: 'power3.out', overwrite: true });
+          if (labelEl) gsap.to(labelEl, { opacity: 0, scale: 0.92, duration: 0.15, ease: 'power3.out', overwrite: true });
+        };
+
         document.addEventListener('click', (e) => {
           const target = (e.target as HTMLElement).closest('a') as HTMLAnchorElement | null;
           if (!target) return;
@@ -216,6 +232,7 @@ const jsonLd = {
           if (url.origin !== window.location.origin) return;
           if (url.pathname === window.location.pathname) return;
           e.preventDefault();
+          resetPointerTransforms();
           gsap.to(curtain, {
             yPercent: 0,
             duration: 0.7,
