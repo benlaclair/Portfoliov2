@@ -189,10 +189,50 @@ DevTools → Rendering → Emulate `prefers-reduced-motion: reduce`. The loader 
 
 ## What's next
 
-Phase 6 (refinement) — open scope. Likely candidates:
+Phase 6 (refinement) — open scope. Two big direction decisions on the table:
 
-- **Real assets** — copy `public/graphics/`, `public/images/`, `public/videos/`, `public/resume.pdf` from the v1 repo so the Vercel deploy renders correctly. Current `public/images` covers in v1 are partly placeholder; re-shoot or re-render the three featured project covers in a consistent treatment.
-- **Performance pass** — Lighthouse audit, font self-hosting if needed, image `sizes` attributes on the few responsive `<img>` tags.
+### Direction 1 — Section contrast: layered material, not just value alternation
+
+The current rhythm is two-value (cream + ink) with most sections being single-canvas. The horizontal cards section is the only one doing it right — paper-toned card on cream canvas, image inside the card. Three layers. Tagline, Timeline, Marquee, Tools are flat: one bg, no card, no atmospheric treatment. The unlock is **layered material per section** — base tone + inset surface + atmospheric layer — so each section reads like a *room*, not a paint chip.
+
+Reference points: Stripe, Linear, Vercel marketing pages, the Phase 3 source comp, Robin Mastromarino's portfolio. None get depth from value alternation alone — they layer.
+
+Changes, ranked by impact:
+
+1. **Activate the mid-tone.** `--color-bg-alt` / `--color-bg-2` (#ece6d6) is defined and barely used. Put Tagline (or Marquee) on it. Rhythm becomes three values instead of two — cheapest, biggest perceptual shift.
+2. **Card-on-canvas as a section primitive.** Wrap Timeline year+blurb and Tools rows in paper-toned cards, same approach as the Work cards. Adds a depth layer per section without redesigning typography.
+3. **Atmospheric effects per section.** Light sections get a soft radial warmth from one corner (mirror of the dark `has-halos` class). Dark sections get film grain via SVG-as-data-URL with `mix-blend-mode: overlay`. CSS-only, no asset cost.
+4. **Replace 1px dividers with deliberate transitions.** Either generous whitespace and no divider, or a soft color bleed (linear-gradient one bg → next bg) at section boundaries. The 1px lines are a Phase 2 holdover that reads utilitarian against everything else.
+5. **Let accent anchor one section, sparingly.** Vbreak or a new chapter marker that's almost entirely orange-on-near-black. Currently accent only does hover/word-tint duty — could carry one whole chapter once.
+
+Discipline rules:
+
+- Pick exactly 3 bg values + 1 accent. Refuse to add a fifth.
+- Build 3–4 named atmospheric utilities (`atmo-warmth-tl`, `atmo-grain-dark`) and reuse — not per-section snowflakes.
+- Card-on-canvas works for grouped content, not narrative paragraphs. Tagline stays card-less; it gets an atmospheric tint instead.
+
+### Direction 2 — Stack: drop React
+
+The two React islands (Navbar, ContactForm) need ~50 lines of vanilla JS to replicate: toggle a class for the mobile menu, set `innerText` for the EST clock, fetch + UI feedback for the contact form. Right now you're shipping React + react-dom (~100KB) for that. The hydration mismatch class of bug *only exists because* of islands (see [`fix: suppress Navbar coordinate-readout hydration warning`](https://github.com/benlaclair/Portfoliov2/commit/57897d8) for the most recent example).
+
+Plan:
+
+- `Navbar.tsx` → `Navbar.astro` (vanilla menu toggle, EST clock, focus trap, ~30 lines)
+- `ContactForm.tsx` → `ContactForm.astro` (vanilla submit + UI feedback, ~25 lines)
+- Drop `@astrojs/react`, `react`, `react-dom`, `@types/react*`, `@gsap/react` from `package.json`
+- Remove `@astrojs/react` integration from `astro.config.mjs`
+- Remove `client:load` directives wherever they exist
+
+Defer if interactive features are coming (filtering, search, complex form wizards). As of 2026-05-06 there are no plans, so compaction is the right move. Afternoon-sized.
+
+### Other open candidates (smaller)
+
+- **Real assets** — copy `public/graphics/`, `public/images/`, `public/videos/`, `public/resume.pdf` from the v1 repo so the Vercel deploy renders correctly. Current covers in v1 are partly placeholder; re-shoot or re-render the three featured project covers in a consistent treatment.
+- **Performance pass** — Lighthouse audit, font self-hosting if needed, image `sizes` attributes on the responsive `<img>` tags.
 - **Content polish** — write the portfolio case study with screenshots; add a 4th project to the homepage hero count if `projects.ts` grows.
-- **Case-study visual richness** — the case-study template is editorial but text-heavy. Adding inline diagrams or before/after image pairs would make Vlier and VEO read better.
+- **Case-study visual richness** — the case-study template is editorial but text-heavy. Inline diagrams or before/after image pairs would make Vlier and VEO read better.
 - **Graphic-design lightbox** — currently vanilla JS in `graphic-design.astro`. Works but is the only non-GSAP motion on the site; could be migrated for consistency.
+
+### Suggested sequencing
+
+Do the React drop first (mechanical, low-risk, simplifies everything underneath), then the visual/contrast work on a clean platform. Or visual first if you'd rather have something to look at while the JS rewrite is happening. Either order works — they don't interfere.
