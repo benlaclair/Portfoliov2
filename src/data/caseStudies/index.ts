@@ -7,7 +7,7 @@ import { vlierCaseStudy } from './vlier';
 import { veoCaseStudy } from './veo';
 import { portfolioCaseStudy } from './portfolio';
 
-export const CASE_STUDIES: Record<string, CaseStudy> = {
+const CASE_STUDIES: Record<string, CaseStudy> = {
   [vlierCaseStudy.slug]: vlierCaseStudy,
   [veoCaseStudy.slug]: veoCaseStudy,
   [portfolioCaseStudy.slug]: portfolioCaseStudy,

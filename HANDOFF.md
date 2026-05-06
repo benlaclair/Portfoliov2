@@ -183,7 +183,6 @@ DevTools → Rendering → Emulate `prefers-reduced-motion: reduce`. The loader 
 
 - **No automated tests.** Visual changes get verified by manual scroll-through on the Vercel deploy. If the project grows, consider Playwright for the loader-to-hero intro chain — it's the most fragile bit.
 - **Lighthouse**: no recent audit. Fontshare CDN adds a ~150KB CSS request and two woff2s; Phase 2's local `@fontsource` was lighter. If LCP regresses, switch to self-hosting Clash + Satoshi via the woff2 files (Fontshare allows direct download).
-- **Legacy case-study data files**: `src/data/vlierCaseStudyData.ts`, `src/data/veoCaseStudyData.ts`, and `src/data/caseStudyData.ts` may be unreferenced after Phase 5's registry refactor. Audit and delete if dead.
 - **Untracked binary assets**: `public/graphics/`, `public/images/`, `public/videos/`, `public/resume.pdf` need to be copied from the v1 repo for the Vercel deploy to render correctly.
 
 ---
@@ -197,4 +196,3 @@ Phase 6 (refinement) — open scope. Likely candidates:
 - **Content polish** — write the portfolio case study with screenshots; add a 4th project to the homepage hero count if `projects.ts` grows.
 - **Case-study visual richness** — the case-study template is editorial but text-heavy. Adding inline diagrams or before/after image pairs would make Vlier and VEO read better.
 - **Graphic-design lightbox** — currently vanilla JS in `graphic-design.astro`. Works but is the only non-GSAP motion on the site; could be migrated for consistency.
-- **Dead-code sweep** — confirm the legacy `*CaseStudyData.ts` files in `src/data/` are unreferenced post-Phase-5 and delete.
