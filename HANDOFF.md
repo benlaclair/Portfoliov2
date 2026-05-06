@@ -12,17 +12,19 @@ Master orientation doc. Read this first, then dive into `docs/` as needed.
 
 Personal portfolio for Ben LaClair (UX/UI + Graphic Designer). Static Astro site with a GSAP-driven motion layer, deployed to Vercel.
 
-- **Production**: `main` branch → https://benlaclair.com (auto-deploys via Vercel)
-- **Active dev**: `claude/astro-gsap-portfolio-rebuild-3Jeel` → PR #1 (preview deploys per push). Phase 1 stabilization (`ae12e71`) and Phase 2 cleanup are local; nothing has been pushed since `a31ad02`.
-- **Repo**: `benlaclair/Portfoliov2`
+- **Repo**: `benlaclair/Portfoliov2` ([github.com/benlaclair/Portfoliov2](https://github.com/benlaclair/Portfoliov2))
+- **Branch model**: single-branch — `main` is where work happens.
+- **Deploy**: `main` push → https://portfoliov2-jet-six.vercel.app (auto-deploys via Vercel). Separate Vercel project from the v1 site at benlaclair.com — anything done here does not touch the live portfolio.
 
-The current visual language is the result of three iterations:
+The current visual language is the result of five phases:
 
 1. **Phase 1** — Astro/GSAP/Tailwind scaffold, Plus Jakarta Sans, dark `#080B0F` bg
 2. **Phase 2** — Warm parchment editorial system (Inter Tight + Instrument Serif italic), full motion layer (Lenis, custom cursor, magnetic links, page curtain, loader, horizontal pin, timeline pin)
-3. **Phase 3** — Perplexity comp visual integration (current): Clash Display + Satoshi typography, light/dark chapter rhythm, SVG B-mark logo, word-reveal, live-dot pulse, coordinate readout, `[data-reveal]` cascade, clip-path mobile menu
+3. **Phase 3** — Perplexity comp visual integration: Clash Display + Satoshi typography, light/dark chapter rhythm, SVG B-mark logo, word-reveal, live-dot pulse, coordinate readout, `[data-reveal]` cascade, clip-path mobile menu
+4. **Phase 4** — Reduced-motion + motion-correctness hardening
+5. **Phase 5** — Case-study architecture refactor: slug-keyed registry in `src/data/caseStudies/`, rendering pieces extracted to `src/components/case-study/*`, no more if/else ladder in `work/[slug].astro`
 
-Phase 3 is a **visual/animation layer over Phase 2's content layout**. The page structure (section order, copy, components) is intentionally unchanged from Phase 2 — only paint, type, and motion were swapped.
+Phase 3 is a **visual/animation layer over Phase 2's content layout** — page structure (section order, copy, components) was intentionally unchanged; only paint, type, and motion were swapped. Phases 4–5 are correctness/architecture refinements that don't change visual output.
 
 ---
 
@@ -59,12 +61,24 @@ src/
     Marquee.astro         Looping ticker, hover-slow
     ProjectCard.astro     Vertical project row used on /work
     ContactForm.tsx       React form → /api/contact → Formspree
+    case-study/           Phase 5 — modular case-study renderers
+      Section.astro         Dispatcher; selects child by `kind`
+      SectionShell.astro    Shared section wrapper
+      Stats.astro           Stats grid
+      Cards.astro           Grid of cards
+      Decisions.astro       Numbered decision list
+      Process.astro         Process steps
+      Challenges.astro      Challenge list
+      Outcomes.astro        Outcomes / impact
+      MetaOverview.astro    Meta block + overview text
+      Video.astro           Embedded video w/ caption
   pages/
     index.astro           Homepage — Loader → Hero → Tagline → Vbreak →
                           HorizontalWork → Marquee → Timeline → CTA
     work/
       index.astro         All projects grid (uses ProjectCard)
-      [slug].astro        Case study template (vlier, veo-olympics, portfolio)
+      [slug].astro        Case study template; reads from caseStudies
+                          registry, no per-slug branches
       graphic-design.astro Masonry gallery + vanilla JS lightbox
     about.astro           Hero + stats + bio + experience timeline
     contact.astro         Hero + ContactForm + email/social links
@@ -75,17 +89,18 @@ src/
     projects.ts           Featured + all projects (4 entries)
     graphicDesign.ts      86 images grouped by client
     tools.ts              AI tools cards
-    vlierCaseStudyData.ts
-    veoCaseStudyData.ts
-    caseStudyData.ts      portfolio (this site) case study
+    caseStudies/          Phase 5 — slug-keyed case-study registry
+      types.ts              Discriminated CaseStudySection union
+      index.ts              Registry of slug → CaseStudy
+      vlier.ts, veo.ts, portfolio.ts
   styles/
     global.css            @theme tokens, base, utilities, motion helpers,
                           cursor, curtain, vbreak, [data-reveal], pulse
 public/
-  graphics/               86 design webp images
-  images/                 project covers + assets
-  videos/                 VEO Olympics broadcast
-  resume.pdf
+  graphics/               86 design webp images   (untracked, copy from v1)
+  images/                 project covers + assets (untracked, copy from v1)
+  videos/                 VEO Olympics broadcast  (untracked, copy from v1)
+  resume.pdf                                       (untracked, copy from v1)
   favicon.svg
 ```
 
@@ -126,9 +141,8 @@ Asset migration if you're cloning fresh: `public/graphics/`, `public/images/`, `
 ## Working on this project
 
 ### Branches
-- `main` is production. Vercel auto-deploys on push.
-- All dev happens on `claude/astro-gsap-portfolio-rebuild-3Jeel`. PR #1 tracks it. Vercel posts a preview URL on each push.
-- `prototype/experimental-portfolio-rebuild` — frozen reference; the Perplexity comp the Phase 3 design tokens were lifted from. Don't merge from it; cherry-pick details if needed.
+- `main` is the only branch. Push triggers a Vercel deploy. No PR flow, no preview branches.
+- For experimental work, branch off main locally if you want to compare a state before pushing. Don't push exploratory branches to origin — keep the remote tidy.
 
 ### Commit style
 Subject line uses conventional-commit-ish prefixes:
@@ -144,8 +158,9 @@ Body bullets describe the why, not the diff. See `git log --oneline main` for ex
 
 **Add a new project case study**
 1. Add entry to `src/data/projects.ts` (the `Project` type tells you the shape).
-2. If it has detailed sections (decisions/process/outcomes), add a `<slug>CaseStudyData.ts` file alongside the existing ones and import it in `src/pages/work/[slug].astro` via the same `if (project.slug === '<new>')` pattern.
-3. Drop hero asset in `public/images/`, set `coverImage` in the project entry.
+2. If it has detailed sections, create `src/data/caseStudies/<slug>.ts` modeled on `vlier.ts` / `portfolio.ts`. Section types are defined in `caseStudies/types.ts` (discriminated union by `kind`).
+3. Register the case study in `src/data/caseStudies/index.ts`. The `[slug].astro` template reads the registry — no per-slug branches needed anymore.
+4. Drop hero asset in `public/images/`, set `coverImage` in the project entry.
 
 **Add a homepage section**
 1. Decide light vs dark — match the chapter rhythm in [docs/DESIGN-SYSTEM.md](docs/DESIGN-SYSTEM.md).
@@ -166,24 +181,20 @@ DevTools → Rendering → Emulate `prefers-reduced-motion: reduce`. The loader 
 
 ## Known issues / debt
 
-- **PR #1** has accumulated 3 phases of work plus Phase 1 stabilization and Phase 2 cleanup. Once it lands, squash-merge and start each future phase as a fresh PR off `main`.
-- **No automated tests.** Visual changes get verified by Vercel preview deploys + manual scroll-through. If the project grows, consider Playwright for the loader-to-hero intro chain — it's the most fragile bit.
+- **No automated tests.** Visual changes get verified by manual scroll-through on the Vercel deploy. If the project grows, consider Playwright for the loader-to-hero intro chain — it's the most fragile bit.
 - **Lighthouse**: no recent audit. Fontshare CDN adds a ~150KB CSS request and two woff2s; Phase 2's local `@fontsource` was lighter. If LCP regresses, switch to self-hosting Clash + Satoshi via the woff2 files (Fontshare allows direct download).
+- **Legacy case-study data files**: `src/data/vlierCaseStudyData.ts`, `src/data/veoCaseStudyData.ts`, and `src/data/caseStudyData.ts` may be unreferenced after Phase 5's registry refactor. Audit and delete if dead.
+- **Untracked binary assets**: `public/graphics/`, `public/images/`, `public/videos/`, `public/resume.pdf` need to be copied from the v1 repo for the Vercel deploy to render correctly.
 
 ---
 
 ## What's next
 
-No explicit Phase 4 scope yet. Most likely future work:
+Phase 6 (refinement) — open scope. Likely candidates:
 
-- **Content polish** — write the portfolio case study to describe Phase 3 properly with screenshots; add the missing 4th project to the homepage hero count if `projects.ts` grows. (Phase 1 already swept the stale "Instrument Serif + Geist" copy in `projects.ts` and `caseStudyData.ts`.)
-- **Real assets** — current `public/images` covers are from v1; some are placeholder. Re-shoot or re-render the three featured project covers in a consistent treatment.
+- **Real assets** — copy `public/graphics/`, `public/images/`, `public/videos/`, `public/resume.pdf` from the v1 repo so the Vercel deploy renders correctly. Current `public/images` covers in v1 are partly placeholder; re-shoot or re-render the three featured project covers in a consistent treatment.
 - **Performance pass** — Lighthouse audit, font self-hosting if needed, image `sizes` attributes on the few responsive `<img>` tags.
-- **Case study visual richness** — the case study template (`work/[slug].astro`) is editorial but text-heavy. Adding inline diagrams or before/after image pairs would make Vlier and VEO read better.
-- **Graphic design lightbox** — currently vanilla JS in `graphic-design.astro`. Works but is the only non-GSAP motion on the site; could be migrated for consistency.
-
----
-
-## Contact for context
-
-Original session conversation lives in Claude Code session history. The plan that produced Phase 3 is preserved at `~/.claude/plans/async-petting-quilt.md` if you have access to that machine; otherwise the commit `d1f1e4e` body has the full change list.
+- **Content polish** — write the portfolio case study with screenshots; add a 4th project to the homepage hero count if `projects.ts` grows.
+- **Case-study visual richness** — the case-study template is editorial but text-heavy. Adding inline diagrams or before/after image pairs would make Vlier and VEO read better.
+- **Graphic-design lightbox** — currently vanilla JS in `graphic-design.astro`. Works but is the only non-GSAP motion on the site; could be migrated for consistency.
+- **Dead-code sweep** — confirm the legacy `*CaseStudyData.ts` files in `src/data/` are unreferenced post-Phase-5 and delete.

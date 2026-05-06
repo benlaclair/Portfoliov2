@@ -34,13 +34,9 @@ The contact form route (`src/pages/api/contact.ts`) is the only consumer.
 
 | Branch | Purpose |
 |---|---|
-| `main` | Production. Auto-deploys to Vercel. Direct pushes go live. |
-| `claude/astro-gsap-portfolio-rebuild-3Jeel` | Active dev. Tracked by PR #1. Vercel posts a preview URL on each push. |
-| `prototype/experimental-portfolio-rebuild` | **Frozen reference.** The Perplexity-generated comp Phase 3's tokens were lifted from. Do not merge. Cherry-pick details if needed. |
+| `main` | The only branch. All work happens here. Push triggers a Vercel deploy to https://portfoliov2-jet-six.vercel.app. |
 
-### Why one long-running PR?
-
-Phases 1–3 all live on PR #1. This is fine for a one-developer portfolio, but it means the PR diff is enormous. **Once Phase 3 is verified live, squash-merge PR #1 to main and start Phase 4 as a fresh PR off main.**
+For experimental work, branch off `main` locally if you want to compare a state before pushing. Don't push exploratory branches to origin — keep the remote tidy.
 
 ---
 
@@ -72,33 +68,23 @@ See `git log --oneline main` for shipped examples.
 
 ---
 
-## Pushing & PRs
+## Pushing
 
 ```bash
-git push -u origin claude/astro-gsap-portfolio-rebuild-3Jeel
+git push origin main
 ```
 
-If a force-push is needed (rebase, etc.), use `--force-with-lease`, never plain `--force` to a branch others might be working on. **Never force-push to `main`.**
-
-PRs are managed via the GitHub MCP tools (or the GitHub web UI). When opening a fresh phase PR:
-
-1. Branch off latest `main`.
-2. Push first commit.
-3. Open as **draft** — Vercel will post a preview URL automatically.
-4. Mark ready for review when CI passes and the preview looks right.
+Vercel sees the push and rebuilds. Watch the deploy in the Vercel dashboard. **Never force-push to `main`.** If you mess up a commit, fix forward — make a new commit that corrects it.
 
 ---
 
 ## Deploy
 
-Vercel is wired to the repo. Two deploy triggers:
+Vercel is wired to the repo. Push to `main` → deploy to https://portfoliov2-jet-six.vercel.app. (This is a separate Vercel project from the v1 site at benlaclair.com — anything done here does not touch the live portfolio.)
 
-- **Push to `main`** → production deploy at `benlaclair.com`.
-- **Push to any other branch with an open PR** → preview deploy at `<branch>-benlaclairs-projects.vercel.app`.
+Build takes ~30–60 seconds. Watch in the Vercel dashboard or wait until the URL serves the new content.
 
-The Vercel bot comments on the PR with the preview URL on each push. Wait for the build status to flip from "Building" to "Ready" (~30–60 seconds for this site) before testing.
-
-If a deploy fails, check the Vercel build logs (link in the PR comment). The most common failures:
+If a deploy fails, check the Vercel build logs in the dashboard. The most common failures:
 
 | Symptom | Likely cause |
 |---|---|
@@ -115,16 +101,9 @@ If a deploy fails, check the Vercel build logs (link in the PR comment). The mos
 
 1. Append to `src/data/projects.ts`. Required fields: `slug`, `title`, `shortTitle`, `category`, `year`, `description`, `role`, `tools[]`, `coverColor`, `overview`. Optional: `coverImage`, `videoUrl`, `client`, `problem`.
 2. Drop the cover into `public/images/`.
-3. If it has detailed sections (decisions, process, outcomes), create `src/data/<slug>CaseStudyData.ts` and import it in `work/[slug].astro` using the existing pattern:
-   ```ts
-   } else if (project.slug === '<new>') {
-     const d = await import('../../data/<new>CaseStudyData');
-     stats = d.<new>Stats;
-     decisions = d.<new>Decisions;
-     outcomes = d.<new>Outcomes;
-   }
-   ```
-4. The homepage's `HorizontalWork.astro` shows `PROJECTS.slice(0, 3)` — if your new project should be featured, reorder the array.
+3. If it has detailed sections, create `src/data/caseStudies/<slug>.ts` modeled on `vlier.ts` / `portfolio.ts`. Section types are defined in `caseStudies/types.ts` (discriminated union by `kind`).
+4. Register the case study in `src/data/caseStudies/index.ts`. The `[slug].astro` template reads the registry — no per-slug branches needed.
+5. The homepage's `HorizontalWork.astro` shows `PROJECTS.slice(0, 3)` — if your new project should be featured, reorder the array.
 
 ### Add a homepage section
 
@@ -184,20 +163,10 @@ Use `gsap.globalTimeline.timeScale(0.3)` in the console to slow everything down 
 
 ## Don't
 
-- **Don't push to `main` directly** unless it's a hotfix. Use the PR flow.
-- **Don't force-push to `main`**, ever.
+- **Don't force-push to `main`**, ever. Fix forward with a new commit instead.
 - **Don't re-introduce Instrument Serif italic accents.** Phase 3 explicitly dropped that role; use `<span class="accent">` instead.
 - **Don't add new globals to `BaseLayout.astro`** unless they apply site-wide. Section-local motion belongs in the section's `<script>` block.
 - **Don't rename CSS custom properties** without grep-replacing every inline `var()` reference across the whole `src/`.
 - **Don't `git rebase -i` or `git add -i`** in the Claude Code shell — interactive flags don't work.
 - **Don't `--no-verify` or `--no-gpg-sign`** without explicit instruction. If a hook fails, fix the root cause.
 
----
-
-## Repo state at handoff
-
-- `main` — last commit `d2f899c` ("refactor: remove hero mountain, apply shrink-on-focus to project panels in horizontal scroll"). This is Phase 2 + the mountain-removal cleanup.
-- `claude/astro-gsap-portfolio-rebuild-3Jeel` — last pushed commit `a31ad02` ("docs: add CLAUDE.md for automatic session bootstrapping"). Local-only commits ahead: `ae12e71` (Phase 1 stabilization) and the Phase 2 cleanup commit on top of it. Push before opening preview.
-- PR #1 — open, draft, base `main`, head `claude/astro-gsap-portfolio-rebuild-3Jeel`. Vercel preview reflects the last push, not the local-only commits.
-
-Once you're satisfied with the preview, squash-merge PR #1 to `main` to ship Phase 3 to production.
