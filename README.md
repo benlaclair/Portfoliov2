@@ -34,16 +34,17 @@ FORMSPREE_ID=your_form_id_here
 
 ## Asset migration
 
-Binary assets aren't tracked in this repo. Pull them from `benlaclair/portfolio` (main branch) into `public/`:
+Only `public/favicon.svg` is tracked. The graphics, images, videos, and resume are large binaries kept out of this repo — pull them from `benlaclair/portfolio` (main) into `public/` before running locally or deploying:
 
 ```bash
-# From the v1 repo
-git checkout main
+# From the v1 repo working tree
 cp -r public/graphics ../Portfoliov2/public/
 cp -r public/images   ../Portfoliov2/public/
 cp -r public/videos   ../Portfoliov2/public/
 cp public/resume.pdf  ../Portfoliov2/public/
 ```
+
+`npm run build` succeeds without these assets, but rendered pages will show broken images and the case-study video won't play. Vercel preview and production builds expect them present.
 
 ## Project structure
 
@@ -51,7 +52,7 @@ cp public/resume.pdf  ../Portfoliov2/public/
 src/
   layouts/    BaseLayout.astro — head, fonts, cursor, Lenis, curtain, observers
   components/ Navbar, Footer, HorizontalWork, Marquee, ProjectCard, ContactForm
-  data/       projects, graphicDesign, tools, constants, *CaseStudyData
+  data/       projects, graphicDesign, tools, *CaseStudyData
   pages/
     index.astro            Homepage (loader → hero → tagline → vbreak →
                            horizontal work → marquee → timeline → CTA)
@@ -64,7 +65,7 @@ src/
     api/contact.ts         Formspree proxy
     robots.txt.ts
   styles/global.css        @theme tokens, base, motion utilities
-public/                     graphics/, images/, videos/, resume.pdf, favicon
+public/                     favicon.svg (tracked); graphics/, images/, videos/, resume.pdf (untracked, copy from v1)
 ```
 
 ## Color tokens (Phase 3)

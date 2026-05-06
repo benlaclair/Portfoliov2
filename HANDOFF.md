@@ -13,7 +13,7 @@ Master orientation doc. Read this first, then dive into `docs/` as needed.
 Personal portfolio for Ben LaClair (UX/UI + Graphic Designer). Static Astro site with a GSAP-driven motion layer, deployed to Vercel.
 
 - **Production**: `main` branch → https://benlaclair.com (auto-deploys via Vercel)
-- **Active dev**: `claude/astro-gsap-portfolio-rebuild-3Jeel` → PR #1 (preview deploys per push)
+- **Active dev**: `claude/astro-gsap-portfolio-rebuild-3Jeel` → PR #1 (preview deploys per push). Phase 1 stabilization (`ae12e71`) and Phase 2 cleanup are local; nothing has been pushed since `a31ad02`.
 - **Repo**: `benlaclair/Portfoliov2`
 
 The current visual language is the result of three iterations:
@@ -59,7 +59,6 @@ src/
     Marquee.astro         Looping ticker, hover-slow
     ProjectCard.astro     Vertical project row used on /work
     ContactForm.tsx       React form → /api/contact → Formspree
-    MarqueeBanner.astro   Legacy variant (unused on Phase 3 homepage; safe to delete if you confirm no imports)
   pages/
     index.astro           Homepage — Loader → Hero → Tagline → Vbreak →
                           HorizontalWork → Marquee → Timeline → CTA
@@ -76,7 +75,6 @@ src/
     projects.ts           Featured + all projects (4 entries)
     graphicDesign.ts      86 images grouped by client
     tools.ts              AI tools cards
-    constants.ts          SITE config (yearsExperience, available, etc.)
     vlierCaseStudyData.ts
     veoCaseStudyData.ts
     caseStudyData.ts      portfolio (this site) case study
@@ -119,9 +117,9 @@ npm run build        # static output to dist/
 npm run check        # astro type-check
 ```
 
-Env: copy `.env.example` to `.env.local` and set `FORMSPREE_ID` (only needed for contact form locally; Vercel has it set as a project env var).
+Env: copy `.env.example` to `.env.local` and set `FORMSPREE_ID` (only needed for the contact form locally; Vercel has it set as a project env var).
 
-Asset migration if you're cloning fresh: `public/graphics`, `public/images`, `public/videos`, `public/resume.pdf` are binary and large — pull them from the v1 repo (`benlaclair/portfolio` main) since they aren't tracked here cleanly. See `README.md` for the copy commands.
+Asset migration if you're cloning fresh: `public/graphics/`, `public/images/`, `public/videos/`, and `public/resume.pdf` are binary, large, and **not tracked in this repo** — `npm run build` will succeed without them, but most pages will render with broken `<img>` and `<video>` sources, and Vercel preview/production builds expect them present. Pull them from the v1 repo (`benlaclair/portfolio` main); see `README.md` for the copy commands. `public/favicon.svg` is the only public asset committed here.
 
 ---
 
@@ -168,10 +166,7 @@ DevTools → Rendering → Emulate `prefers-reduced-motion: reduce`. The loader 
 
 ## Known issues / debt
 
-- **`MarqueeBanner.astro`** is unused on the Phase 3 homepage (replaced by `Marquee.astro`). Verify no imports reference it before deleting.
-- **`src/data/projects.ts` line 89** still mentions "Instrument Serif + Geist" in the portfolio case study `overview` text — that copy should be rewritten to describe the Clash Display + Satoshi pairing.
-- **`src/data/caseStudyData.ts` lines 11–14** — same issue: the typography decision card describes the old fonts. Update content + screenshot when you do a content pass.
-- **PR #1** has accumulated 3 phases of work. Once Phase 3 lands, we should squash-merge and start each future phase as a fresh PR off main.
+- **PR #1** has accumulated 3 phases of work plus Phase 1 stabilization and Phase 2 cleanup. Once it lands, squash-merge and start each future phase as a fresh PR off `main`.
 - **No automated tests.** Visual changes get verified by Vercel preview deploys + manual scroll-through. If the project grows, consider Playwright for the loader-to-hero intro chain — it's the most fragile bit.
 - **Lighthouse**: no recent audit. Fontshare CDN adds a ~150KB CSS request and two woff2s; Phase 2's local `@fontsource` was lighter. If LCP regresses, switch to self-hosting Clash + Satoshi via the woff2 files (Fontshare allows direct download).
 
@@ -181,7 +176,7 @@ DevTools → Rendering → Emulate `prefers-reduced-motion: reduce`. The loader 
 
 No explicit Phase 4 scope yet. Most likely future work:
 
-- **Content polish** — fix the stale "Instrument Serif + Geist" references, write the portfolio case study to describe Phase 3 properly, add the missing 4th project to the homepage hero count if `projects.ts` grows.
+- **Content polish** — write the portfolio case study to describe Phase 3 properly with screenshots; add the missing 4th project to the homepage hero count if `projects.ts` grows. (Phase 1 already swept the stale "Instrument Serif + Geist" copy in `projects.ts` and `caseStudyData.ts`.)
 - **Real assets** — current `public/images` covers are from v1; some are placeholder. Re-shoot or re-render the three featured project covers in a consistent treatment.
 - **Performance pass** — Lighthouse audit, font self-hosting if needed, image `sizes` attributes on the few responsive `<img>` tags.
 - **Case study visual richness** — the case study template (`work/[slug].astro`) is editorial but text-heavy. Adding inline diagrams or before/after image pairs would make Vlier and VEO read better.

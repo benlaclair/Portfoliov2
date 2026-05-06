@@ -191,14 +191,13 @@ Use `gsap.globalTimeline.timeScale(0.3)` in the console to slow everything down 
 - **Don't rename CSS custom properties** without grep-replacing every inline `var()` reference across the whole `src/`.
 - **Don't `git rebase -i` or `git add -i`** in the Claude Code shell — interactive flags don't work.
 - **Don't `--no-verify` or `--no-gpg-sign`** without explicit instruction. If a hook fails, fix the root cause.
-- **Don't delete `MarqueeBanner.astro` without grep-checking** that it's truly unimported. (Phase 3 replaced its homepage usage with `Marquee.astro`, but I haven't verified no other page references it.)
 
 ---
 
 ## Repo state at handoff
 
 - `main` — last commit `d2f899c` ("refactor: remove hero mountain, apply shrink-on-focus to project panels in horizontal scroll"). This is Phase 2 + the mountain-removal cleanup.
-- `claude/astro-gsap-portfolio-rebuild-3Jeel` — last commit `d1f1e4e` ("feat: Phase 3 — Perplexity comp visual integration"). This is what you'd merge to ship Phase 3.
-- PR #1 — open, draft, base `main`, head `claude/astro-gsap-portfolio-rebuild-3Jeel`. Vercel preview live.
+- `claude/astro-gsap-portfolio-rebuild-3Jeel` — last pushed commit `a31ad02` ("docs: add CLAUDE.md for automatic session bootstrapping"). Local-only commits ahead: `ae12e71` (Phase 1 stabilization) and the Phase 2 cleanup commit on top of it. Push before opening preview.
+- PR #1 — open, draft, base `main`, head `claude/astro-gsap-portfolio-rebuild-3Jeel`. Vercel preview reflects the last push, not the local-only commits.
 
 Once you're satisfied with the preview, squash-merge PR #1 to `main` to ship Phase 3 to production.
