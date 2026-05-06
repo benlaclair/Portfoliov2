@@ -16,8 +16,6 @@
     "@astrojs/react": "^3.6.0",
     "@astrojs/sitemap": "^3.6.0",
     "@astrojs/vercel": "^9.0.0",
-    "@fontsource-variable/inter-tight": "^5.2.5",
-    "@fontsource/instrument-serif": "^5.2.5",
     "@fontsource/jetbrains-mono": "^5.2.5",
     "@gsap/react": "^2.1.2",
     "@tailwindcss/vite": "^4.1.0",

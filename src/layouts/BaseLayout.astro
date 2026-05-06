@@ -1,7 +1,5 @@
 ---
 import '../styles/global.css';
-import '@fontsource-variable/inter-tight';
-import '@fontsource/instrument-serif/400-italic.css';
 import '@fontsource/jetbrains-mono/400.css';
 import '@fontsource/jetbrains-mono/500.css';
 import Navbar from '../components/Navbar.tsx';
@@ -43,7 +41,7 @@ const jsonLd = {
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content={description} />
-    <meta name="theme-color" content="#f1ede4" />
+    <meta name="theme-color" content="#0d0c0a" />
     <meta property="og:type" content={pageType} />
     <meta property="og:url" content={canonicalUrl} />
     <meta property="og:title" content={title} />
@@ -57,6 +55,11 @@ const jsonLd = {
     <link rel="canonical" href={canonicalUrl} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="sitemap" href="/sitemap-index.xml" />
+    <link rel="preconnect" href="https://api.fontshare.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://api.fontshare.com/v2/css?f[]=clash-display@500,600&f[]=satoshi@400,500,700&display=swap"
+    />
     <title>{title}</title>
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
   </head>
@@ -84,7 +87,7 @@ const jsonLd = {
 
       const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-      // ============ LENIS smooth scroll (1.4 = premium pacing) ============
+      // ============ LENIS smooth scroll ============
       if (!reduceMotion) {
         const lenis = new Lenis({
           duration: 1.4,
@@ -98,7 +101,6 @@ const jsonLd = {
       }
 
       // ============ CUSTOM CURSOR ============
-      // Solid opaque dot + lower-opacity ring that scales up on hover
       const isTouch = window.matchMedia('(hover: none), (pointer: coarse)').matches;
       if (!isTouch && !reduceMotion) {
         const dot = document.getElementById('cursor-dot') as HTMLElement;
@@ -111,6 +113,14 @@ const jsonLd = {
           window.addEventListener('mousemove', (e) => {
             mouse.x = e.clientX; mouse.y = e.clientY;
             gsap.to(dot, { x: mouse.x, y: mouse.y, duration: 0.12, ease: 'power3.out' });
+
+            // Coordinate readout
+            const coord = document.querySelector<HTMLElement>('[data-coordinates]');
+            if (coord) {
+              const x = String(Math.round(e.clientX)).padStart(3, '0');
+              const y = String(Math.round(e.clientY)).padStart(3, '0');
+              coord.textContent = `X:${x} · Y:${y}`;
+            }
           });
 
           gsap.ticker.add(() => {
@@ -185,6 +195,35 @@ const jsonLd = {
             onComplete: () => { window.location.href = url.href; },
           });
         });
+      }
+
+      // ============ BODY DATA-MODE (dark/light section tracking) ============
+      const darkSections = document.querySelectorAll<HTMLElement>('[data-section-mode="dark"]');
+      darkSections.forEach((section) => {
+        ScrollTrigger.create({
+          trigger: section,
+          start: 'top 60px',
+          end: 'bottom 60px',
+          onEnter: () => { document.body.dataset.mode = 'dark'; },
+          onLeave: () => { document.body.dataset.mode = 'light'; },
+          onEnterBack: () => { document.body.dataset.mode = 'dark'; },
+          onLeaveBack: () => { document.body.dataset.mode = 'light'; },
+        });
+      });
+
+      // ============ [data-reveal] IntersectionObserver cascade ============
+      const revealEls = document.querySelectorAll('[data-reveal]');
+      if (revealEls.length) {
+        const io = new IntersectionObserver((entries) => {
+          entries.forEach((e) => {
+            if (!e.isIntersecting) return;
+            const sib = Array.from(e.target.parentElement?.children ?? []).indexOf(e.target as Element);
+            (e.target as HTMLElement).style.transitionDelay = `${Math.min(sib * 60, 280)}ms`;
+            e.target.classList.add('is-revealed');
+            io.unobserve(e.target);
+          });
+        }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+        revealEls.forEach((el) => io.observe(el));
       }
     </script>
   </body>

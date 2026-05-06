@@ -19,9 +19,9 @@ import { TOOLS } from '../data/tools';
       >
         <h1
           class="tools-h1"
-          style="font-family: 'Inter Tight Variable', 'Inter Tight', sans-serif; font-weight: 500; font-size: clamp(72px, 13vw, 200px); letter-spacing: -0.045em; line-height: 0.92"
+          style="font-family: var(--font-display); font-weight: 500; font-size: clamp(72px, 13vw, 200px); letter-spacing: -0.045em; line-height: 0.92"
         >
-          <span class="line"><span><em>Tools</em> I built.</span></span>
+          <span class="line"><span><span class="accent">Tools</span> I built.</span></span>
         </h1>
         <p style="font-size: 16px; line-height: 1.6; color: var(--color-ink-2); max-width: 460px; padding-bottom: 16px">
           Production tools built to solve real problems in design, content, and workflow. Each one started as a pain point.
@@ -47,7 +47,7 @@ import { TOOLS } from '../data/tools';
               style={`font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.12em; color: ${tool.accentColor}; text-transform: uppercase; margin-bottom: 16px`}
             >{statusLabel}</div>
             <h3
-              style="font-family: 'Inter Tight Variable', 'Inter Tight', sans-serif; font-weight: 500; font-size: clamp(36px, 4.4vw, 64px); line-height: 1.0; letter-spacing: -0.03em; margin-bottom: 24px"
+              style="font-family: var(--font-display); font-weight: 500; font-size: clamp(36px, 4.4vw, 64px); line-height: 1.0; letter-spacing: -0.03em; margin-bottom: 24px"
             >
               {tool.name}
             </h3>
@@ -86,7 +86,7 @@ import { TOOLS } from '../data/tools';
             style={`aspect-ratio: 4/3; background: linear-gradient(135deg, ${tool.accentColor}25, ${tool.accentColor}08); position: relative; overflow: hidden; display: grid; place-items: center`}
           >
             <span
-              style={`color: ${tool.accentColor}; font-family: 'Instrument Serif', serif; font-style: italic; font-size: clamp(48px, 6vw, 96px); letter-spacing: -0.04em; opacity: 0.6; text-align: center; padding: 20px`}
+              style={`color: ${tool.accentColor}; font-family: var(--font-display); font-size: clamp(48px, 6vw, 96px); letter-spacing: -0.04em; opacity: 0.6; text-align: center; padding: 20px`}
             >
               {tool.name.split(' ')[0]}
             </span>

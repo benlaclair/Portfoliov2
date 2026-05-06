@@ -6,14 +6,26 @@ import Marquee from '../components/Marquee.astro';
 
 <BaseLayout>
 
-  <!-- ============ LOADER ============ -->
+  <!-- ============ LOADER (dark) ============ -->
   <div class="loader" id="loader">
     <div class="loader-top">
       <span>Index — 2026</span>
       <span id="loader-pct">000</span>
     </div>
     <div class="loader-mid">
-      <div class="loader-word"><span class="loader-word-inner">Ben<em>.</em></span></div>
+      <div class="loader-svg">
+        <svg
+          class="loader-b"
+          viewBox="0 0 96 96"
+          aria-hidden="true"
+          style="stroke: var(--color-dark-ink); fill: none; stroke-linecap: round; stroke-linejoin: round;"
+        >
+          <path class="loader-path" d="M20 68V22h24c10 0 16 5 16 12.5 0 4.8-2.5 8.3-6.8 10.2C59 46.4 63 50.7 63 57c0 8-6.4 11-17.2 11H20Z" stroke-width="3"/>
+          <path class="loader-path" d="M32 41h10c3.5 0 5.4-1.5 5.4-4.2 0-2.6-2-4-5.6-4H32v8.2Z" stroke-width="3"/>
+          <path class="loader-path" d="M32 58h12.5c3.8 0 5.8-1.7 5.8-4.7 0-2.8-2.1-4.5-6.1-4.5H32V58Z" stroke-width="3"/>
+          <circle cx="70" cy="25" r="7" fill="var(--color-accent)" stroke="none"/>
+        </svg>
+      </div>
     </div>
     <div class="loader-foot">
       <div class="loader-bar"><i id="loader-bar-fill"></i></div>
@@ -24,35 +36,35 @@ import Marquee from '../components/Marquee.astro';
     </div>
   </div>
 
-  <!-- ============ HERO ============ -->
-  <section class="hero" id="hero">
+  <!-- ============ HERO (dark + radial halos) ============ -->
+  <section class="hero is-dark has-halos" id="hero" data-section-mode="dark">
     <div class="hero-eyebrow" id="hero-eyebrow">
-      <span class="ind">Available &middot; Spring 2026</span>
+      <span class="ind">Available &middot; Q3 2026</span>
       <span>Newark, NJ — 40.7357° N</span>
       <span>Portfolio v2 &middot; Index 26</span>
     </div>
 
     <h1 class="hero-title" id="hero-title">
-      <span class="line"><span>Designer</span></span>
-      <span class="line"><span><em>shaping</em> interfaces,</span></span>
-      <span class="line"><span>brands &amp; <em>moving</em></span></span>
-      <span class="line"><span>pictures.</span></span>
+      Designer
+      <br/><span class="accent">shaping</span> interfaces,
+      <br/>brands &amp; <span class="accent">moving</span>
+      <br/>pictures.
     </h1>
 
     <div class="hero-foot" id="hero-foot">
-      <div>
+      <div data-reveal>
         <div class="col-label">Currently</div>
         <div class="col-value"><strong>Graphic / AI Designer</strong> at Market Mentors LLC. Building this site in <strong>Astro + GSAP</strong>.</div>
       </div>
-      <div>
+      <div data-reveal>
         <div class="col-label">Practice</div>
         <div class="col-value">UX/UI &middot; brand systems &middot; AI-led video &middot; web development.</div>
       </div>
-      <div>
+      <div data-reveal>
         <div class="col-label">Recent</div>
         <div class="col-value"><strong>VEO Olympics spot</strong> — Feb 2026. <strong>Vlier.com</strong> — Q4 2025.</div>
       </div>
-      <div>
+      <div data-reveal>
         <div class="col-label">↳ Next</div>
         <div class="col-value"><a href="#hwork" data-cursor="Browse">Three case studies, eighty-six designs, five years</a>.</div>
       </div>
@@ -61,11 +73,11 @@ import Marquee from '../components/Marquee.astro';
 
   <div class="divider"></div>
 
-  <!-- ============ TAGLINE ============ -->
+  <!-- ============ TAGLINE (light) ============ -->
   <section class="tagline">
     <div class="tagline-num section-num">— 01 / Statement</div>
     <p class="tagline-text" id="tagline-text">
-      I help teams turn complicated ideas into <em>measurably simpler</em> products — with type that reads, motion that means something, and details that hold up under scrutiny.
+      I help teams turn complicated ideas into <span class="accent">measurably simpler</span> products — with type that reads, motion that means something, and details that hold up under scrutiny.
     </p>
   </section>
 
@@ -74,17 +86,17 @@ import Marquee from '../components/Marquee.astro';
   <!-- ============ VISUAL BREAK (dark parallax strip) ============ -->
   <section class="vbreak" aria-hidden="true">
     <div class="vbreak-bg" id="vbreak-bg">
-      <p class="vbreak-quote">Type that reads. Motion that means something.</p>
+      <p class="vbreak-quote" data-reveal>Type that reads. Motion that means something.</p>
     </div>
   </section>
 
-  <!-- ============ SELECTED WORK (horizontal pinned) ============ -->
+  <!-- ============ SELECTED WORK (horizontal pinned, light) ============ -->
   <HorizontalWork />
 
-  <!-- ============ MARQUEE ============ -->
+  <!-- ============ MARQUEE (light) ============ -->
   <Marquee />
 
-  <!-- ============ TIMELINE ============ -->
+  <!-- ============ TIMELINE (light) ============ -->
   <section class="timeline" id="timeline">
     <div class="timeline-stage" id="timeline-stage">
       <div class="timeline-pin" id="timeline-pin">
@@ -97,9 +109,9 @@ import Marquee from '../components/Marquee.astro';
         </div>
         <div>
           <div class="timeline-cap">
-            <div class="label">Marker</div>
-            <div class="text" id="timeline-text">First freelance esports overlay. Discord DMs, forty bucks, learning Photoshop the hard way.</div>
-            <div class="right" id="timeline-tag">Self-taught</div>
+            <div class="label" data-reveal>Marker</div>
+            <div class="text" id="timeline-text" data-reveal>First freelance esports overlay. Discord DMs, forty bucks, learning Photoshop the hard way.</div>
+            <div class="right" id="timeline-tag" data-reveal>Self-taught</div>
           </div>
           <div class="timeline-bar"><i id="timeline-fill"></i></div>
           <div class="timeline-ticks" id="timeline-ticks">
@@ -110,72 +122,66 @@ import Marquee from '../components/Marquee.astro';
     </div>
   </section>
 
-  <!-- ============ CTA ============ -->
-  <section class="cta" id="cta">
-    <div class="cta-num section-num">— 05 / Reach out</div>
+  <!-- ============ CTA (dark + radial halos) ============ -->
+  <section class="cta is-dark has-halos" id="cta" data-section-mode="dark">
+    <div class="cta-num">— 05 / Reach out</div>
     <h2 class="cta-title" id="cta-title">
       <span class="line"><span>Have something</span></span>
-      <span class="line"><span><em>worth making?</em></span></span>
+      <span class="line"><span><span class="accent">worth making?</span></span></span>
     </h2>
     <div class="cta-row">
       <a href="mailto:hello@benlaclair.com" data-cursor="Mail" data-magnetic="0.4" class="cta-link">
         hello@benlaclair.com
         <span class="cta-arrow">→</span>
       </a>
-      <p class="cta-side">Replies usually within a day. The shorter your brief, the faster I can be useful — three sentences is plenty.</p>
+      <p class="cta-side" data-reveal>Replies usually within a day. The shorter your brief, the faster I can be useful — three sentences is plenty.</p>
     </div>
   </section>
 
 </BaseLayout>
 
 <style is:global>
-  /* loader */
-  .loader { position: fixed; inset: 0; background: var(--color-bg); z-index: 10000; display: flex; flex-direction: column; justify-content: space-between; padding: 40px; }
-  .loader-top, .loader-bot { display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-ink-2); }
+  /* loader — dark bg */
+  .loader { position: fixed; inset: 0; background: var(--color-dark-bg); z-index: 10000; display: flex; flex-direction: column; justify-content: space-between; padding: 40px; }
+  .loader-top, .loader-bot { display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-dark-ink-2); }
   .loader-mid { flex: 1; display: grid; place-items: center; }
-  .loader-word { overflow: hidden; }
-  .loader-word-inner {
-    display: inline-block;
-    font-family: var(--font-serif);
-    font-style: italic;
-    font-size: clamp(80px, 14vw, 220px);
-    line-height: 0.95;
-    letter-spacing: -0.02em;
-    transform: translateY(110%);
-    color: var(--color-ink);
-  }
-  .loader-word-inner em {
-    color: var(--color-accent);
-    font-style: normal;
-    font-family: var(--font-serif);
-  }
+  .loader-svg { display: grid; place-items: center; }
+  .loader-b { width: clamp(80px, 14vw, 160px); height: clamp(80px, 14vw, 160px); }
+  .loader-path { stroke-dasharray: 240; stroke-dashoffset: 240; }
   .loader-foot { display: flex; flex-direction: column; gap: 20px; }
-  .loader-bar { height: 1px; background: rgba(22,20,15,0.1); position: relative; overflow: hidden; }
-  .loader-bar i { position: absolute; left: 0; top: 0; bottom: 0; width: 0%; background: var(--color-ink); }
+  .loader-bar { height: 1px; background: rgba(244, 239, 228, 0.15); position: relative; overflow: hidden; }
+  .loader-bar i { position: absolute; left: 0; top: 0; bottom: 0; width: 0%; background: var(--color-dark-ink); }
 
-  /* hero */
+  /* hero — dark chapter */
   .hero { min-height: 100vh; padding: 140px 40px 60px; display: flex; flex-direction: column; justify-content: space-between; position: relative; }
-  .hero-eyebrow { display: flex; justify-content: space-between; gap: 24px; flex-wrap: wrap; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em; color: var(--color-ink-2); text-transform: uppercase; opacity: 0; }
-  .hero-eyebrow .ind { display: inline-flex; align-items: center; gap: 10px; }
-  .hero-eyebrow .ind::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--color-accent); }
+  .hero-eyebrow { display: flex; justify-content: space-between; gap: 24px; flex-wrap: wrap; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em; color: var(--color-dark-muted); text-transform: uppercase; opacity: 0; }
 
-  .hero-title { font-family: var(--font-sans); font-weight: 500; font-size: clamp(64px, 13.2vw, 200px); line-height: 0.92; letter-spacing: -0.045em; margin-top: 60px; color: var(--color-ink); }
-  .hero-title em { font-family: var(--font-serif); font-style: italic; font-weight: 400; color: var(--color-accent); }
+  .hero-title {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: clamp(64px, 13.2vw, 200px);
+    line-height: 0.92;
+    letter-spacing: -0.045em;
+    margin-top: 60px;
+    color: var(--color-dark-ink);
+  }
+  .hero-title .accent { color: var(--color-accent); }
+  .hero-title .word { display: inline-block; overflow: hidden; vertical-align: bottom; }
+  .hero-title .word > span { display: inline-block; will-change: transform; }
 
   .hero-foot { display: grid; grid-template-columns: repeat(4, 1fr); gap: 40px; align-items: end; margin-top: 80px; opacity: 0; }
-  .col-label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.14em; color: var(--color-muted); margin-bottom: 12px; text-transform: uppercase; }
-  .col-value { font-size: 14px; line-height: 1.55; color: var(--color-ink-2); }
-  .col-value strong { color: var(--color-ink); font-weight: 600; }
-  .col-value a { border-bottom: 1px solid currentColor; padding-bottom: 1px; }
+  .col-label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.14em; color: var(--color-dark-muted); margin-bottom: 12px; text-transform: uppercase; }
+  .col-value { font-size: 14px; line-height: 1.55; color: var(--color-dark-ink-2); font-family: var(--font-body); }
+  .col-value strong { color: var(--color-dark-ink); font-weight: 600; }
+  .col-value a { border-bottom: 1px solid currentColor; padding-bottom: 1px; color: var(--color-dark-ink-2); }
 
   .divider { height: 1px; background: var(--color-line); margin: 0 40px; }
 
-  /* tagline */
+  /* tagline — light */
   .tagline { padding: 80px 40px; display: grid; grid-template-columns: 1fr 2fr; gap: 80px; align-items: start; }
   .tagline-num { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em; color: var(--color-ink-2); text-transform: uppercase; }
-  .tagline-text { font-family: var(--font-sans); font-weight: 400; font-size: clamp(28px, 3.4vw, 52px); line-height: 1.15; letter-spacing: -0.025em; color: var(--color-ink); }
-  .tagline-text em { font-family: var(--font-serif); font-style: italic; font-weight: 400; color: var(--color-accent); }
-  .tagline-text .word { display: inline-block; opacity: 0.18; transition: opacity 0.4s ease; will-change: opacity; }
+  .tagline-text { font-family: var(--font-body); font-weight: 400; font-size: clamp(28px, 3.4vw, 52px); line-height: 1.15; letter-spacing: -0.025em; color: var(--color-ink); }
+  .tagline-text .tag-word { display: inline-block; opacity: 0.18; transition: opacity 0.4s ease; will-change: opacity; }
 
   /* timeline */
   .timeline { padding: 200px 40px 200px; position: relative; }
@@ -183,10 +189,10 @@ import Marquee from '../components/Marquee.astro';
   .timeline-pin { height: 100vh; display: grid; grid-template-rows: auto 1fr auto; gap: 40px; align-items: stretch; padding-block: 40px; }
   .timeline-top { display: flex; justify-content: space-between; align-items: baseline; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em; color: var(--color-ink-2); text-transform: uppercase; }
   .timeline-mid { display: grid; place-items: center; position: relative; }
-  .timeline-num { font-family: var(--font-serif); font-style: italic; font-size: clamp(160px, 30vw, 460px); line-height: 0.85; letter-spacing: -0.04em; color: var(--color-ink); position: relative; }
+  .timeline-num { font-family: var(--font-display); font-weight: 500; font-style: normal; font-size: clamp(160px, 30vw, 460px); line-height: 0.85; letter-spacing: -0.04em; color: var(--color-ink); position: relative; }
   .timeline-cap { display: grid; grid-template-columns: 1fr 2fr 1fr; gap: 40px; align-items: end; padding-bottom: 20px; }
   .timeline-cap .label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.12em; color: var(--color-ink-2); text-transform: uppercase; }
-  .timeline-cap .text { font-size: clamp(18px, 2.2vw, 28px); line-height: 1.3; letter-spacing: -0.015em; max-width: 700px; }
+  .timeline-cap .text { font-size: clamp(18px, 2.2vw, 28px); line-height: 1.3; letter-spacing: -0.015em; max-width: 700px; font-family: var(--font-body); }
   .timeline-cap .right { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.12em; color: var(--color-muted); text-transform: uppercase; text-align: right; }
   .timeline-bar { height: 1px; background: var(--color-line); position: relative; }
   .timeline-bar i { position: absolute; left: 0; top: 0; bottom: 0; width: 0%; background: var(--color-ink); }
@@ -194,16 +200,16 @@ import Marquee from '../components/Marquee.astro';
   .timeline-ticks span { transition: color 0.5s ease; }
   .timeline-ticks span.active { color: var(--color-accent); }
 
-  /* cta */
+  /* cta — dark chapter */
   .cta { padding: 200px 40px 120px; }
-  .cta-num { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em; color: var(--color-ink-2); text-transform: uppercase; margin-bottom: 40px; }
-  .cta-title { font-family: var(--font-sans); font-weight: 500; font-size: clamp(64px, 11.5vw, 200px); line-height: 0.92; letter-spacing: -0.05em; color: var(--color-ink); }
-  .cta-title em { font-family: var(--font-serif); font-style: italic; font-weight: 400; color: var(--color-accent); }
+  .cta-num { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em; color: var(--color-dark-muted); text-transform: uppercase; margin-bottom: 40px; }
+  .cta-title { font-family: var(--font-display); font-weight: 500; font-size: clamp(64px, 11.5vw, 200px); line-height: 0.92; letter-spacing: -0.05em; color: var(--color-dark-ink); }
+  .cta-title .accent { color: var(--color-accent); }
   .cta-row { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: end; margin-top: 80px; }
-  .cta-link { display: inline-flex; align-items: center; gap: 18px; font-size: 22px; font-weight: 500; letter-spacing: -0.01em; padding: 18px 0; border-bottom: 1px solid var(--color-ink); color: var(--color-ink); }
-  .cta-arrow { width: 44px; height: 44px; border-radius: 50%; background: var(--color-ink); color: var(--color-paper); display: grid; place-items: center; transition: transform 0.6s cubic-bezier(.7,0,.2,1), background 0.4s ease; flex-shrink: 0; }
+  .cta-link { display: inline-flex; align-items: center; gap: 18px; font-size: 22px; font-weight: 500; font-family: var(--font-body); letter-spacing: -0.01em; padding: 18px 0; border-bottom: 1px solid var(--color-dark-ink); color: var(--color-dark-ink); }
+  .cta-arrow { width: 44px; height: 44px; border-radius: 50%; background: var(--color-dark-ink); color: var(--color-dark-bg); display: grid; place-items: center; transition: transform 0.6s cubic-bezier(.7,0,.2,1), background 0.4s ease; flex-shrink: 0; }
   .cta-link:hover .cta-arrow { transform: rotate(-45deg); background: var(--color-accent); }
-  .cta-side { font-size: 14px; line-height: 1.6; color: var(--color-ink-2); max-width: 360px; padding-bottom: 24px; }
+  .cta-side { font-size: 14px; line-height: 1.6; color: var(--color-dark-ink-2); max-width: 360px; padding-bottom: 24px; font-family: var(--font-body); }
 
   @media (max-width: 900px) {
     .hero-foot, .tagline, .cta-row { grid-template-columns: 1fr !important; gap: 32px !important; }
@@ -235,19 +241,55 @@ import Marquee from '../components/Marquee.astro';
         }
       }, 0)
       .to('#loader-bar-fill', { width: '100%', duration: 1.4, ease: 'power1.inOut' }, 0)
-      .to('.loader-word-inner', { y: '0%', duration: 0.9, ease: E_EXPO }, 0.3)
-      .to('.loader-word-inner', { y: '-110%', duration: 0.7, ease: E_EXPO }, '+=0.4')
-      .to('#loader', { yPercent: -100, duration: 1.0, ease: 'expo.inOut' }, '-=0.2')
+      .to('.loader-path', { strokeDashoffset: 0, duration: 0.7, stagger: 0.06, ease: 'power3.out' }, 0)
+      .to('#loader', { yPercent: -100, duration: 1.0, ease: 'expo.inOut' }, '+=0.6')
       .set('#loader', { display: 'none' })
       .to('#site-nav', { opacity: 1, duration: 0.6, ease: E_OUT }, '-=0.5')
       .to('#hero-eyebrow', { opacity: 1, duration: 0.6, ease: E_OUT }, '-=0.4')
-      .to('.hero-title .line span', { y: '0%', duration: 1.1, stagger: 0.08, ease: E_EXPO }, '-=0.3')
-      .to('#hero-foot', { opacity: 1, duration: 0.7, ease: E_OUT }, '-=0.5');
+      .add(() => {
+        // Word-by-word hero reveal
+        const titleEl = document.getElementById('hero-title');
+        if (!titleEl) return;
+        // Wrap each word in .word > span if not already done
+        if (!titleEl.querySelector('.word')) {
+          const walker = document.createTreeWalker(titleEl, NodeFilter.SHOW_TEXT, null);
+          const textNodes: Text[] = [];
+          let node;
+          while ((node = walker.nextNode())) textNodes.push(node as Text);
+          textNodes.forEach((tn) => {
+            if (!tn.textContent?.trim()) return;
+            const frag = document.createDocumentFragment();
+            const parts = tn.textContent.split(/(\s+)/);
+            parts.forEach((part) => {
+              if (/^\s+$/.test(part)) {
+                frag.appendChild(document.createTextNode(part));
+              } else if (part) {
+                const outer = document.createElement('span');
+                outer.className = 'word';
+                const inner = document.createElement('span');
+                inner.textContent = part;
+                outer.appendChild(inner);
+                frag.appendChild(outer);
+              }
+            });
+            tn.replaceWith(frag);
+          });
+        }
+        const words = titleEl.querySelectorAll<HTMLElement>('.word > span');
+        gsap.fromTo(words, { yPercent: 115 }, { yPercent: 0, stagger: 0.04, duration: 1.1, ease: 'expo.out' });
+      }, '-=0.3')
+      .to('#hero-foot', { opacity: 1, duration: 0.7, ease: E_OUT }, '-=0.6');
   } else {
     const loader = document.getElementById('loader');
     if (loader) loader.style.display = 'none';
     gsap.set('#site-nav, #hero-eyebrow, #hero-foot', { opacity: 1 });
-    gsap.set('.hero-title .line span', { y: 0 });
+    // Show all words instantly
+    const titleEl = document.getElementById('hero-title');
+    if (titleEl) {
+      titleEl.querySelectorAll('.word > span').forEach((s) => {
+        (s as HTMLElement).style.transform = 'none';
+      });
+    }
   }
 
   // ============ HERO TITLE SCRUB-OUT ============
@@ -282,31 +324,20 @@ import Marquee from '../components/Marquee.astro';
     let out = '';
     tmp.childNodes.forEach((node) => {
       if (node.nodeType === 3) {
-        out += (node.nodeValue || '').split(/(\s+)/).map((w) => /\s+/.test(w) ? w : (w ? `<span class="word">${w}</span>` : '')).join('');
+        out += (node.nodeValue || '').split(/(\s+)/).map((w) => /\s+/.test(w) ? w : (w ? `<span class="tag-word">${w}</span>` : '')).join('');
       } else if (node.nodeType === 1) {
-        out += `<span class="word">${(node as HTMLElement).outerHTML}</span>`;
+        const el = node as HTMLElement;
+        // Preserve .accent spans — wrap the whole thing as one tag-word
+        out += `<span class="tag-word">${el.outerHTML}</span>`;
       }
     });
     el.innerHTML = out;
-    const words = el.querySelectorAll('.word');
+    const words = el.querySelectorAll('.tag-word');
     gsap.to(words, {
       opacity: 1,
       stagger: { each: 0.04 },
       ease: 'none',
       scrollTrigger: { trigger: el, start: 'top 80%', end: 'top 30%', scrub: 0.6 },
-    });
-    words.forEach((w) => {
-      if (w.querySelector('em')) {
-        ScrollTrigger.create({
-          trigger: w as HTMLElement,
-          start: 'top 40%',
-          onEnter: () => {
-            const em = w.querySelector('em');
-            if (!em) return;
-            gsap.fromTo(em, { color: 'var(--color-ink)' }, { color: 'var(--color-accent)', duration: 0.4, ease: 'power3.out' });
-          },
-        });
-      }
     });
   })();
 

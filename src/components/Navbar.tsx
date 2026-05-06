@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
+import { gsap } from 'gsap';
 
 const navLinks = [
   { href: '/work', label: 'Work' },
@@ -41,6 +42,17 @@ export default function Navbar({ pathname = '' }: Props) {
     const id = setInterval(tick, 30_000);
     return () => clearInterval(id);
   }, []);
+
+  // GSAP mobile menu link stagger on open
+  useEffect(() => {
+    if (!open || !menuRef.current) return;
+    const links = menuRef.current.querySelectorAll<HTMLElement>('.mobile-menu__link');
+    gsap.fromTo(
+      links,
+      { y: 30, autoAlpha: 0 },
+      { y: 0, autoAlpha: 1, stagger: 0.05, duration: 0.55, ease: 'power3.out', delay: 0.15 }
+    );
+  }, [open]);
 
   const closeMenu = useCallback(() => {
     setOpen(false);
@@ -85,21 +97,37 @@ export default function Navbar({ pathname = '' }: Props) {
       className="fixed top-0 inset-x-0 z-50 px-6 md:px-10 py-6 md:py-7 flex items-center justify-between"
       style={{ opacity: 0 }}
     >
-      {/* Wordmark — italic Ben. */}
+      {/* SVG B-mark + wordmark */}
       <a
         href="/"
         data-magnetic="0.3"
-        className="inline-block"
-        style={{
-          fontFamily: "'Instrument Serif', Georgia, serif",
-          fontStyle: 'italic',
-          fontSize: '24px',
-          letterSpacing: '-0.02em',
-          color: 'var(--color-ink)',
-          lineHeight: 1,
-        }}
+        className="inline-flex items-center gap-3"
+        aria-label="Ben LaClair — Home"
       >
-        Ben<span style={{ color: 'var(--color-accent)' }}>.</span>
+        <svg
+          className="brand-mark"
+          viewBox="0 0 44 44"
+          aria-hidden="true"
+          width="36"
+          height="36"
+          style={{ color: 'var(--color-ink)', flexShrink: 0 }}
+        >
+          <rect x="3" y="3" width="38" height="38" rx="12" fill="none" stroke="currentColor" strokeWidth="1.4" />
+          <path d="M13 31V12h10.2c4 0 6.4 1.9 6.4 5.1 0 1.9-1 3.4-2.8 4.2 2.4.6 3.8 2.3 3.8 4.8 0 3.3-2.6 4.9-7.2 4.9H13Zm5-11.1h4.1c1.5 0 2.4-.7 2.4-1.9s-.9-1.8-2.5-1.8H18v3.7Zm0 7h4.9c1.7 0 2.6-.7 2.6-2s-.9-2-2.7-2H18v4Z" fill="currentColor" />
+          <circle cx="32" cy="12" r="3.2" fill="var(--color-accent)" />
+        </svg>
+        <span
+          style={{
+            fontFamily: "'Clash Display', sans-serif",
+            fontWeight: 600,
+            fontSize: '15px',
+            letterSpacing: '-0.02em',
+            color: 'var(--color-ink)',
+            lineHeight: 1,
+          }}
+        >
+          Ben LaClair
+        </span>
       </a>
 
       {/* Desktop links */}
@@ -113,6 +141,7 @@ export default function Navbar({ pathname = '' }: Props) {
             style={{
               fontSize: '13px',
               fontWeight: 500,
+              fontFamily: "'Satoshi', sans-serif",
               color: isActive(href) ? 'var(--color-ink)' : 'var(--color-ink-2)',
               padding: '4px 0',
               transition: 'color 0.3s ease',
@@ -133,17 +162,31 @@ export default function Navbar({ pathname = '' }: Props) {
         ))}
       </nav>
 
-      {/* Right: live EST clock */}
-      <div
-        className="hidden md:block"
-        style={{
-          fontFamily: "'JetBrains Mono', monospace",
-          fontSize: '11px',
-          letterSpacing: '0.08em',
-          color: 'var(--color-ink-2)',
-        }}
-      >
-        {time} EST
+      {/* Right: coordinate readout + clock */}
+      <div className="hidden md:flex items-center gap-6">
+        <span
+          data-coordinates
+          style={{
+            fontFamily: "'JetBrains Mono', monospace",
+            fontSize: '10px',
+            letterSpacing: '0.08em',
+            color: 'var(--color-muted)',
+            minWidth: '130px',
+            textAlign: 'right',
+          }}
+        >
+          X:000 · Y:000
+        </span>
+        <span
+          style={{
+            fontFamily: "'JetBrains Mono', monospace",
+            fontSize: '11px',
+            letterSpacing: '0.08em',
+            color: 'var(--color-ink-2)',
+          }}
+        >
+          {time} EST
+        </span>
       </div>
 
       {/* Mobile toggle */}
@@ -165,7 +208,7 @@ export default function Navbar({ pathname = '' }: Props) {
         />
       </button>
 
-      {/* Mobile menu */}
+      {/* Mobile menu — clip-path circle reveal from top-right */}
       <div
         ref={menuRef}
         id="mobile-menu"
@@ -174,11 +217,17 @@ export default function Navbar({ pathname = '' }: Props) {
         className="md:hidden"
         style={{
           position: 'fixed',
-          inset: '64px 0 0 0',
-          background: 'var(--color-bg)',
-          transform: open ? 'translateY(0)' : 'translateY(-100%)',
-          transition: 'transform 0.45s cubic-bezier(.7,0,.2,1)',
-          padding: '40px 24px',
+          inset: 0,
+          background: 'var(--color-dark-bg)',
+          clipPath: open
+            ? 'circle(140% at calc(100% - 32px) 32px)'
+            : 'circle(0% at calc(100% - 32px) 32px)',
+          transition: 'clip-path 0.7s cubic-bezier(0.4, 0, 0.2, 1)',
+          pointerEvents: open ? 'auto' : 'none',
+          padding: '100px 24px 40px',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
         }}
       >
         <nav className="flex flex-col">
@@ -187,20 +236,35 @@ export default function Navbar({ pathname = '' }: Props) {
               key={href}
               href={href}
               onClick={closeMenu}
-              className="py-3 border-b border-[var(--color-line)]"
+              className="mobile-menu__link py-4 border-b"
               style={{
-                fontFamily: "'Inter Tight Variable', 'Inter Tight', sans-serif",
+                borderColor: 'var(--color-dark-line)',
+                fontFamily: "'Clash Display', sans-serif",
                 fontWeight: 500,
-                fontSize: '32px',
+                fontSize: '40px',
                 letterSpacing: '-0.03em',
                 lineHeight: 1.1,
-                color: isActive(href) ? 'var(--color-ink)' : 'var(--color-ink-2)',
+                color: isActive(href) ? 'var(--color-accent)' : 'var(--color-dark-ink)',
+                opacity: 0,
               }}
             >
               {label}
             </a>
           ))}
         </nav>
+
+        <div
+          style={{
+            marginTop: 'auto',
+            paddingTop: '40px',
+            fontFamily: "'JetBrains Mono', monospace",
+            fontSize: '11px',
+            letterSpacing: '0.08em',
+            color: 'var(--color-dark-muted)',
+          }}
+        >
+          {time} EST
+        </div>
       </div>
     </header>
   );

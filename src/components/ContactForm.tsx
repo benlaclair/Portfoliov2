@@ -7,7 +7,7 @@ const field: React.CSSProperties = {
   padding: '14px 16px',
   color: 'var(--color-ink)',
   fontSize: '14px',
-  fontFamily: "'Inter Tight Variable', 'Inter Tight', sans-serif",
+  fontFamily: "var(--font-body)",
   outline: 'none',
   borderRadius: 0,
 };
@@ -50,8 +50,8 @@ export default function ContactForm() {
       >
         <p
           style={{
-            fontFamily: "'Instrument Serif', serif",
-            fontStyle: 'italic',
+            fontFamily: "var(--font-display)",
+            fontWeight: 600,
             fontSize: '40px',
             color: 'var(--color-ink)',
             marginBottom: '12px',

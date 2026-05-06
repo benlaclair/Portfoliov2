@@ -66,7 +66,7 @@ const isVlier = project.slug === 'vlier';
     >{project.category} &middot; {project.year}</div>
     <h1
       class="cs-title"
-      style="font-family: 'Inter Tight Variable', 'Inter Tight', sans-serif; font-weight: 500; font-size: clamp(48px, 8vw, 128px); letter-spacing: -0.04em; line-height: 0.96; max-width: 1100px; margin-bottom: 32px"
+      style="font-family: var(--font-display); font-weight: 500; font-size: clamp(48px, 8vw, 128px); letter-spacing: -0.04em; line-height: 0.96; max-width: 1100px; margin-bottom: 32px"
     >
       <span class="line"><span>{project.title}</span></span>
     </h1>
@@ -127,7 +127,7 @@ const isVlier = project.slug === 'vlier';
         {stats.map((s) => (
           <div class="cs-stat" style="background: var(--color-bg); padding: 40px 32px">
             <p
-              style="font-family: 'Inter Tight Variable', 'Inter Tight', sans-serif; font-weight: 500; font-size: clamp(40px, 5vw, 72px); line-height: 1; letter-spacing: -0.04em; color: var(--color-ink); margin-bottom: 12px"
+              style="font-family: var(--font-display); font-weight: 500; font-size: clamp(40px, 5vw, 72px); line-height: 1; letter-spacing: -0.04em; color: var(--color-ink); margin-bottom: 12px"
             >{s.value}</p>
             <p
               style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-ink-2)"
@@ -190,7 +190,7 @@ const isVlier = project.slug === 'vlier';
         {(extraSections.scenes as {number:string;title:string;description:string}[]).map((scene) => (
           <div style="background: var(--color-bg); padding: 32px">
             <p style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--color-accent); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 16px">Scene {scene.number}</p>
-            <h3 style="font-family: 'Inter Tight Variable', 'Inter Tight', sans-serif; font-weight: 500; font-size: 24px; letter-spacing: -0.025em; line-height: 1.1; margin-bottom: 12px">{scene.title}</h3>
+            <h3 style="font-family: var(--font-display); font-weight: 500; font-size: 24px; letter-spacing: -0.025em; line-height: 1.1; margin-bottom: 12px">{scene.title}</h3>
             <p style="font-size: 14px; line-height: 1.6; color: var(--color-ink-2)">{scene.description}</p>
           </div>
         ))}
@@ -205,7 +205,7 @@ const isVlier = project.slug === 'vlier';
       <div class="cs-cards" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: var(--color-line)">
         {(extraSections.personas as {role:string;description:string}[]).map((persona) => (
           <div style="background: var(--color-bg); padding: 32px">
-            <h3 style="font-family: 'Inter Tight Variable', 'Inter Tight', sans-serif; font-weight: 500; font-size: 28px; letter-spacing: -0.03em; line-height: 1.1; margin-bottom: 12px">{persona.role}</h3>
+            <h3 style="font-family: var(--font-display); font-weight: 500; font-size: 28px; letter-spacing: -0.03em; line-height: 1.1; margin-bottom: 12px">{persona.role}</h3>
             <p style="font-size: 14px; line-height: 1.6; color: var(--color-ink-2)">{persona.description}</p>
           </div>
         ))}
@@ -228,7 +228,7 @@ const isVlier = project.slug === 'vlier';
               <p style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-accent)">{d.label}</p>
             </div>
             <div>
-              <h3 style="font-family: 'Inter Tight Variable', 'Inter Tight', sans-serif; font-weight: 500; font-size: clamp(24px, 3vw, 40px); letter-spacing: -0.03em; line-height: 1.1; margin-bottom: 16px">{d.title}</h3>
+              <h3 style="font-family: var(--font-display); font-weight: 500; font-size: clamp(24px, 3vw, 40px); letter-spacing: -0.03em; line-height: 1.1; margin-bottom: 16px">{d.title}</h3>
               <p style="font-size: 15px; line-height: 1.65; color: var(--color-ink-2); margin-bottom: 20px">{d.description}</p>
               {d.before && d.after && (
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--color-line); margin-top: 20px">
@@ -260,10 +260,10 @@ const isVlier = project.slug === 'vlier';
             style="display: grid; grid-template-columns: 80px 1fr; gap: 40px; padding: 32px 0; border-top: 1px solid var(--color-line); align-items: start"
           >
             <div
-              style="font-family: 'Instrument Serif', serif; font-style: italic; font-size: 56px; line-height: 1; color: var(--color-accent); letter-spacing: -0.04em"
+              style="font-family: var(--font-display); font-weight: 600; font-size: 56px; line-height: 1; color: var(--color-accent); letter-spacing: -0.04em"
             >{step.step}</div>
             <div>
-              <h3 style="font-family: 'Inter Tight Variable', 'Inter Tight', sans-serif; font-weight: 500; font-size: 22px; letter-spacing: -0.025em; line-height: 1.2; margin-bottom: 10px">{step.title}</h3>
+              <h3 style="font-family: var(--font-display); font-weight: 500; font-size: 22px; letter-spacing: -0.025em; line-height: 1.2; margin-bottom: 10px">{step.title}</h3>
               <p style="font-size: 15px; line-height: 1.6; color: var(--color-ink-2); max-width: 720px">{step.description}</p>
             </div>
           </div>
@@ -284,7 +284,7 @@ const isVlier = project.slug === 'vlier';
           >
             <p style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--color-ink-2); letter-spacing: 0.12em; padding-top: 4px">{c.number}</p>
             <div>
-              <h3 style="font-family: 'Inter Tight Variable', 'Inter Tight', sans-serif; font-weight: 500; font-size: 22px; letter-spacing: -0.025em; line-height: 1.2; margin-bottom: 10px">{c.title}</h3>
+              <h3 style="font-family: var(--font-display); font-weight: 500; font-size: 22px; letter-spacing: -0.025em; line-height: 1.2; margin-bottom: 10px">{c.title}</h3>
               <p style="font-size: 15px; line-height: 1.6; color: var(--color-ink-2); max-width: 800px">{c.body}</p>
             </div>
           </div>
@@ -301,7 +301,7 @@ const isVlier = project.slug === 'vlier';
         {outcomes.map((o) => (
           <div style="background: var(--color-bg); padding: 32px">
             <p style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--color-accent); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 16px">{o.label}</p>
-            <p style="font-family: 'Inter Tight Variable', 'Inter Tight', sans-serif; font-weight: 500; font-size: 22px; line-height: 1.25; letter-spacing: -0.02em; color: var(--color-ink)">{o.value}</p>
+            <p style="font-family: var(--font-display); font-weight: 500; font-size: 22px; line-height: 1.25; letter-spacing: -0.02em; color: var(--color-ink)">{o.value}</p>
           </div>
         ))}
       </div>
@@ -318,8 +318,8 @@ const isVlier = project.slug === 'vlier';
       style="display: block"
     >
       <h2
-        style="font-family: 'Inter Tight Variable', 'Inter Tight', sans-serif; font-weight: 500; font-size: clamp(40px, 6vw, 88px); letter-spacing: -0.04em; line-height: 1; color: var(--color-ink); transition: color 0.4s ease"
-      >{nextProject.title} <span style="color: var(--color-accent); font-family: 'Instrument Serif', serif; font-style: italic">→</span></h2>
+        style="font-family: var(--font-display); font-weight: 500; font-size: clamp(40px, 6vw, 88px); letter-spacing: -0.04em; line-height: 1; color: var(--color-ink); transition: color 0.4s ease"
+      >{nextProject.title} <span style="color: var(--color-accent)">→</span></h2>
       <p style="font-size: 15px; line-height: 1.6; color: var(--color-ink-2); margin-top: 16px; max-width: 600px">{nextProject.description}</p>
     </a>
   </div>
