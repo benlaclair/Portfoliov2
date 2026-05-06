@@ -1,0 +1,26 @@
+---
+interface Props {
+  label: string;
+  src: string;
+  poster?: string;
+  caption?: string;
+}
+const { label, src, poster, caption } = Astro.props;
+---
+<div style="padding: 0 40px 100px; max-width: 1440px; margin-inline: auto">
+  <div
+    style="font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-ink-2); margin-bottom: 24px"
+  >{label}</div>
+  <div style="aspect-ratio: 16/9; overflow: hidden; background: var(--color-ink); position: relative">
+    <video
+      src={src}
+      controls
+      poster={poster}
+      preload="metadata"
+      style="width: 100%; height: 100%; object-fit: cover"
+    />
+  </div>
+  {caption && (
+    <p style="font-size: 13px; color: var(--color-muted); margin-top: 16px; font-family: var(--font-mono); letter-spacing: 0.04em">{caption}</p>
+  )}
+</div>

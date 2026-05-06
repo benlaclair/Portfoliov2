@@ -1,6 +1,9 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { PROJECTS } from '../../data/projects';
+import { getCaseStudy } from '../../data/caseStudies';
+import MetaOverview from '../../components/case-study/MetaOverview.astro';
+import Section from '../../components/case-study/Section.astro';
 
 export function getStaticPaths() {
   return PROJECTS
@@ -16,32 +19,9 @@ const { project } = Astro.props;
 const currentIdx = PROJECTS.findIndex((p) => p.slug === project.slug);
 const nextProject = PROJECTS[(currentIdx + 1) % PROJECTS.length];
 
-let stats: { value: string; label: string }[] = [];
-let process: { step: string; title: string; description: string }[] = [];
-let decisions: { number: string; label: string; title: string; description: string; before?: string; after?: string }[] = [];
-let outcomes: { label: string; value: string }[] = [];
-let extraSections: Record<string, unknown> = {};
-
-if (project.slug === 'vlier') {
-  const d = await import('../../data/vlierCaseStudyData');
-  stats = d.vlierStats;
-  decisions = d.vlierDecisions;
-  outcomes = d.vlierOutcomes;
-  extraSections = { problems: d.vlierProblems, personas: d.vlierPersonas };
-} else if (project.slug === 'veo-olympics') {
-  const d = await import('../../data/veoCaseStudyData');
-  stats = d.veoStats;
-  process = d.veoProcess;
-  outcomes = d.veoOutcomes;
-  extraSections = { scenes: d.veoScenes, challenges: d.veoChallenges };
-} else if (project.slug === 'portfolio') {
-  const d = await import('../../data/caseStudyData');
-  stats = d.portfolioStats;
-  decisions = d.portfolioDecisions;
-}
-
-const isVeo = project.slug === 'veo-olympics';
-const isVlier = project.slug === 'vlier';
+const caseStudy = getCaseStudy(project.slug);
+const preSections = caseStudy?.pre ?? [];
+const postSections = caseStudy?.post ?? [];
 ---
 
 <BaseLayout
@@ -96,217 +76,14 @@ const isVlier = project.slug === 'vlier';
     </div>
   )}
 
-  <!-- VEO video -->
-  {isVeo && project.videoUrl && (
-    <div style="padding: 0 40px 100px; max-width: 1440px; margin-inline: auto">
-      <div
-        style="font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-ink-2); margin-bottom: 24px"
-      >— The spot</div>
-      <div style="aspect-ratio: 16/9; overflow: hidden; background: var(--color-ink); position: relative">
-        <video
-          src={project.videoUrl}
-          controls
-          poster={project.coverImage}
-          preload="metadata"
-          style="width: 100%; height: 100%; object-fit: cover"
-        />
-      </div>
-      <p style="font-size: 13px; color: var(--color-muted); margin-top: 16px; font-family: var(--font-mono); letter-spacing: 0.04em">
-        15-second AI-generated broadcast spot — aired during Winter Olympics coverage.
-      </p>
-    </div>
-  )}
-
-  <!-- Stats -->
-  {stats.length > 0 && (
-    <div style="padding: 0 40px 100px; max-width: 1440px; margin-inline: auto">
-      <div
-        class="cs-stats"
-        style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--color-line)"
-      >
-        {stats.map((s) => (
-          <div class="cs-stat" style="background: var(--color-bg); padding: 40px 32px">
-            <p
-              style="font-family: var(--font-display); font-weight: 500; font-size: clamp(40px, 5vw, 72px); line-height: 1; letter-spacing: -0.04em; color: var(--color-ink); margin-bottom: 12px"
-            >{s.value}</p>
-            <p
-              style="font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-ink-2)"
-            >{s.label}</p>
-          </div>
-        ))}
-      </div>
-    </div>
-  )}
+  <!-- Sections rendered before the meta + overview block (typically video, stats) -->
+  {preSections.map((section) => <Section section={section} project={project} />)}
 
   <!-- Metadata + Overview -->
-  <div
-    class="cs-meta-grid"
-    style="padding: 0 40px 100px; max-width: 1440px; margin-inline: auto; display: grid; grid-template-columns: 240px 1fr; gap: 80px"
-  >
-    <aside style="display: flex; flex-direction: column; gap: 28px; padding-top: 8px">
-      <div>
-        <div style="font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-muted); margin-bottom: 6px">Role</div>
-        <p style="font-size: 14px; color: var(--color-ink)">{project.role}</p>
-      </div>
-      {project.client && (
-        <div>
-          <div style="font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-muted); margin-bottom: 6px">Client</div>
-          <p style="font-size: 14px; color: var(--color-ink)">{project.client}</p>
-        </div>
-      )}
-      <div>
-        <div style="font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-muted); margin-bottom: 6px">Year</div>
-        <p style="font-size: 14px; color: var(--color-ink)">{project.year}</p>
-      </div>
-      <div>
-        <div style="font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-muted); margin-bottom: 6px">Tools</div>
-        <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 6px">
-          {project.tools.map((t) => (<li style="font-size: 13px; color: var(--color-ink-2)">{t}</li>))}
-        </ul>
-      </div>
-    </aside>
+  <MetaOverview project={project} />
 
-    <div>
-      <div
-        style="font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-ink-2); margin-bottom: 24px"
-      >— Overview</div>
-      <p style="font-size: 18px; line-height: 1.55; color: var(--color-ink-2); margin-bottom: 32px">{project.overview}</p>
-      {project.problem && (
-        <>
-          <div
-            style="font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-ink-2); margin: 40px 0 24px"
-          >— The challenge</div>
-          <p style="font-size: 16px; line-height: 1.65; color: var(--color-ink-2)">{project.problem}</p>
-        </>
-      )}
-    </div>
-  </div>
-
-  <!-- VEO scenes -->
-  {isVeo && extraSections.scenes && (
-    <div style="padding: 0 40px 100px; max-width: 1440px; margin-inline: auto">
-      <div style="font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-ink-2); margin-bottom: 32px">— Scene breakdown</div>
-      <div class="cs-cards" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: var(--color-line)">
-        {(extraSections.scenes as {number:string;title:string;description:string}[]).map((scene) => (
-          <div style="background: var(--color-bg); padding: 32px">
-            <p style="font-family: var(--font-mono); font-size: 11px; color: var(--color-accent); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 16px">Scene {scene.number}</p>
-            <h3 style="font-family: var(--font-display); font-weight: 500; font-size: 24px; letter-spacing: -0.025em; line-height: 1.1; margin-bottom: 12px">{scene.title}</h3>
-            <p style="font-size: 14px; line-height: 1.6; color: var(--color-ink-2)">{scene.description}</p>
-          </div>
-        ))}
-      </div>
-    </div>
-  )}
-
-  <!-- Vlier personas -->
-  {isVlier && extraSections.personas && (
-    <div style="padding: 0 40px 100px; max-width: 1440px; margin-inline: auto">
-      <div style="font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-ink-2); margin-bottom: 32px">— Two users, one page</div>
-      <div class="cs-cards" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: var(--color-line)">
-        {(extraSections.personas as {role:string;description:string}[]).map((persona) => (
-          <div style="background: var(--color-bg); padding: 32px">
-            <h3 style="font-family: var(--font-display); font-weight: 500; font-size: 28px; letter-spacing: -0.03em; line-height: 1.1; margin-bottom: 12px">{persona.role}</h3>
-            <p style="font-size: 14px; line-height: 1.6; color: var(--color-ink-2)">{persona.description}</p>
-          </div>
-        ))}
-      </div>
-    </div>
-  )}
-
-  <!-- Decisions -->
-  {decisions.length > 0 && (
-    <div style="padding: 0 40px 100px; max-width: 1440px; margin-inline: auto">
-      <div style="font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-ink-2); margin-bottom: 32px">— Key decisions</div>
-      <div style="display: flex; flex-direction: column">
-        {decisions.map((d) => (
-          <div
-            class="cs-decision"
-            style="display: grid; grid-template-columns: 200px 1fr; gap: 60px; padding: 40px 0; border-top: 1px solid var(--color-line)"
-          >
-            <div>
-              <p style="font-family: var(--font-mono); font-size: 11px; color: var(--color-ink-2); margin-bottom: 6px">{d.number}</p>
-              <p style="font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-accent)">{d.label}</p>
-            </div>
-            <div>
-              <h3 style="font-family: var(--font-display); font-weight: 500; font-size: clamp(24px, 3vw, 40px); letter-spacing: -0.03em; line-height: 1.1; margin-bottom: 16px">{d.title}</h3>
-              <p style="font-size: 15px; line-height: 1.65; color: var(--color-ink-2); margin-bottom: 20px">{d.description}</p>
-              {d.before && d.after && (
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--color-line); margin-top: 20px">
-                  <div style="background: var(--color-paper); padding: 20px">
-                    <p style="font-family: var(--font-mono); font-size: 10px; color: var(--color-muted); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 10px">Before</p>
-                    <p style="font-size: 14px; color: var(--color-ink-2)">{d.before}</p>
-                  </div>
-                  <div style="background: var(--color-paper); padding: 20px; border-left: 2px solid var(--color-accent)">
-                    <p style="font-family: var(--font-mono); font-size: 10px; color: var(--color-accent); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 10px">After</p>
-                    <p style="font-size: 14px; color: var(--color-ink)">{d.after}</p>
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  )}
-
-  <!-- Process steps -->
-  {process.length > 0 && (
-    <div style="padding: 0 40px 100px; max-width: 1440px; margin-inline: auto">
-      <div style="font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-ink-2); margin-bottom: 32px">— Process</div>
-      <div style="display: flex; flex-direction: column">
-        {process.map((step) => (
-          <div
-            class="cs-process"
-            style="display: grid; grid-template-columns: 80px 1fr; gap: 40px; padding: 32px 0; border-top: 1px solid var(--color-line); align-items: start"
-          >
-            <div
-              style="font-family: var(--font-display); font-weight: 600; font-size: 56px; line-height: 1; color: var(--color-accent); letter-spacing: -0.04em"
-            >{step.step}</div>
-            <div>
-              <h3 style="font-family: var(--font-display); font-weight: 500; font-size: 22px; letter-spacing: -0.025em; line-height: 1.2; margin-bottom: 10px">{step.title}</h3>
-              <p style="font-size: 15px; line-height: 1.6; color: var(--color-ink-2); max-width: 720px">{step.description}</p>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  )}
-
-  <!-- VEO challenges -->
-  {isVeo && extraSections.challenges && (
-    <div style="padding: 0 40px 100px; max-width: 1440px; margin-inline: auto">
-      <div style="font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-ink-2); margin-bottom: 32px">— Constraints &amp; solutions</div>
-      <div style="display: flex; flex-direction: column">
-        {(extraSections.challenges as {number:string;title:string;body:string}[]).map((c) => (
-          <div
-            class="cs-challenge"
-            style="display: grid; grid-template-columns: 80px 1fr; gap: 40px; padding: 28px 0; border-top: 1px solid var(--color-line); align-items: start"
-          >
-            <p style="font-family: var(--font-mono); font-size: 11px; color: var(--color-ink-2); letter-spacing: 0.12em; padding-top: 4px">{c.number}</p>
-            <div>
-              <h3 style="font-family: var(--font-display); font-weight: 500; font-size: 22px; letter-spacing: -0.025em; line-height: 1.2; margin-bottom: 10px">{c.title}</h3>
-              <p style="font-size: 15px; line-height: 1.6; color: var(--color-ink-2); max-width: 800px">{c.body}</p>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  )}
-
-  <!-- Outcomes -->
-  {outcomes.length > 0 && (
-    <div style="padding: 0 40px 100px; max-width: 1440px; margin-inline: auto">
-      <div style="font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-ink-2); margin-bottom: 32px">— Outcomes</div>
-      <div class="cs-outcomes" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--color-line)">
-        {outcomes.map((o) => (
-          <div style="background: var(--color-bg); padding: 32px">
-            <p style="font-family: var(--font-mono); font-size: 11px; color: var(--color-accent); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 16px">{o.label}</p>
-            <p style="font-family: var(--font-display); font-weight: 500; font-size: 22px; line-height: 1.25; letter-spacing: -0.02em; color: var(--color-ink)">{o.value}</p>
-          </div>
-        ))}
-      </div>
-    </div>
-  )}
+  <!-- Sections rendered after the meta + overview block -->
+  {postSections.map((section) => <Section section={section} project={project} />)}
 
   <!-- Next project -->
   <div style="padding: 80px 40px 120px; max-width: 1440px; margin-inline: auto; border-top: 1px solid var(--color-line)">
@@ -325,7 +102,10 @@ const isVlier = project.slug === 'vlier';
   </div>
 </BaseLayout>
 
-<style>
+<style is:global>
+  /* Global because .cs-* elements are emitted by child components in
+     src/components/case-study/ — Astro's default scoping wouldn't reach
+     them. Selectors are namespaced under .cs-* so collision risk is low. */
   @media (max-width: 900px) {
     .cs-stats { grid-template-columns: repeat(2, 1fr) !important; }
     .cs-cards { grid-template-columns: 1fr !important; }

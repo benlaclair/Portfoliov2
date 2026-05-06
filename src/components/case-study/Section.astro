@@ -1,0 +1,29 @@
+---
+// Dispatch a single CaseStudySection to the matching renderer. Keeps the
+// page template free of slug-specific branching — the section's `kind`
+// field selects the component.
+import type { CaseStudySection } from '../../data/caseStudies/types';
+import type { Project } from '../../data/projects';
+import Stats from './Stats.astro';
+import Cards from './Cards.astro';
+import Decisions from './Decisions.astro';
+import Process from './Process.astro';
+import Challenges from './Challenges.astro';
+import Outcomes from './Outcomes.astro';
+import Video from './Video.astro';
+
+interface Props {
+  section: CaseStudySection;
+  project: Project;
+}
+const { section, project } = Astro.props;
+---
+{section.kind === 'stats' && <Stats items={section.items} />}
+{section.kind === 'cards' && <Cards label={section.label} columns={section.columns} items={section.items} />}
+{section.kind === 'decisions' && <Decisions label={section.label} items={section.items} />}
+{section.kind === 'process' && <Process label={section.label} items={section.items} />}
+{section.kind === 'challenges' && <Challenges label={section.label} items={section.items} />}
+{section.kind === 'outcomes' && <Outcomes label={section.label} items={section.items} />}
+{section.kind === 'video' && project.videoUrl && (
+  <Video label={section.label} src={project.videoUrl} poster={project.coverImage} caption={section.caption} />
+)}

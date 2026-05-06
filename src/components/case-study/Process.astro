@@ -1,0 +1,30 @@
+---
+import SectionShell from './SectionShell.astro';
+import type { ProcessStep } from '../../data/caseStudies/types';
+
+interface Props {
+  label: string;
+  items: ProcessStep[];
+}
+const { label, items } = Astro.props;
+---
+{items.length > 0 && (
+  <SectionShell label={label}>
+    <div style="display: flex; flex-direction: column">
+      {items.map((step) => (
+        <div
+          class="cs-process"
+          style="display: grid; grid-template-columns: 80px 1fr; gap: 40px; padding: 32px 0; border-top: 1px solid var(--color-line); align-items: start"
+        >
+          <div
+            style="font-family: var(--font-display); font-weight: 600; font-size: 56px; line-height: 1; color: var(--color-accent); letter-spacing: -0.04em"
+          >{step.step}</div>
+          <div>
+            <h3 style="font-family: var(--font-display); font-weight: 500; font-size: 22px; letter-spacing: -0.025em; line-height: 1.2; margin-bottom: 10px">{step.title}</h3>
+            <p style="font-size: 15px; line-height: 1.6; color: var(--color-ink-2); max-width: 720px">{step.description}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  </SectionShell>
+)}

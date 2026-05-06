@@ -1,0 +1,34 @@
+---
+import SectionShell from './SectionShell.astro';
+import type { CardItem } from '../../data/caseStudies/types';
+
+interface Props {
+  label: string;
+  columns?: 2 | 3;
+  items: CardItem[];
+}
+const { label, columns = 2, items } = Astro.props;
+
+// Title sizing matches the original template:
+//   - persona-style cards (no eyebrow)        → 28px
+//   - scene-style cards (with mono eyebrow)   → 24px
+const hasEyebrow = items.some((i) => !!i.eyebrow);
+const titleFontSize = hasEyebrow ? '24px' : '28px';
+const titleLetterSpacing = hasEyebrow ? '-0.025em' : '-0.03em';
+const gridCols = `repeat(${columns}, 1fr)`;
+---
+{items.length > 0 && (
+  <SectionShell label={label}>
+    <div class="cs-cards" style={`display: grid; grid-template-columns: ${gridCols}; gap: 1px; background: var(--color-line)`}>
+      {items.map((item) => (
+        <div style="background: var(--color-bg); padding: 32px">
+          {item.eyebrow && (
+            <p style="font-family: var(--font-mono); font-size: 11px; color: var(--color-accent); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 16px">{item.eyebrow}</p>
+          )}
+          <h3 style={`font-family: var(--font-display); font-weight: 500; font-size: ${titleFontSize}; letter-spacing: ${titleLetterSpacing}; line-height: 1.1; margin-bottom: 12px`}>{item.title}</h3>
+          <p style="font-size: 14px; line-height: 1.6; color: var(--color-ink-2)">{item.description}</p>
+        </div>
+      ))}
+    </div>
+  </SectionShell>
+)}
