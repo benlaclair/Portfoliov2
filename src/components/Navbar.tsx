@@ -170,6 +170,7 @@ export default function Navbar({ pathname = '' }: Props) {
       <div className="hidden md:flex items-center gap-6">
         <span
           data-coordinates
+          suppressHydrationWarning
           style={{
             fontFamily: 'var(--font-mono)',
             fontSize: '10px',
