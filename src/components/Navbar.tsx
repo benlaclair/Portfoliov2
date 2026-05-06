@@ -117,8 +117,8 @@ export default function Navbar({ pathname = '' }: Props) {
           <span
             className="hidden md:block"
             style={{
-              fontFamily: "'Clash Display', ui-sans-serif, sans-serif",
-              fontWeight: 500,
+              fontFamily: "'Plus Jakarta Sans', ui-sans-serif, sans-serif",
+              fontWeight: 600,
               fontSize: '14px',
               letterSpacing: '-0.02em',
               color: 'var(--color-ink)',
@@ -137,7 +137,7 @@ export default function Navbar({ pathname = '' }: Props) {
               data-magnetic="0.25"
               className="nav-link relative"
               style={{
-                fontFamily: "'Clash Display', ui-sans-serif, sans-serif",
+                fontFamily: "'Plus Jakarta Sans', ui-sans-serif, sans-serif",
                 fontSize: '13px',
                 fontWeight: 500,
                 letterSpacing: '-0.01em',
@@ -220,8 +220,8 @@ export default function Navbar({ pathname = '' }: Props) {
               onClick={closeMenu}
               className="py-3 border-b border-[var(--color-line)] flex items-baseline gap-4"
               style={{
-                fontFamily: "'Clash Display', ui-sans-serif, sans-serif",
-                fontWeight: 500,
+                fontFamily: "'Plus Jakarta Sans', ui-sans-serif, sans-serif",
+                fontWeight: 600,
                 fontSize: '32px',
                 letterSpacing: '-0.03em',
                 lineHeight: 1.1,

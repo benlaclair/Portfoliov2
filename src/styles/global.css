@@ -1,18 +1,19 @@
 @import "tailwindcss";
 
-/* Load Clash Display + Satoshi from Fontshare (prototype stack) */
-@import url('https://api.fontshare.com/v2/css?f[]=clash-display@500,600&f[]=satoshi@400,500,700&display=swap');
+/* Plus Jakarta Sans (display/headings) + Satoshi (body) */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap');
+@import url('https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&display=swap');
 
 @theme {
   /* ── Surfaces ── */
-  --color-bg:       #f4efe4;   /* warm paper (prototype --bg) */
-  --color-bg-2:     #ece6d6;   /* subsection alt (prototype --bg-alt) */
+  --color-bg:       #f4efe4;   /* warm paper */
+  --color-bg-2:     #ece6d6;   /* subsection alt */
   --color-paper:    #fffaf0;   /* card surface */
 
   /* ── Ink ── */
-  --color-ink:      #161512;   /* primary text */
-  --color-ink-2:    #2c2a25;   /* secondary text */
-  --color-muted:    #6e6a60;   /* subtle / labels */
+  --color-ink:      #161512;
+  --color-ink-2:    #2c2a25;
+  --color-muted:    #6e6a60;
 
   /* ── Lines ── */
   --color-line:          rgba(22, 21, 18, 0.14);
@@ -34,7 +35,7 @@
   --color-accent-soft:  rgba(255, 92, 26, 0.14);
 
   /* ── Typography ── */
-  --font-sans:  'Clash Display', ui-sans-serif, system-ui, sans-serif;
+  --font-sans:  'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
   --font-body:  'Satoshi', ui-sans-serif, system-ui, sans-serif;
   --font-serif: 'Instrument Serif', Georgia, 'Times New Roman', serif;
   --font-mono:  'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
@@ -86,11 +87,11 @@
 
   ::-webkit-scrollbar { width: 0; height: 0; }
 
-  /* Display headings use Clash Display */
+  /* Display headings use Plus Jakarta Sans */
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-sans);
-    font-weight: 500;
-    letter-spacing: -0.035em;
+    font-weight: 600;
+    letter-spacing: -0.03em;
     line-height: 0.97;
   }
 
