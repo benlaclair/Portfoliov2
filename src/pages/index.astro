@@ -281,7 +281,11 @@ import Marquee from '../components/Marquee.astro';
           });
         }
         const words = titleEl.querySelectorAll<HTMLElement>('.word > span');
-        gsap.fromTo(words, { yPercent: 115 }, { yPercent: 0, stagger: 0.04, duration: 1.1, ease: 'expo.out' });
+        // The global .word > span CSS sets transform: translateY(115%); GSAP
+        // resolves that into a pixel `y` channel that fromTo's `yPercent` never
+        // touches, so without an explicit y:0 the words stay translated 115%
+        // down after the tween — invisible inside the .word overflow box.
+        gsap.fromTo(words, { yPercent: 115, y: 0 }, { yPercent: 0, y: 0, stagger: 0.04, duration: 1.1, ease: 'expo.out' });
       }, '-=0.3')
       .to('#hero-foot', { opacity: 1, duration: 0.7, ease: E_OUT }, '-=0.6');
   } else {
