@@ -27,7 +27,7 @@ const featured: Project[] = PROJECTS.slice(0, 3);
       {featured.map((p, i) => {
         const num = String(i + 1).padStart(2, '0');
         return (
-          <article class="hwork-panel" data-panel data-index={i}>
+          <article class="hwork-panel" data-panel data-index={i} style={`background: ${p.coverColor}12`}>
             <a href={`/work/${p.slug}`} data-cursor="Read case" class="hwork-panel-inner">
               <div class="hwork-meta">
                 <div class="hwork-meta-num">{num} / 03</div>
@@ -76,7 +76,7 @@ const featured: Project[] = PROJECTS.slice(0, 3);
 </section>
 
 <style>
-  .hwork { position: relative; }
+  .hwork { position: relative; background: var(--color-paper); }
   .hwork-header {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -112,6 +112,7 @@ const featured: Project[] = PROJECTS.slice(0, 3);
     position: relative;
     overflow: hidden;
     width: 100%;
+    background: var(--color-paper);
   }
   .hwork-track {
     display: flex;

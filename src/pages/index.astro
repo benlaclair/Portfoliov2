@@ -62,7 +62,7 @@ import Marquee from '../components/Marquee.astro';
   <div class="divider"></div>
 
   <!-- ============ TAGLINE ============ -->
-  <section class="tagline">
+  <section class="tagline" style="background: var(--color-bg-2)">
     <div class="tagline-num section-num">— 01 / Statement</div>
     <p class="tagline-text" id="tagline-text">
       I help teams turn complicated ideas into <em>measurably simpler</em> products — with type that reads, motion that means something, and details that hold up under scrutiny.
@@ -82,10 +82,10 @@ import Marquee from '../components/Marquee.astro';
   <HorizontalWork />
 
   <!-- ============ MARQUEE ============ -->
-  <Marquee />
+  <Marquee dark />
 
   <!-- ============ TIMELINE ============ -->
-  <section class="timeline" id="timeline">
+  <section class="timeline" id="timeline" style="background: var(--color-bg-2)">
     <div class="timeline-stage" id="timeline-stage">
       <div class="timeline-pin" id="timeline-pin">
         <div class="timeline-top">
@@ -180,7 +180,7 @@ import Marquee from '../components/Marquee.astro';
   /* timeline */
   .timeline { padding: 200px 40px 200px; position: relative; }
   .timeline-stage { height: 280vh; position: relative; }
-  .timeline-pin { height: 100vh; display: grid; grid-template-rows: auto 1fr auto; gap: 40px; align-items: stretch; padding-block: 40px; }
+  .timeline-pin { height: 100vh; display: grid; grid-template-rows: auto 1fr auto; gap: 40px; align-items: stretch; padding-block: 40px; background: var(--color-bg-2); }
   .timeline-top { display: flex; justify-content: space-between; align-items: baseline; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em; color: var(--color-ink-2); text-transform: uppercase; }
   .timeline-mid { display: grid; place-items: center; position: relative; }
   .timeline-num { font-family: var(--font-serif); font-style: italic; font-size: clamp(160px, 30vw, 460px); line-height: 0.85; letter-spacing: -0.04em; color: var(--color-ink); position: relative; }
@@ -194,16 +194,16 @@ import Marquee from '../components/Marquee.astro';
   .timeline-ticks span { transition: color 0.5s ease; }
   .timeline-ticks span.active { color: var(--color-accent); }
 
-  /* cta */
-  .cta { padding: 200px 40px 120px; }
-  .cta-num { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em; color: var(--color-ink-2); text-transform: uppercase; margin-bottom: 40px; }
-  .cta-title { font-family: var(--font-sans); font-weight: 500; font-size: clamp(64px, 11.5vw, 200px); line-height: 0.92; letter-spacing: -0.05em; color: var(--color-ink); }
+  /* cta — full dark inversion */
+  .cta { padding: 200px 40px 120px; background: var(--color-ink); }
+  .cta-num { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em; color: rgba(241,237,228,0.4); text-transform: uppercase; margin-bottom: 40px; }
+  .cta-title { font-family: var(--font-sans); font-weight: 500; font-size: clamp(64px, 11.5vw, 200px); line-height: 0.92; letter-spacing: -0.05em; color: var(--color-bg); }
   .cta-title em { font-family: var(--font-serif); font-style: italic; font-weight: 400; color: var(--color-accent); }
   .cta-row { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: end; margin-top: 80px; }
-  .cta-link { display: inline-flex; align-items: center; gap: 18px; font-size: 22px; font-weight: 500; letter-spacing: -0.01em; padding: 18px 0; border-bottom: 1px solid var(--color-ink); color: var(--color-ink); }
-  .cta-arrow { width: 44px; height: 44px; border-radius: 50%; background: var(--color-ink); color: var(--color-paper); display: grid; place-items: center; transition: transform 0.6s cubic-bezier(.7,0,.2,1), background 0.4s ease; flex-shrink: 0; }
-  .cta-link:hover .cta-arrow { transform: rotate(-45deg); background: var(--color-accent); }
-  .cta-side { font-size: 14px; line-height: 1.6; color: var(--color-ink-2); max-width: 360px; padding-bottom: 24px; }
+  .cta-link { display: inline-flex; align-items: center; gap: 18px; font-size: 22px; font-weight: 500; letter-spacing: -0.01em; padding: 18px 0; border-bottom: 1px solid rgba(241,237,228,0.2); color: var(--color-bg); }
+  .cta-arrow { width: 44px; height: 44px; border-radius: 50%; background: transparent; border: 1px solid rgba(241,237,228,0.3); color: var(--color-bg); display: grid; place-items: center; transition: transform 0.6s cubic-bezier(.7,0,.2,1), background 0.4s ease, border-color 0.4s ease; flex-shrink: 0; }
+  .cta-link:hover .cta-arrow { transform: rotate(-45deg); background: var(--color-accent); border-color: var(--color-accent); }
+  .cta-side { font-size: 14px; line-height: 1.6; color: rgba(241,237,228,0.45); max-width: 360px; padding-bottom: 24px; }
 
   @media (max-width: 900px) {
     .hero-foot, .tagline, .cta-row { grid-template-columns: 1fr !important; gap: 32px !important; }

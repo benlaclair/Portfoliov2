@@ -3,17 +3,19 @@ interface Props {
   items?: string[];
   speed?: number;
   separator?: string;
+  dark?: boolean;
 }
 
 const {
   items = ['UX / UI', 'Brand Identity', 'AI Video', 'Web Development', 'Editorial', 'Motion', 'Graphic Design'],
   speed = 40,
   separator = '—',
+  dark = false,
 } = Astro.props;
 
 const content = items.join(`  ${separator}  `);
 ---
-<div class="marquee" data-speed={speed}>
+<div class:list={['marquee', { 'marquee--dark': dark }]} data-speed={speed}>
   <div class="marquee-track" data-marquee-track>
     {/* Render content multiple times so the loop is seamless */}
     {[0, 1, 2, 3].map(() => (
@@ -33,6 +35,10 @@ const content = items.join(`  ${separator}  `);
     padding: 28px 0;
     background: var(--color-bg);
   }
+  .marquee--dark {
+    background: #1d1509;
+    border-color: rgba(241, 237, 228, 0.1);
+  }
   .marquee-track {
     display: inline-flex;
     gap: 0;
@@ -46,6 +52,9 @@ const content = items.join(`  ${separator}  `);
     color: var(--color-ink);
     flex-shrink: 0;
     padding-inline: 8px;
+  }
+  .marquee--dark .marquee-item {
+    color: var(--color-bg);
   }
   .marquee-sep {
     color: var(--color-accent);
