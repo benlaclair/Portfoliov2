@@ -127,9 +127,17 @@ import Marquee from '../components/Marquee.astro';
 </BaseLayout>
 
 <style is:global>
-  /* loader */
-  .loader { position: fixed; inset: 0; background: var(--color-bg); z-index: 10000; display: flex; flex-direction: column; justify-content: space-between; padding: 40px; }
-  .loader-top, .loader-bot { display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-ink-2); }
+  /* loader — dark, matches hero */
+  .loader {
+    position: fixed; inset: 0; z-index: 10000;
+    display: flex; flex-direction: column; justify-content: space-between;
+    padding: 40px;
+    background:
+      radial-gradient(60% 60% at 88% 12%, rgba(255, 92, 26, 0.18), transparent 70%),
+      radial-gradient(70% 60% at 6% 90%, rgba(79, 152, 255, 0.10), transparent 70%),
+      #0d0c0a;
+  }
+  .loader-top, .loader-bot { display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: #898478; }
   .loader-mid { flex: 1; display: grid; place-items: center; }
   .loader-word { overflow: hidden; }
   .loader-word-inner {
@@ -140,7 +148,7 @@ import Marquee from '../components/Marquee.astro';
     line-height: 0.95;
     letter-spacing: -0.02em;
     transform: translateY(110%);
-    color: var(--color-ink);
+    color: #f4efe4;
   }
   .loader-word-inner em {
     color: var(--color-accent);
@@ -148,8 +156,8 @@ import Marquee from '../components/Marquee.astro';
     font-family: var(--font-serif);
   }
   .loader-foot { display: flex; flex-direction: column; gap: 20px; }
-  .loader-bar { height: 1px; background: rgba(22,20,15,0.1); position: relative; overflow: hidden; }
-  .loader-bar i { position: absolute; left: 0; top: 0; bottom: 0; width: 0%; background: var(--color-ink); }
+  .loader-bar { height: 1px; background: rgba(244, 239, 228, 0.12); position: relative; overflow: hidden; }
+  .loader-bar i { position: absolute; left: 0; top: 0; bottom: 0; width: 0%; background: #f4efe4; }
 
   /* hero — dark first */
   .hero {
