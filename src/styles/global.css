@@ -212,6 +212,12 @@
   max-width: 860px;
 }
 
+/* Nav adaptive coloring — cream over dark hero, dark after scrolling past */
+#site-nav.nav--over-dark {
+  --color-ink: #f4efe4;
+  --color-ink-2: #898478;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;

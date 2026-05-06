@@ -59,8 +59,6 @@ import Marquee from '../components/Marquee.astro';
     </div>
   </section>
 
-  <div class="divider"></div>
-
   <!-- ============ TAGLINE ============ -->
   <section class="tagline" style="background: var(--color-bg-2)">
     <div class="tagline-num section-num">— 01 / Statement</div>
@@ -82,7 +80,7 @@ import Marquee from '../components/Marquee.astro';
   <HorizontalWork />
 
   <!-- ============ MARQUEE ============ -->
-  <Marquee dark />
+  <Marquee />
 
   <!-- ============ TIMELINE ============ -->
   <section class="timeline" id="timeline" style="background: var(--color-bg-2)">
@@ -153,8 +151,20 @@ import Marquee from '../components/Marquee.astro';
   .loader-bar { height: 1px; background: rgba(22,20,15,0.1); position: relative; overflow: hidden; }
   .loader-bar i { position: absolute; left: 0; top: 0; bottom: 0; width: 0%; background: var(--color-ink); }
 
-  /* hero */
-  .hero { min-height: 100vh; padding: 140px 40px 60px; display: flex; flex-direction: column; justify-content: space-between; position: relative; }
+  /* hero — dark first */
+  .hero {
+    min-height: 100vh;
+    padding: 140px 40px 60px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    background:
+      radial-gradient(60% 60% at 88% 12%, rgba(255, 92, 26, 0.18), transparent 70%),
+      radial-gradient(70% 60% at 6% 90%, rgba(79, 152, 255, 0.10), transparent 70%),
+      #0d0c0a;
+    border-bottom: 1px solid rgba(244, 239, 228, 0.14);
+  }
   .hero-eyebrow { display: flex; justify-content: space-between; gap: 24px; flex-wrap: wrap; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em; color: var(--color-ink-2); text-transform: uppercase; opacity: 0; }
   .hero-eyebrow .ind { display: inline-flex; align-items: center; gap: 10px; }
   .hero-eyebrow .ind::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--color-accent); }
@@ -167,6 +177,14 @@ import Marquee from '../components/Marquee.astro';
   .col-value { font-size: 14px; line-height: 1.55; color: var(--color-ink-2); }
   .col-value strong { color: var(--color-ink); font-weight: 600; }
   .col-value a { border-bottom: 1px solid currentColor; padding-bottom: 1px; }
+
+  /* hero text inversions — cream palette on dark bg */
+  .hero .hero-eyebrow { color: #898478; }
+  .hero .hero-title { color: #f4efe4; }
+  .hero .col-label { color: #898478; }
+  .hero .col-value { color: #d6d1c4; }
+  .hero .col-value strong { color: #f4efe4; }
+  .hero .col-value a { color: #f4efe4; border-bottom-color: rgba(244, 239, 228, 0.32); }
 
   .divider { height: 1px; background: var(--color-line); margin: 0 40px; }
 

@@ -161,6 +161,19 @@ const jsonLd = {
         document.addEventListener('astro:page-load', bindMagnets);
       }
 
+      // ============ NAV ADAPTIVE COLOR (dark hero → light sections) ============
+      const heroEl = document.getElementById('hero');
+      if (heroEl) {
+        const nav = document.getElementById('site-nav');
+        nav?.classList.add('nav--over-dark');
+        ScrollTrigger.create({
+          trigger: heroEl,
+          start: 'bottom top',
+          onEnter:     () => nav?.classList.remove('nav--over-dark'),
+          onLeaveBack: () => nav?.classList.add('nav--over-dark'),
+        });
+      }
+
       // ============ PAGE TRANSITION CURTAIN ============
       const curtain = document.getElementById('page-curtain');
       if (curtain && !reduceMotion) {
