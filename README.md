@@ -14,27 +14,45 @@ Astro + GSAP + Tailwind v4 rebuild of [benlaclair.com](https://benlaclair.com).
 - **React islands** — `ContactForm.tsx`, `Navbar.tsx`
 - **Vercel** — deployment
 
-## Dev
+## Setup (fresh machine)
+
+### Prerequisites
+
+- **Node.js 20.3+** — pinned via `.nvmrc`. If you use `nvm`, run `nvm use` from the repo root.
+- **Git** with auth configured. Recommended: [GitHub CLI](https://cli.github.com) (`gh auth login` once wires up git's credential helper for HTTPS pushes). SSH or PAT also fine.
+
+### Steps
 
 ```bash
+git clone https://github.com/benlaclair/Portfoliov2.git
+cd Portfoliov2
+
+# Optional: configure git identity for this repo (skip if global config is set)
+git config user.name "Ben LaClair"
+git config user.email "benlaclair@gmail.com"
+
+# Install dependencies
 npm install
-npm run dev      # localhost:4321
+
+# Env — only needed for the contact form to work locally
+cp .env.example .env.local
+# then edit .env.local and set FORMSPREE_ID
+```
+
+Then copy binary assets from the v1 repo — see [Asset migration](#asset-migration) below.
+
+### Run
+
+```bash
+npm run dev      # localhost:4321 — HMR
 npm run build    # static output to dist/
 npm run preview  # preview the build
 npm run check    # astro type-check
 ```
 
-## Env
-
-Copy `.env.example` to `.env.local` and fill in your Formspree ID:
-
-```
-FORMSPREE_ID=your_form_id_here
-```
-
 ## Asset migration
 
-Only `public/favicon.svg` is tracked. The graphics, images, videos, and resume are large binaries kept out of this repo — pull them from `benlaclair/portfolio` (main) into `public/` before running locally or deploying:
+Only `public/favicon.svg` is tracked. The graphics, images, videos, and resume are large binaries kept out of this repo — pull them from `benlaclair/portfolio` (main) into `public/`:
 
 ```bash
 # From the v1 repo working tree
@@ -44,7 +62,7 @@ cp -r public/videos   ../Portfoliov2/public/
 cp public/resume.pdf  ../Portfoliov2/public/
 ```
 
-`npm run build` succeeds without these assets, but rendered pages will show broken images and the case-study video won't play. Vercel preview and production builds expect them present.
+`npm run build` succeeds without these assets, but rendered pages — local and on Vercel — will show broken images and the case-study video won't play.
 
 ## Project structure
 
