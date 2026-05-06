@@ -11,6 +11,9 @@ interface Props {
   pathname?: string;
 }
 
+const displayFont = 'var(--font-sans)';
+const monoFont = 'var(--font-mono)';
+
 export default function Navbar({ pathname = '' }: Props) {
   const [open, setOpen] = useState(false);
   const [time, setTime] = useState('-- : --');
@@ -19,7 +22,6 @@ export default function Navbar({ pathname = '' }: Props) {
   const menuRef = useRef<HTMLDivElement>(null);
   const hamburgerRef = useRef<HTMLButtonElement>(null);
 
-  // Live EST clock
   useEffect(() => {
     const tick = () => {
       try {
@@ -38,18 +40,20 @@ export default function Navbar({ pathname = '' }: Props) {
         setTime(`${String(d.getHours()).padStart(2, '0')} : ${String(d.getMinutes()).padStart(2, '0')}`);
       }
     };
+
     tick();
     const id = setInterval(tick, 30_000);
     return () => clearInterval(id);
   }, []);
 
-  // Coordinate readout (desktop only)
   useEffect(() => {
     const isDesktop = window.matchMedia('(min-width: 1100px)').matches;
     if (!isDesktop) return;
+
     const handler = (e: MouseEvent) => {
       setCoords(`X:${String(e.clientX).padStart(3, '0')} · Y:${String(e.clientY).padStart(3, '0')}`);
     };
+
     window.addEventListener('pointermove', handler);
     return () => window.removeEventListener('pointermove', handler);
   }, []);
@@ -61,29 +65,40 @@ export default function Navbar({ pathname = '' }: Props) {
 
   useEffect(() => {
     if (!open) return;
+
     function onKeyDown(e: KeyboardEvent) {
-      if (e.key === 'Escape') { closeMenu(); return; }
+      if (e.key === 'Escape') {
+        closeMenu();
+        return;
+      }
       if (e.key !== 'Tab') return;
+
       const menu = menuRef.current;
       if (!menu) return;
+
       const focusable = menu.querySelectorAll<HTMLElement>('a, button, [tabindex]:not([tabindex="-1"])');
       if (focusable.length === 0) return;
+
       const first = focusable[0];
       const last = focusable[focusable.length - 1];
+
       if (e.shiftKey && document.activeElement === first) {
-        e.preventDefault(); last.focus();
+        e.preventDefault();
+        last.focus();
       } else if (!e.shiftKey && document.activeElement === last) {
-        e.preventDefault(); first.focus();
+        e.preventDefault();
+        first.focus();
       }
     }
+
     document.addEventListener('keydown', onKeyDown);
     const firstLink = menuRef.current?.querySelector<HTMLElement>('a');
     firstLink?.focus();
+
     return () => document.removeEventListener('keydown', onKeyDown);
   }, [open, closeMenu]);
 
-  const isActive = (href: string) =>
-    href === '/about' ? pathname === href : pathname.startsWith(href);
+  const isActive = (href: string) => (href === '/about' ? pathname === href : pathname.startsWith(href));
 
   return (
     <>
@@ -93,13 +108,7 @@ export default function Navbar({ pathname = '' }: Props) {
         className="fixed top-0 inset-x-0 z-50 px-6 md:px-10 py-5 md:py-6 flex items-center justify-between"
         style={{ opacity: 0 }}
       >
-        {/* B-mark logo (SVG lettermark) */}
-        <a
-          href="/"
-          data-magnetic="0.3"
-          aria-label="Ben LaClair — home"
-          className="flex items-center gap-2.5 group"
-        >
+        <a href="/" data-magnetic="0.3" aria-label="Ben LaClair — home" className="flex items-center gap-2.5 group">
           <svg
             viewBox="0 0 44 44"
             width="36"
@@ -117,7 +126,7 @@ export default function Navbar({ pathname = '' }: Props) {
           <span
             className="hidden md:block"
             style={{
-              fontFamily: "'Plus Jakarta Sans', ui-sans-serif, sans-serif",
+              fontFamily: displayFont,
               fontWeight: 600,
               fontSize: '14px',
               letterSpacing: '-0.02em',
@@ -128,7 +137,6 @@ export default function Navbar({ pathname = '' }: Props) {
           </span>
         </a>
 
-        {/* Desktop nav links */}
         <nav className="hidden md:flex items-center gap-8">
           {navLinks.map(({ href, label }) => (
             <a
@@ -137,7 +145,7 @@ export default function Navbar({ pathname = '' }: Props) {
               data-magnetic="0.25"
               className="nav-link relative"
               style={{
-                fontFamily: "'Plus Jakarta Sans', ui-sans-serif, sans-serif",
+                fontFamily: displayFont,
                 fontSize: '13px',
                 fontWeight: 500,
                 letterSpacing: '-0.01em',
@@ -151,7 +159,9 @@ export default function Navbar({ pathname = '' }: Props) {
                 <span
                   style={{
                     position: 'absolute',
-                    left: 0, right: 0, bottom: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
                     height: '1px',
                     background: 'var(--color-accent)',
                   }}
@@ -161,11 +171,10 @@ export default function Navbar({ pathname = '' }: Props) {
           ))}
         </nav>
 
-        {/* Right: coord readout + EST clock */}
         <div
           className="hidden md:flex items-center gap-4"
           style={{
-            fontFamily: "'JetBrains Mono', monospace",
+            fontFamily: monoFont,
             fontSize: '11px',
             letterSpacing: '0.08em',
             color: 'var(--color-muted)',
@@ -175,7 +184,6 @@ export default function Navbar({ pathname = '' }: Props) {
           <span>{time} EST</span>
         </div>
 
-        {/* Mobile toggle */}
         <button
           ref={hamburgerRef}
           onClick={() => setOpen(!open)}
@@ -195,7 +203,6 @@ export default function Navbar({ pathname = '' }: Props) {
         </button>
       </header>
 
-      {/* Mobile menu */}
       <div
         ref={menuRef}
         id="mobile-menu"
@@ -220,7 +227,7 @@ export default function Navbar({ pathname = '' }: Props) {
               onClick={closeMenu}
               className="py-3 border-b border-[var(--color-line)] flex items-baseline gap-4"
               style={{
-                fontFamily: "'Plus Jakarta Sans', ui-sans-serif, sans-serif",
+                fontFamily: displayFont,
                 fontWeight: 600,
                 fontSize: '32px',
                 letterSpacing: '-0.03em',
@@ -228,13 +235,15 @@ export default function Navbar({ pathname = '' }: Props) {
                 color: isActive(href) ? 'var(--color-ink)' : 'var(--color-ink-2)',
               }}
             >
-              <span style={{
-                fontFamily: "'JetBrains Mono', monospace",
-                fontSize: '11px',
-                letterSpacing: '0.1em',
-                color: 'var(--color-muted)',
-                flexShrink: 0,
-              }}>
+              <span
+                style={{
+                  fontFamily: monoFont,
+                  fontSize: '11px',
+                  letterSpacing: '0.1em',
+                  color: 'var(--color-muted)',
+                  flexShrink: 0,
+                }}
+              >
                 {String(index + 1).padStart(2, '0')}
               </span>
               {label}
@@ -246,7 +255,7 @@ export default function Navbar({ pathname = '' }: Props) {
           style={{
             display: 'block',
             marginTop: '40px',
-            fontFamily: "'JetBrains Mono', monospace",
+            fontFamily: monoFont,
             fontSize: '13px',
             letterSpacing: '0.04em',
             color: 'var(--color-muted)',

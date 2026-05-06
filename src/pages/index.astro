@@ -2,18 +2,16 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import HorizontalWork from '../components/HorizontalWork.astro';
 import Marquee from '../components/Marquee.astro';
+import { TIMELINE_ENTRIES } from '../data/timeline';
 ---
 
 <BaseLayout>
-
-  <!-- ============ LOADER ============ -->
   <div class="loader" id="loader">
     <div class="loader-top">
       <span>Index — 2026</span>
       <span id="loader-pct">000</span>
     </div>
     <div class="loader-mid">
-      <!-- SVG B-mark (stroke-animated) -->
       <svg class="loader-bmark" viewBox="0 0 96 96" aria-hidden="true">
         <path class="loader-path" d="M20 68V22h24c10 0 16 5 16 12.5 0 4.8-2.5 8.3-6.8 10.2C59 46.4 63 50.7 63 57c0 8-6.4 11-17.2 11H20Z" />
         <path class="loader-path" d="M32 41h10c3.5 0 5.4-1.5 5.4-4.2 0-2.6-2-4-5.6-4H32v8.2Z" />
@@ -30,7 +28,6 @@ import Marquee from '../components/Marquee.astro';
     </div>
   </div>
 
-  <!-- ============ HERO ============ -->
   <section class="hero" id="hero">
     <div class="hero-eyebrow" id="hero-eyebrow">
       <span class="ind">Available &middot; Spring 2026</span>
@@ -67,7 +64,6 @@ import Marquee from '../components/Marquee.astro';
 
   <div class="divider"></div>
 
-  <!-- ============ TAGLINE ============ -->
   <section class="tagline">
     <div class="tagline-num section-num">— 01 / Statement</div>
     <p class="tagline-text" id="tagline-text">
@@ -77,20 +73,15 @@ import Marquee from '../components/Marquee.astro';
 
   <div class="divider"></div>
 
-  <!-- ============ VISUAL BREAK (dark parallax strip) ============ -->
   <section class="vbreak" aria-hidden="true">
     <div class="vbreak-bg" id="vbreak-bg">
       <p class="vbreak-quote">Type that reads. Motion that means something.</p>
     </div>
   </section>
 
-  <!-- ============ SELECTED WORK (horizontal pinned) ============ -->
   <HorizontalWork />
-
-  <!-- ============ MARQUEE ============ -->
   <Marquee />
 
-  <!-- ============ TIMELINE ============ -->
   <section class="timeline" id="timeline">
     <div class="timeline-stage" id="timeline-stage">
       <div class="timeline-pin" id="timeline-pin">
@@ -99,24 +90,23 @@ import Marquee from '../components/Marquee.astro';
           <span id="timeline-progress">01 / 05</span>
         </div>
         <div class="timeline-mid">
-          <div class="timeline-num" id="timeline-num">2018</div>
+          <div class="timeline-num" id="timeline-num">{TIMELINE_ENTRIES[0].y}</div>
         </div>
         <div>
           <div class="timeline-cap">
             <div class="label">Marker</div>
-            <div class="text" id="timeline-text">First freelance esports overlay. Discord DMs, forty bucks, learning Photoshop the hard way.</div>
-            <div class="right" id="timeline-tag">Self-taught</div>
+            <div class="text" id="timeline-text">{TIMELINE_ENTRIES[0].text}</div>
+            <div class="right" id="timeline-tag">{TIMELINE_ENTRIES[0].tag}</div>
           </div>
           <div class="timeline-bar"><i id="timeline-fill"></i></div>
           <div class="timeline-ticks" id="timeline-ticks">
-            <span class="active">2018</span><span>2019</span><span>2021</span><span>2024</span><span>2026</span>
+            {TIMELINE_ENTRIES.map((entry, index) => <span class={index === 0 ? 'active' : ''}>{entry.y}</span>)}
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ============ CTA (dark inversion) ============ -->
   <section class="cta" id="cta">
     <div class="cta-num section-num">— 05 / Reach out</div>
     <h2 class="cta-title" id="cta-title">
@@ -131,29 +121,43 @@ import Marquee from '../components/Marquee.astro';
       <p class="cta-side">Replies usually within a day. The shorter your brief, the faster I can be useful — three sentences is plenty.</p>
     </div>
   </section>
-
 </BaseLayout>
 
-<style is:global>
-  /* ========== LOADER (dark) ========== */
+<style>
   .loader {
-    position: fixed; inset: 0; z-index: 10000;
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
     background: var(--color-dark-bg);
-    display: flex; flex-direction: column; justify-content: space-between; padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 40px;
   }
-  .loader-top, .loader-bot {
-    display: flex; justify-content: space-between;
-    font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+
+  .loader-top,
+  .loader-bot {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
     color: var(--color-dark-muted);
   }
-  .loader-mid { flex: 1; display: grid; place-items: center; }
 
-  /* Stroke-animated B-mark */
+  .loader-mid {
+    flex: 1;
+    display: grid;
+    place-items: center;
+  }
+
   .loader-bmark {
     width: clamp(80px, 12vw, 160px);
     height: clamp(80px, 12vw, 160px);
     overflow: visible;
   }
+
   .loader-path {
     fill: none;
     stroke: var(--color-dark-ink);
@@ -164,29 +168,61 @@ import Marquee from '../components/Marquee.astro';
     stroke-dashoffset: 240;
     animation: draw 1.2s var(--ease-out) forwards;
   }
-  .loader-path:nth-child(2) { animation-delay: 0.15s; }
-  .loader-path:nth-child(3) { animation-delay: 0.3s; }
+
+  .loader-path:nth-child(2) {
+    animation-delay: 0.15s;
+  }
+
+  .loader-path:nth-child(3) {
+    animation-delay: 0.3s;
+  }
+
   .loader-dot {
     fill: var(--color-accent);
     opacity: 0;
     animation: dotIn 0.4s var(--ease-out) 0.8s forwards;
   }
+
   @keyframes draw {
-    to { stroke-dashoffset: 0; }
+    to {
+      stroke-dashoffset: 0;
+    }
   }
+
   @keyframes dotIn {
-    to { opacity: 1; }
+    to {
+      opacity: 1;
+    }
   }
 
-  .loader-foot { display: flex; flex-direction: column; gap: 20px; }
-  .loader-bar { height: 1px; background: rgba(244,239,228,0.12); position: relative; overflow: hidden; }
-  .loader-bar i { position: absolute; left: 0; top: 0; bottom: 0; width: 0%; background: var(--color-dark-ink); }
+  .loader-foot {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
 
-  /* ========== HERO (dark, dual-radial gradient) ========== */
+  .loader-bar {
+    height: 1px;
+    background: rgba(244, 239, 228, 0.12);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .loader-bar i {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 0%;
+    background: var(--color-dark-ink);
+  }
+
   .hero {
     min-height: 100vh;
     padding: 140px 40px 60px;
-    display: flex; flex-direction: column; justify-content: space-between;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     position: relative;
     background:
       radial-gradient(ellipse 60% 55% at 88% 12%, rgba(255, 92, 26, 0.22), transparent 65%),
@@ -194,122 +230,358 @@ import Marquee from '../components/Marquee.astro';
       var(--color-dark-bg);
     color: var(--color-dark-ink);
   }
+
   .hero::after {
     content: '';
-    position: absolute; left: 0; right: 0; bottom: 0;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
     height: 1px;
     background: var(--color-dark-line);
   }
 
   .hero-eyebrow {
-    display: flex; justify-content: space-between; gap: 24px; flex-wrap: wrap;
-    font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em;
-    color: var(--color-dark-muted); text-transform: uppercase; opacity: 0;
+    display: flex;
+    justify-content: space-between;
+    gap: 24px;
+    flex-wrap: wrap;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    color: var(--color-dark-muted);
+    text-transform: uppercase;
+    opacity: 0;
   }
-  .hero-eyebrow .ind { display: inline-flex; align-items: center; gap: 10px; }
+
+  .hero-eyebrow .ind {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+  }
+
   .hero-eyebrow .ind::before {
-    content: ''; width: 6px; height: 6px; border-radius: 50%;
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
     background: var(--color-accent);
     animation: pulse 1.6s ease infinite;
   }
 
   .hero-title {
-    font-family: var(--font-sans); font-weight: 500;
+    font-family: var(--font-sans);
+    font-weight: 600;
     font-size: clamp(64px, 13.2vw, 200px);
-    line-height: 0.92; letter-spacing: -0.045em;
+    line-height: 0.92;
+    letter-spacing: -0.045em;
     margin-top: 60px;
     color: var(--color-dark-ink);
   }
+
   .hero-title em {
-    font-family: var(--font-serif); font-style: italic; font-weight: 400;
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 400;
     color: var(--color-accent);
   }
 
   .hero-foot {
-    display: grid; grid-template-columns: repeat(4, 1fr); gap: 40px;
-    align-items: end; margin-top: 80px; opacity: 0;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 40px;
+    align-items: end;
+    margin-top: 80px;
+    opacity: 0;
   }
+
   .col-label {
-    font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.14em;
-    color: var(--color-dark-muted); margin-bottom: 12px; text-transform: uppercase;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    color: var(--color-dark-muted);
+    margin-bottom: 12px;
+    text-transform: uppercase;
   }
-  .col-value { font-size: 14px; line-height: 1.55; color: var(--color-dark-ink-2); }
-  .col-value strong { color: var(--color-dark-ink); font-weight: 600; }
-  .col-value a { border-bottom: 1px solid currentColor; padding-bottom: 1px; color: var(--color-dark-ink); }
 
-  .divider { height: 1px; background: var(--color-line); margin: 0 40px; }
+  .col-value {
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--color-dark-ink-2);
+  }
 
-  /* ========== TAGLINE (light) ========== */
-  .tagline { padding: 80px 40px; display: grid; grid-template-columns: 1fr 2fr; gap: 80px; align-items: start; }
-  .tagline-num { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em; color: var(--color-ink-2); text-transform: uppercase; }
+  .col-value strong {
+    color: var(--color-dark-ink);
+    font-weight: 600;
+  }
+
+  .col-value a {
+    border-bottom: 1px solid currentColor;
+    padding-bottom: 1px;
+    color: var(--color-dark-ink);
+  }
+
+  .divider {
+    height: 1px;
+    background: var(--color-line);
+    margin: 0 40px;
+  }
+
+  .tagline {
+    padding: 80px 40px;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 80px;
+    align-items: start;
+  }
+
   .tagline-text {
-    font-family: var(--font-sans); font-weight: 400;
+    font-family: var(--font-sans);
+    font-weight: 500;
     font-size: clamp(28px, 3.4vw, 52px);
-    line-height: 1.15; letter-spacing: -0.025em; color: var(--color-ink);
+    line-height: 1.15;
+    letter-spacing: -0.025em;
+    color: var(--color-ink);
   }
-  .tagline-text em { font-family: var(--font-serif); font-style: italic; font-weight: 400; color: var(--color-accent); }
-  .tagline-text .word { display: inline-block; opacity: 0.18; transition: opacity 0.4s ease; will-change: opacity; }
 
-  /* ========== TIMELINE (light) ========== */
-  .timeline { padding: 200px 40px 200px; position: relative; }
-  .timeline-stage { height: 280vh; position: relative; }
-  .timeline-pin { height: 100vh; display: grid; grid-template-rows: auto 1fr auto; gap: 40px; align-items: stretch; padding-block: 40px; }
-  .timeline-top { display: flex; justify-content: space-between; align-items: baseline; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em; color: var(--color-ink-2); text-transform: uppercase; }
-  .timeline-mid { display: grid; place-items: center; position: relative; }
-  .timeline-num { font-family: var(--font-serif); font-style: italic; font-size: clamp(160px, 30vw, 460px); line-height: 0.85; letter-spacing: -0.04em; color: var(--color-ink); position: relative; }
-  .timeline-cap { display: grid; grid-template-columns: 1fr 2fr 1fr; gap: 40px; align-items: end; padding-bottom: 20px; }
-  .timeline-cap .label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.12em; color: var(--color-ink-2); text-transform: uppercase; }
-  .timeline-cap .text { font-size: clamp(18px, 2.2vw, 28px); line-height: 1.3; letter-spacing: -0.015em; max-width: 700px; }
-  .timeline-cap .right { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.12em; color: var(--color-muted); text-transform: uppercase; text-align: right; }
-  .timeline-bar { height: 1px; background: var(--color-line); position: relative; }
-  .timeline-bar i { position: absolute; left: 0; top: 0; bottom: 0; width: 0%; background: var(--color-ink); }
-  .timeline-ticks { display: flex; justify-content: space-between; margin-top: 12px; font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.1em; color: var(--color-muted); }
-  .timeline-ticks span { transition: color 0.5s ease; }
-  .timeline-ticks span.active { color: var(--color-accent); }
+  .tagline-text em {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 400;
+    color: var(--color-accent);
+  }
 
-  /* ========== CTA (dark inversion) ========== */
+  .tagline-text .word {
+    display: inline-block;
+    opacity: 0.18;
+    transition: opacity 0.4s ease;
+    will-change: opacity;
+  }
+
+  .timeline {
+    padding: 200px 40px 200px;
+    position: relative;
+  }
+
+  .timeline-stage {
+    height: 280vh;
+    position: relative;
+  }
+
+  .timeline-pin {
+    height: 100vh;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    gap: 40px;
+    align-items: stretch;
+    padding-block: 40px;
+  }
+
+  .timeline-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    color: var(--color-ink-2);
+    text-transform: uppercase;
+  }
+
+  .timeline-mid {
+    display: grid;
+    place-items: center;
+    position: relative;
+  }
+
+  .timeline-num {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: clamp(160px, 30vw, 460px);
+    line-height: 0.85;
+    letter-spacing: -0.04em;
+    color: var(--color-ink);
+    position: relative;
+  }
+
+  .timeline-cap {
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    gap: 40px;
+    align-items: end;
+    padding-bottom: 20px;
+  }
+
+  .timeline-cap .label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    color: var(--color-ink-2);
+    text-transform: uppercase;
+  }
+
+  .timeline-cap .text {
+    font-size: clamp(18px, 2.2vw, 28px);
+    line-height: 1.3;
+    letter-spacing: -0.015em;
+    max-width: 700px;
+  }
+
+  .timeline-cap .right {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    color: var(--color-muted);
+    text-transform: uppercase;
+    text-align: right;
+  }
+
+  .timeline-bar {
+    height: 1px;
+    background: var(--color-line);
+    position: relative;
+  }
+
+  .timeline-bar i {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 0%;
+    background: var(--color-ink);
+  }
+
+  .timeline-ticks {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 12px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    color: var(--color-muted);
+  }
+
+  .timeline-ticks span {
+    transition: color 0.5s ease;
+  }
+
+  .timeline-ticks span.active {
+    color: var(--color-accent);
+  }
+
   .cta {
     padding: 200px 40px 120px;
     background: var(--color-dark-bg);
     color: var(--color-dark-ink);
   }
-  .cta-num { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em; color: var(--color-dark-muted); text-transform: uppercase; margin-bottom: 40px; }
+
+  .cta-num {
+    color: var(--color-dark-muted);
+    margin-bottom: 40px;
+  }
+
   .cta-title {
-    font-family: var(--font-sans); font-weight: 500;
+    font-family: var(--font-sans);
+    font-weight: 600;
     font-size: clamp(64px, 11.5vw, 200px);
-    line-height: 0.92; letter-spacing: -0.05em;
+    line-height: 0.92;
+    letter-spacing: -0.05em;
     color: var(--color-dark-ink);
   }
-  .cta-title em { font-family: var(--font-serif); font-style: italic; font-weight: 400; color: var(--color-accent); }
-  .cta-row { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: end; margin-top: 80px; }
+
+  .cta-title em {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 400;
+    color: var(--color-accent);
+  }
+
+  .cta-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: end;
+    margin-top: 80px;
+  }
+
   .cta-link {
-    display: inline-flex; align-items: center; gap: 18px;
-    font-size: 22px; font-weight: 500; letter-spacing: -0.01em;
-    padding: 18px 0; border-bottom: 1px solid var(--color-dark-line-strong);
+    display: inline-flex;
+    align-items: center;
+    gap: 18px;
+    font-size: 22px;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    padding: 18px 0;
+    border-bottom: 1px solid var(--color-dark-line-strong);
     color: var(--color-dark-ink);
   }
+
   .cta-arrow {
-    width: 44px; height: 44px; border-radius: 50%;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
     border: 1px solid var(--color-dark-line-strong);
     color: var(--color-dark-ink);
-    display: grid; place-items: center;
-    transition: transform 0.6s cubic-bezier(.7,0,.2,1), background 0.4s ease, border-color 0.4s ease;
+    display: grid;
+    place-items: center;
+    transition: transform 0.6s cubic-bezier(.7, 0, .2, 1), background 0.4s ease, border-color 0.4s ease;
     flex-shrink: 0;
   }
-  .cta-link:hover .cta-arrow { transform: rotate(-45deg); background: var(--color-accent); border-color: var(--color-accent); color: #fff; }
-  .cta-side { font-size: 14px; line-height: 1.6; color: var(--color-dark-ink-2); max-width: 360px; padding-bottom: 24px; }
+
+  .cta-link:hover .cta-arrow {
+    transform: rotate(-45deg);
+    background: var(--color-accent);
+    border-color: var(--color-accent);
+    color: #fff;
+  }
+
+  .cta-side {
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--color-dark-ink-2);
+    max-width: 360px;
+    padding-bottom: 24px;
+  }
+
+  @media (max-width: 1200px) {
+    .hero-foot {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
 
   @media (max-width: 900px) {
-    .hero-foot, .tagline, .cta-row { grid-template-columns: 1fr !important; gap: 32px !important; }
-    .timeline-cap { grid-template-columns: 1fr !important; }
-    .hero-eyebrow { flex-direction: column; gap: 12px; }
-    .timeline-num { font-size: clamp(120px, 22vw, 280px) !important; }
-    .hero { padding: 120px 24px 48px; }
-    .tagline, .cta { padding-inline: 24px; }
+    .hero,
+    .tagline,
+    .timeline,
+    .cta {
+      padding-inline: 24px;
+    }
+
+    .hero {
+      padding-top: 120px;
+      padding-bottom: 48px;
+    }
+
+    .hero-foot,
+    .tagline,
+    .cta-row,
+    .timeline-cap {
+      grid-template-columns: 1fr !important;
+      gap: 32px !important;
+    }
+
+    .hero-eyebrow {
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .timeline-num {
+      font-size: clamp(120px, 22vw, 280px) !important;
+    }
   }
 </style>
 
-<script>
+<script define:vars={{ timelineEntries: TIMELINE_ENTRIES }}>
   import { gsap } from 'gsap';
   import { ScrollTrigger } from 'gsap/ScrollTrigger';
   gsap.registerPlugin(ScrollTrigger);
@@ -318,20 +590,21 @@ import Marquee from '../components/Marquee.astro';
   const E_EXPO = 'expo.out';
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  // ============ LOADER → HERO INTRO ============
   if (!reduceMotion) {
     const pct = { v: 0 };
     const intro = gsap.timeline({ defaults: { ease: E_EXPO } });
     intro
       .to(pct, {
-        v: 100, duration: 1.4, ease: 'power1.inOut',
+        v: 100,
+        duration: 1.4,
+        ease: 'power1.inOut',
         onUpdate: () => {
           const el = document.getElementById('loader-pct');
           const el2 = document.getElementById('loader-pct-bot');
           const val = Math.floor(pct.v).toString().padStart(3, '0');
           if (el) el.textContent = val;
-          if (el2) el2.textContent = val + '%';
-        }
+          if (el2) el2.textContent = `${val}%`;
+        },
       }, 0)
       .to('#loader-bar-fill', { width: '100%', duration: 1.4, ease: 'power1.inOut' }, 0)
       .to('#loader', { yPercent: -100, duration: 1.0, ease: 'expo.inOut' }, '+=0.5')
@@ -347,83 +620,97 @@ import Marquee from '../components/Marquee.astro';
     gsap.set('.hero-title .line span', { y: 0 });
   }
 
-  // ============ HERO TITLE SCRUB-OUT ============
   if (!reduceMotion) {
     gsap.to('#hero-title', {
-      scale: 0.96, yPercent: -8, opacity: 0.4, ease: 'none',
+      scale: 0.96,
+      yPercent: -8,
+      opacity: 0.4,
+      ease: 'none',
       scrollTrigger: { trigger: '#hero', start: 'bottom bottom', end: 'bottom 30%', scrub: true },
     });
   }
 
-  // ============ VBREAK PARALLAX ============
   if (!reduceMotion) {
-    gsap.fromTo('#vbreak-bg',
+    gsap.fromTo(
+      '#vbreak-bg',
       { yPercent: -14 },
-      { yPercent: 14, ease: 'none',
-        scrollTrigger: { trigger: '.vbreak', start: 'top bottom', end: 'bottom top', scrub: true } }
+      {
+        yPercent: 14,
+        ease: 'none',
+        scrollTrigger: { trigger: '.vbreak', start: 'top bottom', end: 'bottom top', scrub: true },
+      }
     );
   }
 
-  // ============ TAGLINE WORD SCRUB ============
   (function setupTagline() {
     const el = document.getElementById('tagline-text');
     if (!el) return;
     const html = el.innerHTML;
-    const tmp = document.createElement('div'); tmp.innerHTML = html;
+    const tmp = document.createElement('div');
+    tmp.innerHTML = html;
     let out = '';
     tmp.childNodes.forEach((node) => {
       if (node.nodeType === 3) {
-        out += (node.nodeValue || '').split(/(\s+)/).map((w) => /\s+/.test(w) ? w : (w ? `<span class="word">${w}</span>` : '')).join('');
+        out += (node.nodeValue || '')
+          .split(/(\s+)/)
+          .map((w) => (/\s+/.test(w) ? w : w ? `<span class="word">${w}</span>` : ''))
+          .join('');
       } else if (node.nodeType === 1) {
-        out += `<span class="word">${(node as HTMLElement).outerHTML}</span>`;
+        out += `<span class="word">${node.outerHTML}</span>`;
       }
     });
     el.innerHTML = out;
     const words = el.querySelectorAll('.word');
-    gsap.to(words, {
-      opacity: 1, stagger: { each: 0.04 }, ease: 'none',
-      scrollTrigger: { trigger: el, start: 'top 80%', end: 'top 30%', scrub: 0.6 },
-    });
-    words.forEach((w) => {
-      if (w.querySelector('em')) {
-        ScrollTrigger.create({
-          trigger: w as HTMLElement, start: 'top 40%',
-          onEnter: () => {
-            const em = w.querySelector('em');
-            if (!em) return;
-            gsap.fromTo(em, { color: 'var(--color-ink)' }, { color: 'var(--color-accent)', duration: 0.4, ease: 'power3.out' });
-          },
-        });
-      }
-    });
+    if (!reduceMotion) {
+      gsap.to(words, {
+        opacity: 1,
+        stagger: { each: 0.04 },
+        ease: 'none',
+        scrollTrigger: { trigger: el, start: 'top 80%', end: 'top 30%', scrub: 0.6 },
+      });
+      words.forEach((w) => {
+        if (w.querySelector('em')) {
+          ScrollTrigger.create({
+            trigger: w,
+            start: 'top 40%',
+            onEnter: () => {
+              const em = w.querySelector('em');
+              if (!em) return;
+              gsap.fromTo(em, { color: 'var(--color-ink)' }, { color: 'var(--color-accent)', duration: 0.4, ease: 'power3.out' });
+            },
+          });
+        }
+      });
+    } else {
+      words.forEach((w) => {
+        w.style.opacity = '1';
+      });
+    }
   })();
 
-  // ============ TIMELINE PINNED ============
-  const tlData = [
-    { y: '2018', text: 'First freelance esports overlay. Discord DMs, forty bucks, learning Photoshop the hard way.', tag: 'Self-taught' },
-    { y: '2019', text: 'Pivot to UX. First paid web project for a community nonprofit; learned Figma overnight.', tag: 'Pivot' },
-    { y: '2021', text: 'Joined the Gazelle Group. Brand systems for ESPN-affiliated tournaments touching ten million screens.', tag: 'Studio' },
-    { y: '2024', text: 'Vlier and YMCA — first proper enterprise UX engagements. Deliverables that actually shipped.', tag: 'Enterprise' },
-    { y: '2026', text: 'AI-generated TV spot for the Winter Olympics. Now rebuilding everything — in public.', tag: 'Today' },
-  ];
   const tlNum = document.getElementById('timeline-num');
   const tlText = document.getElementById('timeline-text');
   const tlTag = document.getElementById('timeline-tag');
-  const tlFill = document.getElementById('timeline-fill') as HTMLElement | null;
+  const tlFill = document.getElementById('timeline-fill');
   const tlProg = document.getElementById('timeline-progress');
-  const tlTicks = document.querySelectorAll<HTMLElement>('#timeline-ticks span');
+  const tlTicks = document.querySelectorAll('#timeline-ticks span');
   let tlIdx = 0;
 
-  function setTimeline(idx: number) {
+  function setTimeline(idx) {
     if (idx === tlIdx || !tlNum || !tlText || !tlTag || !tlProg) return;
     tlIdx = idx;
-    const cur = tlData[idx];
-    gsap.fromTo(tlNum, { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.65, ease: E_EXPO });
-    gsap.fromTo([tlText, tlTag], { y: 18, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, stagger: 0.05, ease: E_EXPO, delay: 0.08 });
+    const cur = timelineEntries[idx];
+    if (!cur) return;
+
+    if (!reduceMotion) {
+      gsap.fromTo(tlNum, { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.65, ease: E_EXPO });
+      gsap.fromTo([tlText, tlTag], { y: 18, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, stagger: 0.05, ease: E_EXPO, delay: 0.08 });
+    }
+
     tlNum.textContent = cur.y;
     tlText.textContent = cur.text;
     tlTag.textContent = cur.tag;
-    tlProg.textContent = `${(idx + 1).toString().padStart(2, '0')} / ${tlData.length.toString().padStart(2, '0')}`;
+    tlProg.textContent = `${String(idx + 1).padStart(2, '0')} / ${String(timelineEntries.length).padStart(2, '0')}`;
     tlTicks.forEach((s, i) => s.classList.toggle('active', i === idx));
   }
 
@@ -433,20 +720,26 @@ import Marquee from '../components/Marquee.astro';
     end: 'bottom bottom',
     pin: '#timeline-pin',
     onUpdate: (self) => {
-      const idx = Math.min(tlData.length - 1, Math.floor(self.progress * tlData.length));
+      const idx = Math.min(timelineEntries.length - 1, Math.floor(self.progress * timelineEntries.length));
       setTimeline(idx);
-      if (tlFill) tlFill.style.width = (self.progress * 100).toFixed(2) + '%';
+      if (tlFill) tlFill.style.width = `${(self.progress * 100).toFixed(2)}%`;
     },
   });
 
-  // ============ CTA ============
   gsap.set('.cta-title .line span', { y: '110%' });
   gsap.to('.cta-title .line span', {
-    y: '0%', duration: 1.2, stagger: 0.1, ease: E_EXPO,
+    y: '0%',
+    duration: 1.2,
+    stagger: 0.1,
+    ease: E_EXPO,
     scrollTrigger: { trigger: '.cta-title', start: 'top 80%' },
   });
   gsap.from('.cta-row > *', {
-    y: 30, opacity: 0, duration: 0.9, stagger: 0.1, ease: E_OUT,
+    y: 30,
+    opacity: 0,
+    duration: 0.9,
+    stagger: 0.1,
+    ease: E_OUT,
     scrollTrigger: { trigger: '.cta-row', start: 'top 85%' },
   });
 

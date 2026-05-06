@@ -1,60 +1,135 @@
 ---
 const year = new Date().getFullYear();
 ---
+
 <footer class="footer-mark-section">
-  <div class="wrap" style="padding-top: 80px; padding-bottom: 40px; border-top: 1px solid var(--color-line)">
-    <div
-      style="display: flex; justify-content: space-between; align-items: flex-end; gap: 60px; flex-wrap: wrap"
-    >
-      <div
-        class="footer-mark"
-        style="font-family: 'Instrument Serif', Georgia, serif; font-style: italic; font-size: clamp(64px, 10vw, 120px); line-height: 0.85; letter-spacing: -0.03em; color: var(--color-ink); transform-origin: left bottom"
-      >
-        Ben<span style="color: var(--color-accent)">.</span>
+  <div class="wrap footer-wrap">
+    <div class="footer-top">
+      <div class="footer-mark">
+        Ben<span class="footer-dot">.</span>
       </div>
 
-      <div
-        class="footer-info"
-        style="display: grid; grid-template-columns: repeat(2, auto); gap: 32px 60px; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase"
-      >
-        <div>
-          <div style="color: var(--color-muted); margin-bottom: 8px">Index</div>
-          <div style="color: var(--color-ink)">{year}</div>
+      <div class="footer-info">
+        <div class="footer-cell">
+          <div class="footer-label">Index</div>
+          <div class="footer-value">{year}</div>
         </div>
-        <div>
-          <div style="color: var(--color-muted); margin-bottom: 8px">Built with</div>
-          <div style="color: var(--color-ink)">Astro &middot; GSAP</div>
+        <div class="footer-cell">
+          <div class="footer-label">Built with</div>
+          <div class="footer-value">Astro &middot; GSAP</div>
         </div>
-        <div>
-          <div style="color: var(--color-muted); margin-bottom: 8px">Elsewhere</div>
+        <div class="footer-cell">
+          <div class="footer-label">Elsewhere</div>
           <a
             href="https://www.linkedin.com/in/benlaclair"
             target="_blank"
             rel="noopener noreferrer"
             data-cursor="Visit"
-            style="color: var(--color-ink); border-bottom: 1px solid currentColor; padding-bottom: 1px"
+            class="footer-link"
           >LinkedIn ↗</a>
         </div>
-        <div>
-          <div style="color: var(--color-muted); margin-bottom: 8px">Reach</div>
-          <a
-            href="mailto:hello@benlaclair.com"
-            data-cursor="Mail"
-            style="color: var(--color-ink); border-bottom: 1px solid currentColor; padding-bottom: 1px"
-          >hello@benlaclair.com</a>
+        <div class="footer-cell">
+          <div class="footer-label">Reach</div>
+          <a href="mailto:hello@benlaclair.com" data-cursor="Mail" class="footer-link">hello@benlaclair.com</a>
         </div>
       </div>
     </div>
 
-    <div
-      style="margin-top: 80px; padding-top: 24px; border-top: 1px solid var(--color-line); display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-muted)"
-    >
+    <div class="footer-bottom">
       <span>&copy; {year} Ben LaClair</span>
       <span>Designed &amp; built from scratch</span>
       <span>v2.0</span>
     </div>
   </div>
 </footer>
+
+<style>
+  .footer-wrap {
+    padding-top: 80px;
+    padding-bottom: 40px;
+    border-top: 1px solid var(--color-line);
+  }
+
+  .footer-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 60px;
+    flex-wrap: wrap;
+  }
+
+  .footer-mark {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: clamp(64px, 10vw, 120px);
+    line-height: 0.85;
+    letter-spacing: -0.03em;
+    color: var(--color-ink);
+    transform-origin: left bottom;
+  }
+
+  .footer-dot {
+    color: var(--color-accent);
+  }
+
+  .footer-info {
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    gap: 32px 60px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .footer-label {
+    color: var(--color-muted);
+    margin-bottom: 8px;
+  }
+
+  .footer-value {
+    color: var(--color-ink);
+  }
+
+  .footer-link {
+    color: var(--color-ink);
+    border-bottom: 1px solid currentColor;
+    padding-bottom: 1px;
+  }
+
+  .footer-bottom {
+    margin-top: 80px;
+    padding-top: 24px;
+    border-top: 1px solid var(--color-line);
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+  }
+
+  @media (max-width: 900px) {
+    .footer-top {
+      align-items: flex-start;
+      gap: 40px;
+    }
+
+    .footer-info {
+      grid-template-columns: 1fr;
+      gap: 24px;
+      width: 100%;
+    }
+
+    .footer-bottom {
+      margin-top: 56px;
+      padding-top: 20px;
+    }
+  }
+</style>
 
 <script>
   import { gsap } from 'gsap';
@@ -73,7 +148,7 @@ const year = new Date().getFullYear();
     });
   }
 
-  const info = document.querySelectorAll<HTMLElement>('.footer-info > div');
+  const info = document.querySelectorAll<HTMLElement>('.footer-info > .footer-cell');
   if (info.length) {
     gsap.from(info, {
       y: 20,
