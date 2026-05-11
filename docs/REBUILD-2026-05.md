@@ -3,7 +3,7 @@
 In-progress build. Hero rebuild, indigo accent, vertical work cards, infinite-loop gallery, copy audit.
 
 > **Last touched:** 2026-05-11
-> **Next up:** Phase B — copy audit edits
+> **Next up:** Phase C — hero rebuild (minimal phrase → HeroGallery + CTA)
 > **Resume how:** `git pull origin main && git log --oneline | grep "Phase"` then pick up at the first unchecked phase below.
 
 This doc is the resumption beacon for working across multiple chat sessions / machines. A fresh chat reads this first, then [HANDOFF.md](../HANDOFF.md) for general orientation.
@@ -36,12 +36,13 @@ This doc is the resumption beacon for working across multiple chat sessions / ma
   - 38 component-level `var(--color-accent)` references update automatically
   - **What landed:** All tokens + 4 literals swapped. **Deviation:** the atmo-warmth utilities were shifted to actual warm cream-amber `rgba(220,170,110,…)` instead of following the (now-cool) accent — the "warmth" name is semantic and shouldn't follow accent into a cool palette. Vbreak-bg tint follows the new indigo accent. Check + build clean.
 
-- [ ] **Phase B — Copy audit edits**
+- [x] **Phase B — Copy audit edits** (commit `ef39e66`)
   - [src/pages/index.astro](../src/pages/index.astro): drop "— 01 / Statement", "— 04 / On the record", "— 05 / Reach out"; vbreak quote → "Details that hold up under scrutiny."
   - [src/components/HorizontalWork.astro](../src/components/HorizontalWork.astro): drop "— 02 / Selected work" + intro sentence (file gets full rewrite in Phase E)
   - **Delete [src/components/Marquee.astro](../src/components/Marquee.astro)** and its import/usage in index.astro
   - [src/components/Footer.astro](../src/components/Footer.astro): drop "Built with / Astro · GSAP" cell, "Designed & built from scratch", "v2.0"
   - Loader copy preserved; timeline data preserved
+  - **What landed:** All audit cuts shipped. Marquee deleted (file count 40 → 39). Orphaned CSS rules removed (`.tagline-num`, `.cta-num`, `.hwork-num`, `.hwork-header-right`); `.timeline-top` re-anchored to `justify-content: flex-end` since the eyebrow span is gone. Chapter rhythm in DESIGN-SYSTEM.md updated to D · D · L · D · L · L · D · D. Check + build clean.
 
 - [ ] **Phase C — Hero rebuild (minimal phrase → HeroGallery + CTA)**
   - Rewrite hero markup in [src/pages/index.astro](../src/pages/index.astro)
