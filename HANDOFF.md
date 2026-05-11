@@ -36,7 +36,7 @@ Phase 3 is a **visual/animation layer over Phase 2's content layout** — page s
 | Styling | Tailwind v4 via `@tailwindcss/vite` + custom `@theme` tokens in `src/styles/global.css` |
 | Motion | GSAP 3.13 + ScrollTrigger; Lenis 1.1 for smooth scroll |
 | Type | Clash Display 500/600 + Satoshi 400/500/700 (Fontshare CDN) + JetBrains Mono 400/500 (Fontsource) |
-| React | One island only — `ContactForm.tsx` (and `Navbar.tsx` for state) |
+| JS | Vanilla TypeScript only. No React. Page- and component-local `<script>` blocks. |
 | Forms | Formspree proxy via `src/pages/api/contact.ts` |
 | Deploy | Vercel (`@astrojs/vercel` adapter) |
 
@@ -53,14 +53,14 @@ src/
                           Lenis init, ScrollTrigger setup, [data-reveal]
                           IntersectionObserver, body[data-mode] tracking
   components/
-    Navbar.tsx            SVG B-mark + wordmark, links, EST clock,
-                          coordinate readout, clip-path mobile menu (React)
+    Navbar.astro          SVG B-mark + wordmark, links, EST clock,
+                          coordinate readout, clip-path mobile menu
     Footer.astro          Dark chapter, large SVG B-mark + wordmark, info grid
     HorizontalWork.astro  Pinned horizontal scroll, 3 case study panels,
                           shrink-on-focus, side-rail wayfinding
     Marquee.astro         Looping ticker, hover-slow
     ProjectCard.astro     Vertical project row used on /work
-    ContactForm.tsx       React form → /api/contact → Formspree
+    ContactForm.astro     Form → /api/contact → Formspree
     case-study/           Phase 5 — modular case-study renderers
       Section.astro         Dispatcher; selects child by `kind`
       SectionShell.astro    Shared section wrapper
@@ -189,9 +189,9 @@ DevTools → Rendering → Emulate `prefers-reduced-motion: reduce`. The loader 
 
 ## What's next
 
-Phase 6 (refinement) — open scope. Two big direction decisions on the table:
+Phase 6 (refinement) — in progress. React-island stack was dropped on 2026-05-07 (Navbar and ContactForm are now `.astro` with vanilla JS). The remaining big direction is visual.
 
-### Direction 1 — Section contrast: layered material, not just value alternation
+### Section contrast — layered material, not just value alternation
 
 The current rhythm is two-value (cream + ink) with most sections being single-canvas. The horizontal cards section is the only one doing it right — paper-toned card on cream canvas, image inside the card. Three layers. Tagline, Timeline, Marquee, Tools are flat: one bg, no card, no atmospheric treatment. The unlock is **layered material per section** — base tone + inset surface + atmospheric layer — so each section reads like a *room*, not a paint chip.
 
@@ -211,20 +211,6 @@ Discipline rules:
 - Build 3–4 named atmospheric utilities (`atmo-warmth-tl`, `atmo-grain-dark`) and reuse — not per-section snowflakes.
 - Card-on-canvas works for grouped content, not narrative paragraphs. Tagline stays card-less; it gets an atmospheric tint instead.
 
-### Direction 2 — Stack: drop React
-
-The two React islands (Navbar, ContactForm) need ~50 lines of vanilla JS to replicate: toggle a class for the mobile menu, set `innerText` for the EST clock, fetch + UI feedback for the contact form. Right now you're shipping React + react-dom (~100KB) for that. The hydration mismatch class of bug *only exists because* of islands (see [`fix: suppress Navbar coordinate-readout hydration warning`](https://github.com/benlaclair/Portfoliov2/commit/57897d8) for the most recent example).
-
-Plan:
-
-- `Navbar.tsx` → `Navbar.astro` (vanilla menu toggle, EST clock, focus trap, ~30 lines)
-- `ContactForm.tsx` → `ContactForm.astro` (vanilla submit + UI feedback, ~25 lines)
-- Drop `@astrojs/react`, `react`, `react-dom`, `@types/react*`, `@gsap/react` from `package.json`
-- Remove `@astrojs/react` integration from `astro.config.mjs`
-- Remove `client:load` directives wherever they exist
-
-Defer if interactive features are coming (filtering, search, complex form wizards). As of 2026-05-06 there are no plans, so compaction is the right move. Afternoon-sized.
-
 ### Other open candidates (smaller)
 
 - **Real assets** — copy `public/graphics/`, `public/images/`, `public/videos/`, `public/resume.pdf` from the v1 repo so the Vercel deploy renders correctly. Current covers in v1 are partly placeholder; re-shoot or re-render the three featured project covers in a consistent treatment.
@@ -232,7 +218,3 @@ Defer if interactive features are coming (filtering, search, complex form wizard
 - **Content polish** — write the portfolio case study with screenshots; add a 4th project to the homepage hero count if `projects.ts` grows.
 - **Case-study visual richness** — the case-study template is editorial but text-heavy. Inline diagrams or before/after image pairs would make Vlier and VEO read better.
 - **Graphic-design lightbox** — currently vanilla JS in `graphic-design.astro`. Works but is the only non-GSAP motion on the site; could be migrated for consistency.
-
-### Suggested sequencing
-
-Do the React drop first (mechanical, low-risk, simplifies everything underneath), then the visual/contrast work on a clean platform. Or visual first if you'd rather have something to look at while the JS rewrite is happening. Either order works — they don't interfere.

@@ -11,7 +11,7 @@ Astro + GSAP + Tailwind v4 rebuild of [benlaclair.com](https://benlaclair.com).
 - **Lenis 1.1** — smooth scroll
 - **Tailwind v4** via `@tailwindcss/vite`
 - **Clash Display + Satoshi** (Fontshare CDN) + **JetBrains Mono** (Fontsource)
-- **React islands** — `ContactForm.tsx`, `Navbar.tsx`
+- **Vanilla TypeScript** — no React. Component-local `<script>` blocks for state.
 - **Vercel** — deployment
 
 ## Setup (fresh machine)

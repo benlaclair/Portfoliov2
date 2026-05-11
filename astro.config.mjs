@@ -1,5 +1,4 @@
 import { defineConfig } from 'astro/config';
-import react from '@astrojs/react';
 import sitemap from '@astrojs/sitemap';
 import vercel from '@astrojs/vercel';
 import tailwindcss from '@tailwindcss/vite';
@@ -11,7 +10,7 @@ export default defineConfig({
     webAnalytics: { enabled: true },
     imageService: true,
   }),
-  integrations: [react(), sitemap()],
+  integrations: [sitemap()],
   vite: { plugins: [tailwindcss()] },
   prefetch: { prefetchAll: true, defaultStrategy: 'viewport' },
 });

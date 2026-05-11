@@ -2,7 +2,7 @@
 import '../styles/global.css';
 import '@fontsource/jetbrains-mono/400.css';
 import '@fontsource/jetbrains-mono/500.css';
-import Navbar from '../components/Navbar.tsx';
+import Navbar from '../components/Navbar.astro';
 import Footer from '../components/Footer.astro';
 
 interface Props {
@@ -76,7 +76,7 @@ const jsonLd = {
     <!-- Page transition curtain -->
     <div class="page-curtain" id="page-curtain"></div>
 
-    {!hideChrome && <Navbar pathname={Astro.url.pathname} client:load />}
+    {!hideChrome && <Navbar pathname={Astro.url.pathname} />}
     <main id="main">
       <slot />
     </main>
