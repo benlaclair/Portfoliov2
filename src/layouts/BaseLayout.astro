@@ -119,14 +119,6 @@ const jsonLd = {
             mouse.x = e.clientX; mouse.y = e.clientY;
             gsap.to(dot, { x: mouse.x, y: mouse.y, duration: 0.12, ease: 'power3.out' });
             if (label) gsap.to(label, { x: mouse.x, y: mouse.y, duration: 0.18, ease: 'power3.out' });
-
-            // Coordinate readout
-            const coord = document.querySelector<HTMLElement>('[data-coordinates]');
-            if (coord) {
-              const x = String(Math.round(e.clientX)).padStart(3, '0');
-              const y = String(Math.round(e.clientY)).padStart(3, '0');
-              coord.textContent = `X:${x} · Y:${y}`;
-            }
           });
 
           gsap.ticker.add(() => {

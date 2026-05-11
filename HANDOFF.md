@@ -20,7 +20,7 @@ The current visual language is the result of five phases:
 
 1. **Phase 1** — Astro/GSAP/Tailwind scaffold, Plus Jakarta Sans, dark `#080B0F` bg
 2. **Phase 2** — Warm parchment editorial system (Inter Tight + Instrument Serif italic), full motion layer (Lenis, custom cursor, magnetic links, page curtain, loader, horizontal pin, timeline pin)
-3. **Phase 3** — Perplexity comp visual integration: Clash Display + Satoshi typography, light/dark chapter rhythm, SVG B-mark logo, word-reveal, live-dot pulse, coordinate readout, `[data-reveal]` cascade, clip-path mobile menu
+3. **Phase 3** — Perplexity comp visual integration: Clash Display + Satoshi typography, light/dark chapter rhythm, SVG B-mark logo, word-reveal, live-dot pulse, `[data-reveal]` cascade, clip-path mobile menu
 4. **Phase 4** — Reduced-motion + motion-correctness hardening
 5. **Phase 5** — Case-study architecture refactor: slug-keyed registry in `src/data/caseStudies/`, rendering pieces extracted to `src/components/case-study/*`, no more if/else ladder in `work/[slug].astro`
 
@@ -53,8 +53,9 @@ src/
                           Lenis init, ScrollTrigger setup, [data-reveal]
                           IntersectionObserver, body[data-mode] tracking
   components/
-    Navbar.astro          SVG B-mark + wordmark, links, EST clock,
-                          coordinate readout, clip-path mobile menu
+    Navbar.astro          SVG B-mark + wordmark, links with animated
+                          accent underline, EST clock, mode-aware
+                          frosted substrate, clip-path mobile menu
     Footer.astro          Dark chapter, large SVG B-mark + wordmark, info grid
     HorizontalWork.astro  Pinned horizontal scroll, 3 case study panels,
                           shrink-on-focus, side-rail wayfinding

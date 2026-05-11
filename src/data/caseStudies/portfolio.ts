@@ -13,7 +13,7 @@ const decisions: DecisionItem[] = [
     label: 'Typography',
     title: 'Clash Display + Satoshi + JetBrains Mono',
     description:
-      'Clash Display 500/600 carries the editorial weight on hero, headings, and timeline numerals — geometric, modern, with enough character to read as a brand voice. Satoshi 400/500/700 handles body and UI: clean, neutral, readable down to 13px. JetBrains Mono picks up labels, eyebrows, and the live coordinate readout — the only place where machine voice belongs.',
+      'Clash Display 500/600 carries the editorial weight on hero, headings, and timeline numerals — geometric, modern, with enough character to read as a brand voice. Satoshi 400/500/700 handles body and UI: clean, neutral, readable down to 13px. JetBrains Mono picks up labels, eyebrows, and the EST clock in the navbar — the only places where machine voice belongs.',
     before: 'Phase 2: Inter Tight + Instrument Serif italic for accent words',
     after: 'Phase 3: Clash Display + Satoshi + JetBrains Mono. The accent role moved from an italic serif to an orange <span class="accent">.',
   },

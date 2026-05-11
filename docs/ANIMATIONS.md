@@ -10,7 +10,7 @@ Every motion on the site, where it lives, and how to extend it without breaking 
 
 | File | Motion it owns |
 |---|---|
-| `BaseLayout.astro` | Lenis init, custom cursor, magnetic links, page curtain, `body[data-mode]` ScrollTrigger, `[data-reveal]` IntersectionObserver, coordinate readout |
+| `BaseLayout.astro` | Lenis init, custom cursor, magnetic links, page curtain, `body[data-mode]` ScrollTrigger, `[data-reveal]` IntersectionObserver |
 | `index.astro` | Loader → hero intro timeline, hero word-reveal, hero scrub-out, vbreak parallax, tagline word-scrub, timeline pin, CTA line-reveal |
 | `HorizontalWork.astro` | Pinned horizontal scroll, shrink-on-focus, side-rail, clip-path entrance, inner-image parallax |
 | `Marquee.astro` | Looping ticker, hover-slow |
@@ -112,20 +112,6 @@ CSS:
 ```
 
 Apply liberally — it costs ~zero. Stagger comes from sibling index, so to control sequence, just order the elements in the DOM.
-
-### Coordinate readout
-
-Inside the cursor `mousemove` handler:
-```js
-const coord = document.querySelector('[data-coordinates]');
-if (coord) {
-  const x = String(Math.round(e.clientX)).padStart(3, '0');
-  const y = String(Math.round(e.clientY)).padStart(3, '0');
-  coord.textContent = `X:${x} · Y:${y}`;
-}
-```
-
-The element is in `Navbar.tsx`, hidden below the `md:` breakpoint. Updates are per-frame (no throttle) — fine because we're only writing `textContent` once per pointermove.
 
 ---
 

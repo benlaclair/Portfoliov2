@@ -32,7 +32,6 @@ const isActive = (href: string) =>
       aria-hidden="true"
       width="36"
       height="36"
-      style="color: var(--color-ink); flex-shrink: 0;"
     >
       <rect x="3" y="3" width="38" height="38" rx="12" fill="none" stroke="currentColor" stroke-width="1.4" />
       <path
@@ -41,40 +40,23 @@ const isActive = (href: string) =>
       />
       <circle cx="32" cy="12" r="3.2" fill="var(--color-accent)" />
     </svg>
-    <span style="font-family: var(--font-display); font-weight: 600; font-size: 15px; letter-spacing: -0.02em; color: var(--color-ink); line-height: 1;">
-      Ben LaClair
-    </span>
+    <span class="brand-wordmark">Ben LaClair</span>
   </a>
 
-  <nav class="hidden md:flex items-center gap-9">
+  <nav class="hidden md:flex items-center gap-10">
     {navLinks.map(({ href, label }) => (
       <a
         href={href}
         data-magnetic="0.25"
-        class="nav-link relative"
-        style={`font-size: 13px; font-weight: 500; font-family: var(--font-body); color: ${isActive(href) ? 'var(--color-ink)' : 'var(--color-ink-2)'}; padding: 4px 0; transition: color 0.3s ease;`}
+        class:list={['nav-link', { 'is-active': isActive(href) }]}
       >
         {label}
-        {isActive(href) && (
-          <span style="position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: var(--color-ink);"></span>
-        )}
       </a>
     ))}
   </nav>
 
   <div class="hidden md:flex items-center gap-6">
-    <span
-      data-coordinates
-      style="font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.08em; color: var(--color-muted); min-width: 130px; text-align: right;"
-    >
-      X:000 · Y:000
-    </span>
-    <span
-      data-clock
-      style="font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; color: var(--color-ink-2);"
-    >
-      —— : —— EST
-    </span>
+    <span data-clock class="nav-clock">—— : —— EST</span>
   </div>
 
   <button
@@ -85,8 +67,8 @@ const isActive = (href: string) =>
     aria-expanded="false"
     aria-controls="mobile-menu"
   >
-    <span class="hamburger-line block w-5 h-px bg-[var(--color-ink)] transition-all duration-200 origin-center"></span>
-    <span class="hamburger-line block w-5 h-px bg-[var(--color-ink)] transition-all duration-200 origin-center"></span>
+    <span class="hamburger-line block w-5 h-px transition-all duration-200 origin-center"></span>
+    <span class="hamburger-line block w-5 h-px transition-all duration-200 origin-center"></span>
   </button>
 
   <div
@@ -118,6 +100,97 @@ const isActive = (href: string) =>
 </header>
 
 <style>
+  /* === Mode-aware nav surface === */
+  #site-nav {
+    box-shadow: inset 0 -1px 0 transparent;
+    transition:
+      background-color 0.4s var(--ease-out),
+      backdrop-filter 0.4s var(--ease-out),
+      -webkit-backdrop-filter 0.4s var(--ease-out),
+      box-shadow 0.4s var(--ease-out);
+  }
+  #site-nav[data-scrolled="true"] {
+    background-color: color-mix(in srgb, var(--color-bg) 72%, transparent);
+    backdrop-filter: blur(14px) saturate(140%);
+    -webkit-backdrop-filter: blur(14px) saturate(140%);
+    box-shadow: inset 0 -1px 0 var(--color-line-soft);
+  }
+  body[data-mode="dark"] #site-nav[data-scrolled="true"] {
+    background-color: color-mix(in srgb, var(--color-dark-bg) 72%, transparent);
+    box-shadow: inset 0 -1px 0 var(--color-dark-line);
+  }
+
+  /* === Brand mark + wordmark === */
+  .brand-mark {
+    color: var(--color-ink);
+    flex-shrink: 0;
+    transition: color 0.3s ease;
+  }
+  .brand-wordmark {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 15px;
+    letter-spacing: -0.02em;
+    color: var(--color-ink);
+    line-height: 1;
+    transition: color 0.3s ease;
+  }
+  body[data-mode="dark"] .brand-mark,
+  body[data-mode="dark"] .brand-wordmark { color: var(--color-dark-ink); }
+
+  /* === Nav links: animated accent underline === */
+  .nav-link {
+    position: relative;
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--color-ink-2);
+    padding: 6px 0;
+    letter-spacing: -0.005em;
+    transition: color 0.3s ease;
+  }
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 1px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 0.45s var(--ease-out), background-color 0.3s ease, height 0.3s ease;
+  }
+  .nav-link:hover { color: var(--color-ink); }
+  .nav-link:hover::after { transform: scaleX(1); }
+  .nav-link.is-active { color: var(--color-ink); }
+  .nav-link.is-active::after {
+    background: var(--color-accent);
+    transform: scaleX(1);
+    height: 2px;
+  }
+
+  body[data-mode="dark"] .nav-link { color: var(--color-dark-ink-2); }
+  body[data-mode="dark"] .nav-link:hover,
+  body[data-mode="dark"] .nav-link.is-active { color: var(--color-dark-ink); }
+
+  /* === Clock === */
+  .nav-clock {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    color: var(--color-ink-2);
+    transition: color 0.3s ease;
+  }
+  body[data-mode="dark"] .nav-clock { color: var(--color-dark-ink-2); }
+
+  /* === Hamburger lines === */
+  .hamburger-line {
+    background: var(--color-ink);
+    transition: background 0.3s ease, transform 0.2s ease;
+  }
+  body[data-mode="dark"] .hamburger-line { background: var(--color-dark-ink); }
+
   /* Hamburger transforms when menu is open */
   #nav-hamburger[aria-expanded="true"] .hamburger-line:nth-child(1) {
     transform: rotate(45deg) translateY(3px);
@@ -135,6 +208,23 @@ const isActive = (href: string) =>
 
 <script>
   import { gsap } from 'gsap';
+
+  // ============ SCROLL SUBSTRATE ============
+  // Floating nav above the hero, frosted substrate once you've scrolled
+  // ~85vh down. Mode-aware (light/dark) via CSS using body[data-mode].
+  const nav = document.getElementById('site-nav');
+  if (nav) {
+    const updateScrolled = () => {
+      if (window.scrollY > window.innerHeight * 0.85) {
+        nav.setAttribute('data-scrolled', 'true');
+      } else {
+        nav.removeAttribute('data-scrolled');
+      }
+    };
+    window.addEventListener('scroll', updateScrolled, { passive: true });
+    window.addEventListener('resize', updateScrolled, { passive: true });
+    updateScrolled();
+  }
 
   // ============ EST CLOCK ============
   const clockEls = document.querySelectorAll<HTMLElement>('[data-clock], [data-clock-mobile]');

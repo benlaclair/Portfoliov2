@@ -56,7 +56,7 @@ Three families, three roles. Drop everything else.
 |---|---|---|---|
 | **Clash Display** | 500, 600 | Headings, hero, large display, accent words | Fontshare CDN |
 | **Satoshi** | 400, 500, 700 | Body text, UI, links | Fontshare CDN |
-| **JetBrains Mono** | 400, 500 | Mono labels, eyebrow text, coordinates, timestamps | `@fontsource/jetbrains-mono` |
+| **JetBrains Mono** | 400, 500 | Mono labels, eyebrow text, timestamps | `@fontsource/jetbrains-mono` |
 
 ### Tokens
 
@@ -188,7 +188,7 @@ Most homepage sections use `padding: 200px 40px;` (or similar generous vertical)
 - Hero font scales drop
 - HorizontalWork falls back to vertical stacking (the pin/scroll is desktop-only)
 - Timeline numeral shrinks
-- Coordinate readout in Navbar is hidden (set in `Navbar.tsx` via `hidden md:flex`)
+- Navbar's right-side cluster (clock) is hidden via `hidden md:flex`
 
 ---
 
