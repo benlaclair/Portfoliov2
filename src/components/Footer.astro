@@ -69,19 +69,16 @@ const year = new Date().getFullYear();
 </footer>
 
 <script>
-  import { gsap } from 'gsap';
-  import { ScrollTrigger } from 'gsap/ScrollTrigger';
-  gsap.registerPlugin(ScrollTrigger);
+  import { gsap, ease, reduceMotion } from '../lib/motion';
 
-  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const mark = document.querySelector<HTMLElement>('.footer-mark');
-  if (mark && !reduceMotion) {
+  if (mark && !reduceMotion.current) {
     gsap.from(mark, {
       y: 60,
       scale: 0.96,
       opacity: 0,
       duration: 1.1,
-      ease: 'expo.out',
+      ease: ease.expo,
       scrollTrigger: { trigger: mark, start: 'top 92%' },
     });
   }

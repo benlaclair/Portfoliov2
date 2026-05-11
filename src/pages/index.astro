@@ -238,20 +238,14 @@ import Marquee from '../components/Marquee.astro';
 </style>
 
 <script>
-  import { gsap } from 'gsap';
-  import { ScrollTrigger } from 'gsap/ScrollTrigger';
-  gsap.registerPlugin(ScrollTrigger);
-
-  const E_OUT = 'power3.out';
-  const E_EXPO = 'expo.out';
-  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  import { gsap, ScrollTrigger, ease, reduceMotion } from '../lib/motion';
 
   // ============ LOADER → HERO INTRO ============
-  if (!reduceMotion) {
+  if (!reduceMotion.current) {
     // Loader controls #site-nav visibility on the homepage only;
     // hide it now so the timeline can fade it in after the wipe.
     gsap.set('#site-nav', { opacity: 0 });
-    const intro = gsap.timeline({ defaults: { ease: E_EXPO } });
+    const intro = gsap.timeline({ defaults: { ease: ease.expo } });
     const pct = { v: 0 };
     intro
       .to(pct, {
@@ -265,8 +259,8 @@ import Marquee from '../components/Marquee.astro';
       .to('.loader-path', { strokeDashoffset: 0, duration: 0.7, stagger: 0.06, ease: 'power3.out' }, 0)
       .to('#loader', { yPercent: -100, duration: 1.0, ease: 'expo.inOut' }, '+=0.6')
       .set('#loader', { display: 'none' })
-      .to('#site-nav', { opacity: 1, duration: 0.6, ease: E_OUT }, '-=0.5')
-      .to('#hero-eyebrow', { opacity: 1, duration: 0.6, ease: E_OUT }, '-=0.4')
+      .to('#site-nav', { opacity: 1, duration: 0.6, ease: ease.out }, '-=0.5')
+      .to('#hero-eyebrow', { opacity: 1, duration: 0.6, ease: ease.out }, '-=0.4')
       .add(() => {
         // Word-by-word hero reveal
         const titleEl = document.getElementById('hero-title');
@@ -308,7 +302,7 @@ import Marquee from '../components/Marquee.astro';
         // down after the tween — invisible inside the .word overflow box.
         gsap.fromTo(words, { yPercent: 115, y: 0 }, { yPercent: 0, y: 0, stagger: 0.04, duration: 1.1, ease: 'expo.out' });
       }, '-=0.3')
-      .to('#hero-foot', { opacity: 1, duration: 0.7, ease: E_OUT }, '-=0.6');
+      .to('#hero-foot', { opacity: 1, duration: 0.7, ease: ease.out }, '-=0.6');
   } else {
     const loader = document.getElementById('loader');
     if (loader) loader.style.display = 'none';
@@ -323,7 +317,7 @@ import Marquee from '../components/Marquee.astro';
   }
 
   // ============ HERO TITLE SCRUB-OUT ============
-  if (!reduceMotion) {
+  if (!reduceMotion.current) {
     gsap.to('#hero-title', {
       scale: 0.96,
       yPercent: -8,
@@ -334,7 +328,7 @@ import Marquee from '../components/Marquee.astro';
   }
 
   // ============ VBREAK PARALLAX ============
-  if (!reduceMotion) {
+  if (!reduceMotion.current) {
     gsap.fromTo('#vbreak-bg',
       { yPercent: -14 },
       {
@@ -379,7 +373,7 @@ import Marquee from '../components/Marquee.astro';
     };
     wrapWords(el);
 
-    if (reduceMotion) {
+    if (reduceMotion.current) {
       // Static fallback: ensure all words are fully visible.
       el.querySelectorAll<HTMLElement>('.tag-word').forEach((w) => { w.style.opacity = '1'; });
       return;
@@ -414,9 +408,9 @@ import Marquee from '../components/Marquee.astro';
     if (idx === tlIdx || !tlNum || !tlText || !tlTag || !tlProg) return;
     tlIdx = idx;
     const cur = tlData[idx];
-    if (!reduceMotion) {
-      gsap.fromTo(tlNum, { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.65, ease: E_EXPO });
-      gsap.fromTo([tlText, tlTag], { y: 18, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, stagger: 0.05, ease: E_EXPO, delay: 0.08 });
+    if (!reduceMotion.current) {
+      gsap.fromTo(tlNum, { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.65, ease: ease.expo });
+      gsap.fromTo([tlText, tlTag], { y: 18, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, stagger: 0.05, ease: ease.expo, delay: 0.08 });
     }
     tlNum.textContent = cur.y;
     tlText.textContent = cur.text;
@@ -451,17 +445,16 @@ import Marquee from '../components/Marquee.astro';
   }
 
   // ============ CTA ============
-  if (!reduceMotion) {
+  if (!reduceMotion.current) {
     gsap.set('.cta-title .line span', { y: '110%' });
     gsap.to('.cta-title .line span', {
-      y: '0%', duration: 1.2, stagger: 0.1, ease: E_EXPO,
+      y: '0%', duration: 1.2, stagger: 0.1, ease: ease.expo,
       scrollTrigger: { trigger: '.cta-title', start: 'top 80%' },
     });
     gsap.from('.cta-row > *', {
-      y: 30, opacity: 0, duration: 0.9, stagger: 0.1, ease: E_OUT,
+      y: 30, opacity: 0, duration: 0.9, stagger: 0.1, ease: ease.out,
       scrollTrigger: { trigger: '.cta-row', start: 'top 85%' },
     });
   }
 
-  window.addEventListener('resize', () => ScrollTrigger.refresh());
 </script>

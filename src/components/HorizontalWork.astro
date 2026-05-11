@@ -317,19 +317,16 @@ const featured: Project[] = PROJECTS.slice(0, 3);
 </style>
 
 <script>
-  import { gsap } from 'gsap';
-  import { ScrollTrigger } from 'gsap/ScrollTrigger';
-  gsap.registerPlugin(ScrollTrigger);
+  import { gsap, ScrollTrigger, ease, reduceMotion } from '../lib/motion';
 
   const isMobile = window.matchMedia('(max-width: 900px)').matches;
-  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   const stage = document.getElementById('hwork-stage');
   const track = document.getElementById('hwork-track') as HTMLElement;
   const panels = gsap.utils.toArray<HTMLElement>('[data-panel]');
   const ticks = gsap.utils.toArray<HTMLElement>('[data-rail-tick]');
 
-  if (stage && track && panels.length && !isMobile && !reduceMotion) {
+  if (stage && track && panels.length && !isMobile && !reduceMotion.current) {
     const total = panels.length;
     const distance = (total - 1) * window.innerWidth;
     const cards = panels.map((p) => p.querySelector<HTMLElement>('.hwork-panel-inner'));
@@ -375,7 +372,7 @@ const featured: Project[] = PROJECTS.slice(0, 3);
           ticks.forEach((t, ti) => t.classList.toggle('active', ti === i && self.isActive));
           cards.forEach((c, ci) => c?.classList.toggle('is-active', ci === i && self.isActive));
           if (self.isActive) {
-            if (titleSpan) gsap.to(titleSpan, { y: '0%', duration: 0.9, ease: 'expo.out' });
+            if (titleSpan) gsap.to(titleSpan, { y: '0%', duration: 0.9, ease: ease.expo });
             if (visual) visual.classList.add('in');
             // Three-room rhythm: middle panel (i=1) is dark — flip body mode
             // so the cursor inverts; sibling panels restore light.
@@ -407,7 +404,7 @@ const featured: Project[] = PROJECTS.slice(0, 3);
     ticks[0]?.classList.add('active');
     cards[0]?.classList.add('is-active');
     const firstTitle = panels[0]?.querySelector<HTMLElement>('[data-title] .line > span');
-    if (firstTitle) gsap.to(firstTitle, { y: '0%', duration: 0.9, ease: 'expo.out', delay: 0.3 });
+    if (firstTitle) gsap.to(firstTitle, { y: '0%', duration: 0.9, ease: ease.expo, delay: 0.3 });
     const firstVisual = panels[0]?.querySelector<HTMLElement>('[data-visual]');
     if (firstVisual) gsap.delayedCall(0.4, () => firstVisual.classList.add('in'));
   } else if (panels.length) {
@@ -425,12 +422,12 @@ const featured: Project[] = PROJECTS.slice(0, 3);
       if (card) card.classList.add('is-active');
       // Skip gsap.from on reduced motion — it would leave panels hidden until
       // ScrollTrigger fires. On mobile, keep a soft entrance.
-      if (!reduceMotion) {
+      if (!reduceMotion.current) {
         gsap.from(panel, {
           opacity: 0,
           y: 30,
           duration: 0.8,
-          ease: 'expo.out',
+          ease: ease.expo,
           scrollTrigger: { trigger: panel, start: 'top 85%' },
         });
       }

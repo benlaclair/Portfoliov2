@@ -100,12 +100,9 @@ const num = '/' + String(index + 1).padStart(2, '0');
 </style>
 
 <script>
-  import { gsap } from 'gsap';
-  import { ScrollTrigger } from 'gsap/ScrollTrigger';
-  gsap.registerPlugin(ScrollTrigger);
+  import { gsap, ease, reduceMotion } from '../lib/motion';
 
-  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (reduceMotion) {
+  if (reduceMotion.current) {
     // Without GSAP touching these, the markup renders fully visible already.
     // Bail to avoid leaving inline opacity/transform from gsap.from().
   } else {
@@ -121,14 +118,14 @@ const num = '/' + String(index + 1).padStart(2, '0');
         opacity: 0,
         duration: 1.0,
         stagger: 0.08,
-        ease: 'expo.out',
+        ease: ease.expo,
         scrollTrigger: { trigger: p, start: 'top 75%' },
       });
       gsap.from(visual, {
         y: 60,
         opacity: 0,
         duration: 1.2,
-        ease: 'expo.out',
+        ease: ease.expo,
         scrollTrigger: { trigger: p, start: 'top 75%' },
       });
       gsap.fromTo(

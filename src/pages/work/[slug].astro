@@ -117,19 +117,15 @@ const postSections = caseStudy?.post ?? [];
 </style>
 
 <script>
-  import { gsap } from 'gsap';
-  import { ScrollTrigger } from 'gsap/ScrollTrigger';
-  gsap.registerPlugin(ScrollTrigger);
+  import { gsap, ease, reduceMotion } from '../../lib/motion';
 
-  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  if (!reduceMotion) {
+  if (!reduceMotion.current) {
     // Hero entrance
     gsap.set('.cs-title .line span', { y: '110%' });
     gsap.timeline({ delay: 0.1 })
-      .from('.cs-meta', { y: 20, opacity: 0, duration: 0.5, ease: 'power3.out' })
-      .to('.cs-title .line span', { y: '0%', duration: 1.1, ease: 'expo.out' }, '-=0.3')
-      .from('.cs-desc', { y: 20, opacity: 0, duration: 0.6, ease: 'power3.out' }, '-=0.5');
+      .from('.cs-meta', { y: 20, opacity: 0, duration: 0.5, ease: ease.out })
+      .to('.cs-title .line span', { y: '0%', duration: 1.1, ease: ease.expo }, '-=0.3')
+      .from('.cs-desc', { y: 20, opacity: 0, duration: 0.6, ease: ease.out }, '-=0.5');
 
     // Cover clip-path entrance
     const cover = document.querySelector<HTMLElement>('.cs-cover');
@@ -137,7 +133,7 @@ const postSections = caseStudy?.post ?? [];
       gsap.to(cover, {
         clipPath: 'inset(0 0 0 0)',
         duration: 1.2,
-        ease: 'expo.out',
+        ease: ease.expo,
         delay: 0.4,
       });
     }
@@ -148,7 +144,7 @@ const postSections = caseStudy?.post ?? [];
         y: 30,
         opacity: 0,
         duration: 0.7,
-        ease: 'expo.out',
+        ease: ease.expo,
         scrollTrigger: { trigger: el, start: 'top 88%' },
       });
     });
@@ -160,7 +156,7 @@ const postSections = caseStudy?.post ?? [];
           y: 30,
           opacity: 0,
           duration: 0.7,
-          ease: 'expo.out',
+          ease: ease.expo,
           scrollTrigger: { trigger: row, start: 'top 88%' },
         });
       });

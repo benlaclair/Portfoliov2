@@ -55,10 +55,9 @@ const content = items.join(`  ${separator}  `);
 </style>
 
 <script>
-  import { gsap } from 'gsap';
+  import { gsap, reduceMotion } from '../lib/motion';
 
-  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (reduceMotion) {
+  if (reduceMotion.current) {
     // Static fallback: leave the track in place. The duplicated content is
     // already visible; an infinite loop would conflict with reduced-motion intent.
   } else {

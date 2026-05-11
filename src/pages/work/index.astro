@@ -42,10 +42,6 @@ import { PROJECTS } from '../../data/projects';
 </style>
 
 <script>
-  import { gsap } from 'gsap';
-  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (!reduceMotion) {
-    gsap.set('.work-h1 .line span', { y: '110%' });
-    gsap.to('.work-h1 .line span', { y: '0%', duration: 1.1, ease: 'expo.out', delay: 0.1 });
-  }
+  import { revealLines } from '../../lib/motion';
+  revealLines('.work-h1 .line span');
 </script>

@@ -207,7 +207,7 @@ const isActive = (href: string) =>
 </style>
 
 <script>
-  import { gsap } from 'gsap';
+  import { gsap, reduceMotion } from '../lib/motion';
 
   // ============ SCROLL SUBSTRATE ============
   // Floating nav above the hero, frosted substrate once you've scrolled
@@ -268,8 +268,7 @@ const isActive = (href: string) =>
 
       if (open) {
         const links = menu.querySelectorAll<HTMLElement>('.mobile-menu__link');
-        const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        if (reduceMotion) {
+        if (reduceMotion.current) {
           gsap.set(links, { y: 0, autoAlpha: 1 });
         } else {
           gsap.fromTo(
