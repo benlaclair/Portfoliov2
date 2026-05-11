@@ -3,7 +3,7 @@
 In-progress build. Hero rebuild, indigo accent, vertical work cards, infinite-loop gallery, copy audit.
 
 > **Last touched:** 2026-05-11
-> **Next up:** Phase A — color system swap
+> **Next up:** Phase B — copy audit edits
 > **Resume how:** `git pull origin main && git log --oneline | grep "Phase"` then pick up at the first unchecked phase below.
 
 This doc is the resumption beacon for working across multiple chat sessions / machines. A fresh chat reads this first, then [HANDOFF.md](../HANDOFF.md) for general orientation.
@@ -29,11 +29,12 @@ This doc is the resumption beacon for working across multiple chat sessions / ma
 
 ## Phase tracker
 
-- [ ] **Phase A — Color system swap (orange → indigo)**
-  - Tokens in [src/styles/global.css](../src/styles/global.css): `--color-accent`, `--color-accent-hover`, `--color-accent-soft`
-  - Re-tune `.has-halos::after` cool-blue (currently `rgba(80, 130, 220, 0.10)`) → warm cream-amber `rgba(220, 170, 110, 0.08)` so it doesn't twin with the new indigo
+- [x] **Phase A — Color system swap (orange → indigo)** (commit `5068aa3`)
+  - Tokens in [src/styles/global.css](../src/styles/global.css): `--color-accent`, `--color-accent-hover`, `--color-accent-soft` → indigo
+  - Re-tune `.has-halos::after` cool-blue → warm cream-amber so it doesn't twin with the new indigo
   - Replace 4 rgba(255,92,26,…) literals: `--shadow-card-dark-active`, `.atmo-warmth-tl::before`, `.atmo-warmth-br::before`, `.vbreak-bg`
   - 38 component-level `var(--color-accent)` references update automatically
+  - **What landed:** All tokens + 4 literals swapped. **Deviation:** the atmo-warmth utilities were shifted to actual warm cream-amber `rgba(220,170,110,…)` instead of following the (now-cool) accent — the "warmth" name is semantic and shouldn't follow accent into a cool palette. Vbreak-bg tint follows the new indigo accent. Check + build clean.
 
 - [ ] **Phase B — Copy audit edits**
   - [src/pages/index.astro](../src/pages/index.astro): drop "— 01 / Statement", "— 04 / On the record", "— 05 / Reach out"; vbreak quote → "Details that hold up under scrutiny."
