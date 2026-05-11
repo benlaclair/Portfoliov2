@@ -15,10 +15,7 @@ import { TOOLS } from '../data/tools';
         class="tools-head"
         style="display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: end"
       >
-        <h1
-          class="tools-h1"
-          style="font-family: var(--font-display); font-weight: 500; font-size: clamp(72px, 13vw, 200px); letter-spacing: -0.045em; line-height: 0.92"
-        >
+        <h1 class="tools-h1 text-display-xl">
           <span class="line"><span><span class="accent">Tools</span> I built.</span></span>
         </h1>
         <p style="font-size: 16px; line-height: 1.6; color: var(--color-ink-2); max-width: 460px; padding-bottom: 16px">
@@ -46,9 +43,7 @@ import { TOOLS } from '../data/tools';
             <div
               style={`font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em; color: ${tool.accentColor}; text-transform: uppercase; margin-bottom: 16px`}
             >{statusLabel}</div>
-            <h3
-              style="font-family: var(--font-display); font-weight: 500; font-size: clamp(36px, 4.4vw, 64px); line-height: 1.0; letter-spacing: -0.03em; margin-bottom: 24px"
-            >
+            <h3 class="text-display-md" style="margin-bottom: 24px">
               {tool.name}
             </h3>
             <p style="font-size: 16px; line-height: 1.6; color: var(--color-ink-2); max-width: 540px; margin-bottom: 24px">
