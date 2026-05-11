@@ -3,7 +3,7 @@
 In-progress build. Hero rebuild, indigo accent, vertical work cards, infinite-loop gallery, copy audit.
 
 > **Last touched:** 2026-05-11
-> **Next up:** Phase E — HorizontalWork → VerticalWork conversion
+> **Next up:** Phase F — graphic-design.astro rebuild with HeroGallery
 > **Resume how:** `git pull origin main && git log --oneline | grep "Phase"` then pick up at the first unchecked phase below.
 
 This doc is the resumption beacon for working across multiple chat sessions / machines. A fresh chat reads this first, then [HANDOFF.md](../HANDOFF.md) for general orientation.
@@ -57,12 +57,13 @@ This doc is the resumption beacon for working across multiple chat sessions / ma
   - Animates `yPercent: 100 → 0 → -100` — rises from below, covers, exits up revealing tagline
   - **What landed:** Two-keyframe timeline (rise to 0, then continue to -100) scrub-bound across the hero-bottom-leaves-viewport scroll range. z:8000 keeps it under page-curtain (z:9999). Reduced motion: no ScrollTrigger, hero scrolls naturally.
 
-- [ ] **Phase E — HorizontalWork → VerticalWork**
+- [x] **Phase E — HorizontalWork → VerticalWork** (commit `acbc24f`)
   - Rewrite [src/components/HorizontalWork.astro](../src/components/HorizontalWork.astro) in place (preserve import in index.astro)
   - 3 stacked cards, gap 80px. Per-card ScrollTrigger: scale 0.92→1, yPercent 12→0, opacity 0.6→1, image clip-path inset(0 100% 0 0)→inset(0)
   - Inner image parallax preserved (yPercent -8→8)
   - Active state via IntersectionObserver multiple thresholds; dark middle card flips `body[data-mode]`
   - Side-rail wayfinding **dropped**
+  - **What landed:** Stacked vertical with two scrub ScrollTriggers per card (enter scrub + exit scrub) for the focal one-at-a-time feel. Title line-reveal + clip-path visual are one-shot on first focal entry. Body-mode flip now uses `data-section-mode="dark"` on the middle panel — picked up by BaseLayout's existing ScrollTrigger, no per-component `body.dataset` mutation. IntersectionObserver tracks most-visible at threshold 0.25 minimum for `.is-active` shadow lift. File slimmed 248 → 165 lines.
 
 - [ ] **Phase F — graphic-design.astro rebuild**
   - [src/pages/work/graphic-design.astro](../src/pages/work/graphic-design.astro) renders `<HeroGallery fullPage />` for slower full-document browse rhythm
