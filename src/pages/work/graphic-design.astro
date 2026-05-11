@@ -1,157 +1,71 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { DESIGN_GROUPS, totalImages } from '../../data/graphicDesign';
+import HeroGallery from '../../components/HeroGallery.astro';
+import { totalImages } from '../../data/graphicDesign';
 ---
 
 <BaseLayout
   title="Graphic Design — Ben LaClair"
   description="A curated selection of brand, editorial, and visual design work spanning esports, ESPN-affiliated tournaments, and brand systems."
 >
-  <div style="padding: 140px 40px 80px; max-width: 1440px; margin-inline: auto">
-
-    <!-- Header -->
-    <div style="margin-bottom: 80px">
-      <a
-        href="/work"
-        data-cursor="back"
-        style="display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-ink-2); margin-bottom: 40px"
-      >← All work</a>
-      <div class="section-num" style="margin-bottom: 32px">— Graphic Design &middot; 2020–2026</div>
-      <h1 class="gd-h1 text-display-xl" style="margin-bottom: 32px">
+  <div class="gd-header">
+    <div class="wrap">
+      <a href="/work" data-cursor="back" class="gd-back">← All work</a>
+      <h1 class="gd-h1 text-display-xl">
         <span class="line"><span>Brand &amp; <span class="accent">editorial.</span></span></span>
       </h1>
-      <p style="font-size: 18px; line-height: 1.55; color: var(--color-ink-2); max-width: 600px">
+      <p class="gd-desc">
         {totalImages} pieces across esports, ESPN-affiliated tournaments, and brand work —
         stream overlays, event posters, email campaigns, logos, and wayfinding systems.
       </p>
     </div>
-
-    <!-- Groups -->
-    {DESIGN_GROUPS.map((group) => (
-      <section style="margin-bottom: 100px">
-        <div
-          style="display: flex; align-items: baseline; justify-content: space-between; gap: 24px; margin-bottom: 32px; padding-bottom: 24px; border-bottom: 1px solid var(--color-line)"
-        >
-          <div>
-            <h2
-              style="font-family: var(--font-display); font-weight: 500; font-size: clamp(28px, 3.5vw, 48px); letter-spacing: -0.03em; line-height: 1"
-            >{group.title}</h2>
-            <p style="font-size: 14px; color: var(--color-ink-2); margin-top: 8px; max-width: 540px">{group.description}</p>
-          </div>
-          <span
-            style="flex-shrink: 0; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-ink-2)"
-          >{group.images.length} pieces</span>
-        </div>
-
-        <div class="gd-grid" style="columns: 3; column-gap: 16px">
-          {group.images.map((img, i) => (
-            <button
-              class="gallery-thumb"
-              data-cursor="zoom"
-              data-src={img.src}
-              data-alt={img.alt}
-              data-index={i}
-              aria-label={`View: ${img.alt}`}
-              style="width: 100%; margin-bottom: 16px; break-inside: avoid; display: block; overflow: hidden; background: var(--color-paper); border: none; padding: 0; cursor: none"
-            >
-              <img
-                src={img.src}
-                alt={img.alt}
-                width="600"
-                height="600"
-                loading="lazy"
-                decoding="async"
-                style="width: 100%; height: auto; display: block; transition: transform 0.6s cubic-bezier(.7,0,.2,1)"
-                onmouseover="this.style.transform='scale(1.04)'"
-                onmouseout="this.style.transform='scale(1)'"
-              />
-            </button>
-          ))}
-        </div>
-      </section>
-    ))}
-
   </div>
 
-  <!-- Lightbox -->
-  <div
-    id="lightbox"
-    style="position: fixed; inset: 0; z-index: 9999; background: rgba(22, 20, 15, 0.94); backdrop-filter: blur(8px); display: none; align-items: center; justify-content: center; padding: 24px"
-    role="dialog"
-    aria-modal="true"
-    aria-label="Image lightbox"
-  >
-    <button
-      id="lb-close"
-      style="position: absolute; top: 24px; right: 24px; width: 44px; height: 44px; border-radius: 50%; background: rgba(251,248,241,0.1); color: var(--color-paper); display: grid; place-items: center; border: none; cursor: none"
-      aria-label="Close"
-    >✕</button>
-    <button
-      id="lb-prev"
-      style="position: absolute; left: 24px; top: 50%; transform: translateY(-50%); width: 44px; height: 44px; border-radius: 50%; background: rgba(251,248,241,0.1); color: var(--color-paper); display: grid; place-items: center; border: none; cursor: none"
-      aria-label="Previous"
-    >←</button>
-    <button
-      id="lb-next"
-      style="position: absolute; right: 24px; top: 50%; transform: translateY(-50%); width: 44px; height: 44px; border-radius: 50%; background: rgba(251,248,241,0.1); color: var(--color-paper); display: grid; place-items: center; border: none; cursor: none"
-      aria-label="Next"
-    >→</button>
-    <img
-      id="lb-img"
-      src=""
-      alt=""
-      style="max-width: 100%; max-height: 85vh; object-fit: contain"
-    />
+  <div class="gd-gallery">
+    <HeroGallery fullPage />
   </div>
 </BaseLayout>
 
 <style>
-  @media (max-width: 900px) { .gd-grid { columns: 2 !important; } }
-  @media (max-width: 540px) { .gd-grid { columns: 1 !important; } }
-  #lb-close:hover, #lb-prev:hover, #lb-next:hover { background: rgba(251,248,241,0.2) !important; }
+  .gd-header {
+    padding: 140px 0 80px;
+  }
+  .gd-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-ink-2);
+    margin-bottom: 40px;
+  }
+  .gd-h1 {
+    margin-bottom: 32px;
+  }
+  .gd-desc {
+    font-size: 18px;
+    line-height: 1.55;
+    color: var(--color-ink-2);
+    max-width: 600px;
+  }
+  /* Gallery viewport — full-page browse rhythm; height grows with content,
+     HeroGallery's columns scroll independently inside their fixed-height
+     parent. Use a tall container so the looping ticker has room to breathe. */
+  .gd-gallery {
+    position: relative;
+    height: 200vh;
+    margin-bottom: 80px;
+    overflow: hidden;
+  }
+  @media (max-width: 900px) {
+    .gd-header { padding: 100px 0 60px; }
+    .gd-gallery { height: 150vh; }
+  }
 </style>
 
 <script>
   import { revealLines } from '../../lib/motion';
   revealLines('.gd-h1 .line span');
-
-  const thumbs = Array.from(document.querySelectorAll<HTMLButtonElement>('.gallery-thumb'));
-  const lb = document.getElementById('lightbox')!;
-  const lbImg = document.getElementById('lb-img') as HTMLImageElement;
-  let current = 0;
-
-  function openLightbox(index: number) {
-    current = index;
-    const btn = thumbs[current];
-    lbImg.src = btn.dataset.src!;
-    lbImg.alt = btn.dataset.alt!;
-    lb.style.display = 'flex';
-    document.body.style.overflow = 'hidden';
-    document.getElementById('lb-close')?.focus();
-  }
-
-  function closeLightbox() {
-    lb.style.display = 'none';
-    document.body.style.overflow = '';
-    thumbs[current]?.focus();
-  }
-
-  function navigate(dir: 1 | -1) {
-    current = (current + dir + thumbs.length) % thumbs.length;
-    lbImg.src = thumbs[current].dataset.src!;
-    lbImg.alt = thumbs[current].dataset.alt!;
-  }
-
-  thumbs.forEach((btn, i) => btn.addEventListener('click', () => openLightbox(i)));
-  document.getElementById('lb-close')!.addEventListener('click', closeLightbox);
-  document.getElementById('lb-prev')!.addEventListener('click', () => navigate(-1));
-  document.getElementById('lb-next')!.addEventListener('click', () => navigate(1));
-  lb.addEventListener('click', (e) => { if (e.target === lb) closeLightbox(); });
-
-  document.addEventListener('keydown', (e) => {
-    if (lb.style.display !== 'flex') return;
-    if (e.key === 'Escape') closeLightbox();
-    if (e.key === 'ArrowLeft') navigate(-1);
-    if (e.key === 'ArrowRight') navigate(1);
-  });
 </script>
