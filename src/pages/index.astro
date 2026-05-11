@@ -166,8 +166,11 @@ import Marquee from '../components/Marquee.astro';
     color: var(--color-dark-ink);
     /* Hidden until the intro timeline's word-wrap callback fires —
        otherwise the raw text paints during loader exit, then flashes
-       out when JS wraps it into the .word > span overflow boxes. */
-    opacity: 0;
+       out when JS wraps it into the .word > span overflow boxes.
+       Using visibility (not opacity) so the scrub-out tween below
+       captures opacity: 1 as its natural from-state — otherwise
+       reversing the scrub on scroll-up would fade the title to 0. */
+    visibility: hidden;
   }
   .hero-title .accent { color: var(--color-accent); }
   .hero-title .word { display: inline-block; overflow: hidden; vertical-align: bottom; }
@@ -290,9 +293,9 @@ import Marquee from '../components/Marquee.astro';
         }
         // Words are now wrapped (and hidden inside .word > span overflow
         // boxes via the global translateY(115%) rule). Safe to flip the
-        // title to opacity 1 — no flash, because the text is hidden by
-        // the word transforms until the fromTo below tweens them up.
-        gsap.set(titleEl, { opacity: 1 });
+        // title visible — no flash, because the text is hidden by the
+        // word transforms until the fromTo below tweens them up.
+        gsap.set(titleEl, { visibility: 'visible' });
         const words = titleEl.querySelectorAll<HTMLElement>('.word > span');
         // The global .word > span CSS sets transform: translateY(115%); GSAP
         // resolves that into a pixel `y` channel that fromTo's `yPercent` never
@@ -304,7 +307,8 @@ import Marquee from '../components/Marquee.astro';
   } else {
     const loader = document.getElementById('loader');
     if (loader) loader.style.display = 'none';
-    gsap.set('#site-nav, #hero-eyebrow, #hero-foot, #hero-title', { opacity: 1 });
+    gsap.set('#site-nav, #hero-eyebrow, #hero-foot', { opacity: 1 });
+    gsap.set('#hero-title', { visibility: 'visible' });
     // Show all words instantly
     const titleEl = document.getElementById('hero-title');
     if (titleEl) {
