@@ -3,7 +3,7 @@
 In-progress build. Hero rebuild, indigo accent, vertical work cards, infinite-loop gallery, copy audit.
 
 > **Last touched:** 2026-05-11
-> **Next up:** Phase F — graphic-design.astro rebuild with HeroGallery
+> **Next up:** Phase G — final QA + tracker close-out
 > **Resume how:** `git pull origin main && git log --oneline | grep "Phase"` then pick up at the first unchecked phase below.
 
 This doc is the resumption beacon for working across multiple chat sessions / machines. A fresh chat reads this first, then [HANDOFF.md](../HANDOFF.md) for general orientation.
@@ -65,10 +65,11 @@ This doc is the resumption beacon for working across multiple chat sessions / ma
   - Side-rail wayfinding **dropped**
   - **What landed:** Stacked vertical with two scrub ScrollTriggers per card (enter scrub + exit scrub) for the focal one-at-a-time feel. Title line-reveal + clip-path visual are one-shot on first focal entry. Body-mode flip now uses `data-section-mode="dark"` on the middle panel — picked up by BaseLayout's existing ScrollTrigger, no per-component `body.dataset` mutation. IntersectionObserver tracks most-visible at threshold 0.25 minimum for `.is-active` shadow lift. File slimmed 248 → 165 lines.
 
-- [ ] **Phase F — graphic-design.astro rebuild**
+- [x] **Phase F — graphic-design.astro rebuild** (commit `73fef55`)
   - [src/pages/work/graphic-design.astro](../src/pages/work/graphic-design.astro) renders `<HeroGallery fullPage />` for slower full-document browse rhythm
   - **Lightbox removed entirely** — modal DOM, click handlers, keyboard nav, inline `onmouseover` all gone
   - Keep page hero block above the gallery for landing identity
+  - **What landed:** Per-group masonry replaced with single full-page gallery in a 200vh container (150vh at ≤900px). All per-group headers + lightbox markup + keyboard nav gone — file slimmed 158 → 73 lines. Browse rhythm uses HeroGallery's `fullPage` speeds (90/65/110/75s) for a calmer pace than the homepage hero.
 
 - [ ] **Phase G — Final QA + tracker close-out**
   - Visual scan every page after indigo swap
