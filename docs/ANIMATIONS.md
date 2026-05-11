@@ -2,9 +2,22 @@
 
 Every motion on the site, where it lives, and how to extend it without breaking neighbors.
 
-**Reduced-motion is non-negotiable.** Every animation in this doc has a corresponding `@media (prefers-reduced-motion: reduce)` fallback or a `reduceMotion` JS guard. If you add motion, add the fallback.
+**Reduced-motion is non-negotiable.** Every animation has a corresponding `@media (prefers-reduced-motion: reduce)` fallback or a `reduceMotion.current` JS guard. If you add motion, add the fallback.
 
 ---
+
+## The motion lib — `src/lib/motion.ts`
+
+Every consumer imports from one place. `gsap.registerPlugin(ScrollTrigger)` runs here once; a global resize handler refreshes ScrollTrigger here once.
+
+```ts
+import { gsap, ScrollTrigger, ease, reduceMotion, revealLines } from '../lib/motion';
+```
+
+- **`gsap`, `ScrollTrigger`** — re-exported singletons. Don't import from `gsap` directly anywhere else.
+- **`ease`** — typed token map: `ease.out` (`'power3.out'`), `ease.expo` (`'expo.out'`), `ease.expoInOut`, `ease.power2`, `ease.power1InOut`. Don't retype the strings; add a new key here if you need a new easing.
+- **`reduceMotion`** — reactive object, *not* a boolean. Read `reduceMotion.current` at the moment of decision (so OS preference toggles are respected mid-session). Subscribe with `reduceMotion.onChange(cb)` if you need to react.
+- **`revealLines(selector, opts?)`** — the canonical `.line > span` reveal. Sets `y: '110%'`, tweens to `y: '0%'` over 1.1s with `ease.expo`. Bails under reduced-motion. Used by every page hero with a `.line` reveal.
 
 ## What runs where
 
@@ -12,14 +25,14 @@ Every motion on the site, where it lives, and how to extend it without breaking 
 |---|---|
 | `BaseLayout.astro` | Lenis init, custom cursor, magnetic links, page curtain, `body[data-mode]` ScrollTrigger, `[data-reveal]` IntersectionObserver |
 | `index.astro` | Loader → hero intro timeline, hero word-reveal, hero scrub-out, vbreak parallax, tagline word-scrub, timeline pin, CTA line-reveal |
-| `HorizontalWork.astro` | Pinned horizontal scroll, shrink-on-focus, side-rail, clip-path entrance, inner-image parallax |
+| `HorizontalWork.astro` | Pinned horizontal scroll, shrink-on-focus + Y-drift on whole `.hwork-panel-inner` cards, `is-active` shadow upgrade, side-rail, clip-path entrance, inner-image parallax, body-mode flip when middle (dark) card is active |
 | `Marquee.astro` | Looping ticker, hover-slow |
 | `Footer.astro` | Mark scale-in entrance |
-| `Navbar.tsx` | Mobile menu link stagger (on open) |
-| `ProjectCard.astro` | Per-row reveal + visual parallax (used on `/work`) |
-| `work/[slug].astro` | Hero reveal, cover clip-path entrance, decision/process row reveals |
-| `about.astro` | h1 line-reveal, stat number tickup, experience row reveal |
-| `contact.astro`, `tools.astro`, `work/index.astro` | h1 line-reveal |
+| `Navbar.astro` | Mobile menu link stagger (on open), scroll-substrate fade-in past hero |
+| `ProjectCard.astro` | Inner-image parallax scrub only (reveals migrated to `[data-reveal]`) |
+| `work/[slug].astro` | Hero entrance timeline + cover clip-path entrance (row reveals migrated to `[data-reveal]`) |
+| `about.astro` | h1 line-reveal via `revealLines()`, stat number tickup (exp-row reveals migrated to `[data-reveal]`) |
+| `contact.astro`, `tools.astro`, `work/index.astro`, `work/graphic-design.astro` | h1 line-reveal via `revealLines()` |
 
 ---
 

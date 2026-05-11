@@ -16,15 +16,17 @@ Personal portfolio for Ben LaClair (UX/UI + Graphic Designer). Static Astro site
 - **Branch model**: single-branch — `main` is where work happens.
 - **Deploy**: `main` push → https://portfoliov2-jet-six.vercel.app (auto-deploys via Vercel). Separate Vercel project from the v1 site at benlaclair.com — anything done here does not touch the live portfolio.
 
-The current visual language is the result of five phases:
+The current visual language is the result of seven phases:
 
 1. **Phase 1** — Astro/GSAP/Tailwind scaffold, Plus Jakarta Sans, dark `#080B0F` bg
 2. **Phase 2** — Warm parchment editorial system (Inter Tight + Instrument Serif italic), full motion layer (Lenis, custom cursor, magnetic links, page curtain, loader, horizontal pin, timeline pin)
 3. **Phase 3** — Perplexity comp visual integration: Clash Display + Satoshi typography, light/dark chapter rhythm, SVG B-mark logo, word-reveal, live-dot pulse, `[data-reveal]` cascade, clip-path mobile menu
 4. **Phase 4** — Reduced-motion + motion-correctness hardening
 5. **Phase 5** — Case-study architecture refactor: slug-keyed registry in `src/data/caseStudies/`, rendering pieces extracted to `src/components/case-study/*`, no more if/else ladder in `work/[slug].astro`
+6. **Phase 6** — Section-contrast pass: 3-value rhythm (cream / mid-tone / dark), card-on-canvas pattern (Timeline, Tools, horizontal Work panels), navbar mode-aware substrate + animated underline + 60px height, three-room horizontal panels with accent-stroked dark middle card
+7. **Phase 7** — Architectural migration: `src/lib/motion.ts` singleton, `@theme` shadow + typography utility tokens, `<Image />` for project covers, `[data-reveal]` replacing hand-rolled scroll reveals, `<RowList />` + `<Grid />` primitives consolidating case-study renderers, inline-style sweep
 
-Phase 3 is a **visual/animation layer over Phase 2's content layout** — page structure (section order, copy, components) was intentionally unchanged; only paint, type, and motion were swapped. Phases 4–5 are correctness/architecture refinements that don't change visual output.
+Phase 3 is a **visual/animation layer over Phase 2's content layout** — page structure (section order, copy, components) was intentionally unchanged; only paint, type, and motion were swapped. Phases 4–5 are correctness/architecture refinements. Phase 6 is visual rhythm. Phase 7 is pure architecture — zero visual change.
 
 ---
 
@@ -64,13 +66,17 @@ src/
     ContactForm.astro     Form → /api/contact → Formspree
     case-study/           Phase 5 — modular case-study renderers
       Section.astro         Dispatcher; selects child by `kind`
-      SectionShell.astro    Shared section wrapper
-      Stats.astro           Stats grid
-      Cards.astro           Grid of cards
-      Decisions.astro       Numbered decision list
-      Process.astro         Process steps
-      Challenges.astro      Challenge list
-      Outcomes.astro        Outcomes / impact
+      SectionShell.astro    Shared section wrapper (label + max-width frame)
+      RowList.astro         Phase 7 — label/content rows primitive
+                            (Decisions / Process / Challenges consume)
+      Grid.astro            Phase 7 — bordered cell grid primitive
+                            (Stats / Cards / Outcomes consume)
+      Stats.astro           Stats cells via <Grid columns={4}>
+      Cards.astro           Cards cells via <Grid columns={2|3}>
+      Decisions.astro       Decision rows via <RowList cols="200px 1fr">
+      Process.astro         Process steps via <RowList cols="80px 1fr">
+      Challenges.astro      Challenge rows via <RowList cols="80px 1fr">
+      Outcomes.astro        Outcomes via <Grid columns={3}>
       MetaOverview.astro    Meta block + overview text
       Video.astro           Embedded video w/ caption
   pages/
@@ -94,9 +100,16 @@ src/
       types.ts              Discriminated CaseStudySection union
       index.ts              Registry of slug → CaseStudy
       vlier.ts, veo.ts, portfolio.ts
+  lib/
+    motion.ts             Phase 7 — gsap + ScrollTrigger singleton,
+                          ease tokens, reactive reduceMotion, revealLines()
+                          helper. All scripts import from here.
   styles/
-    global.css            @theme tokens, base, utilities, motion helpers,
-                          cursor, curtain, vbreak, [data-reveal], pulse
+    global.css            @theme tokens (colors, shadows, fonts, scale),
+                          @utility classes (text-display-{xl,lg,md,sm},
+                          text-eyebrow{,-accent}, text-meta, text-body*),
+                          base, motion helpers, cursor, curtain, vbreak,
+                          [data-reveal], pulse
 public/
   graphics/               86 design webp images   (untracked, copy from v1)
   images/                 project covers + assets (untracked, copy from v1)
@@ -190,32 +203,15 @@ DevTools → Rendering → Emulate `prefers-reduced-motion: reduce`. The loader 
 
 ## What's next
 
-Phase 6 (refinement) — in progress. React-island stack was dropped on 2026-05-07 (Navbar and ContactForm are now `.astro` with vanilla JS). The remaining big direction is visual.
+Phase 6 (section contrast) and Phase 7 (architectural migration) both shipped to `main`. The site has a 3-value rhythm (cream / mid-tone / dark), card-on-canvas pattern across Timeline / Tools / horizontal Work, a mode-aware navbar at 60px height with animated accent underline, and the horizontal Work panels render as three-room cards with the dark middle card outlined in 2px accent stroke. Phase 7 extracted `src/lib/motion.ts`, added `@theme` shadow + typography utility tokens, migrated covers to `<Image />`, replaced 4 pages' worth of hand-rolled scroll reveals with `[data-reveal]`, and consolidated 6 case-study renderers behind `<RowList />` + `<Grid />` primitives.
 
-### Section contrast — layered material, not just value alternation
+### Open items (smaller, surgical)
 
-The current rhythm is two-value (cream + ink) with most sections being single-canvas. The horizontal cards section is the only one doing it right — paper-toned card on cream canvas, image inside the card. Three layers. Tagline, Timeline, Marquee, Tools are flat: one bg, no card, no atmospheric treatment. The unlock is **layered material per section** — base tone + inset surface + atmospheric layer — so each section reads like a *room*, not a paint chip.
-
-Reference points: Stripe, Linear, Vercel marketing pages, the Phase 3 source comp, Robin Mastromarino's portfolio. None get depth from value alternation alone — they layer.
-
-Changes, ranked by impact:
-
-1. **Activate the mid-tone.** `--color-bg-alt` / `--color-bg-2` (#ece6d6) is defined and barely used. Put Tagline (or Marquee) on it. Rhythm becomes three values instead of two — cheapest, biggest perceptual shift.
-2. **Card-on-canvas as a section primitive.** Wrap Timeline year+blurb and Tools rows in paper-toned cards, same approach as the Work cards. Adds a depth layer per section without redesigning typography.
-3. **Atmospheric effects per section.** Light sections get a soft radial warmth from one corner (mirror of the dark `has-halos` class). Dark sections get film grain via SVG-as-data-URL with `mix-blend-mode: overlay`. CSS-only, no asset cost.
-4. **Replace 1px dividers with deliberate transitions.** Either generous whitespace and no divider, or a soft color bleed (linear-gradient one bg → next bg) at section boundaries. The 1px lines are a Phase 2 holdover that reads utilitarian against everything else.
-5. **Let accent anchor one section, sparingly.** Vbreak or a new chapter marker that's almost entirely orange-on-near-black. Currently accent only does hover/word-tint duty — could carry one whole chapter once.
-
-Discipline rules:
-
-- Pick exactly 3 bg values + 1 accent. Refuse to add a fifth.
-- Build 3–4 named atmospheric utilities (`atmo-warmth-tl`, `atmo-grain-dark`) and reuse — not per-section snowflakes.
-- Card-on-canvas works for grouped content, not narrative paragraphs. Tagline stays card-less; it gets an atmospheric tint instead.
-
-### Other open candidates (smaller)
-
-- **Real assets** — copy `public/graphics/`, `public/images/`, `public/videos/`, `public/resume.pdf` from the v1 repo so the Vercel deploy renders correctly. Current covers in v1 are partly placeholder; re-shoot or re-render the three featured project covers in a consistent treatment.
-- **Performance pass** — Lighthouse audit, font self-hosting if needed, image `sizes` attributes on the responsive `<img>` tags.
+- **Real assets** — copy `public/graphics/`, `public/images/`, `public/videos/`, `public/resume.pdf` from the v1 repo. The four project covers in `src/data/projects.ts` reference `/images/projects/*.jpg` (1440×900) that need to actually exist. Re-shoot or re-render the featured project covers in a consistent treatment.
+- **Graphic-design lightbox `<Image />` migration** — the 86-image gallery in `work/graphic-design.astro` is still raw `<img>`. Deferred from Phase 7 pending per-image dimensions from real binaries. Once assets arrive: add `width`/`height` per entry in `src/data/graphicDesign.ts` and swap `<img>` → `<Image>` with `widths={[300, 600, 900]}` and `sizes="(max-width: 900px) 50vw, 33vw"`.
+- **`<ClientRouter />` (View Transitions API)** — parked from Phase 7 plan as a separate initiative. Would replace the hand-rolled `.page-curtain` in `BaseLayout.astro` (lines ~202-243) with Astro 5's `<ClientRouter />`. Real upside: SPA-like navigation, persistent Lenis + cursor state, shared-element flights between `/work` grid and case-study heros. Real risk: requires re-binding ScrollTrigger and `[data-section-mode]` observers on `astro:after-swap`.
+- **Tier 3 audit smalls** — inline `onmouseover` handlers in `work/graphic-design.astro:68-69` should move to scoped CSS hover. Duplicate count-up animation pattern (`about.astro` stat counters + `index.astro` loader pct) could become a single `<Counter />` component. ContactForm error surface shows a single generic message for all non-200s — should distinguish 422 / 429 / 500. No linter/prettier in `package.json` — CRLF/LF warnings on every commit, would be solved by a `.gitattributes` + prettier config.
+- **Atmospheric effects on light/dark sections** — never implemented from the original Phase 6 audit. Light sections could get soft radial warmth mirroring the dark `has-halos` class; dark sections could get subtle film grain via SVG-as-data-URL with `mix-blend-mode: overlay`. CSS-only, no asset cost. Build 3-4 named utilities (`atmo-warmth-tl`, `atmo-grain-dark`) — not per-section snowflakes.
+- **Performance pass** — Lighthouse audit, font self-hosting from Fontshare woff2s if LCP regresses, real-asset image weight check once binaries land.
 - **Content polish** — write the portfolio case study with screenshots; add a 4th project to the homepage hero count if `projects.ts` grows.
-- **Case-study visual richness** — the case-study template is editorial but text-heavy. Inline diagrams or before/after image pairs would make Vlier and VEO read better.
-- **Graphic-design lightbox** — currently vanilla JS in `graphic-design.astro`. Works but is the only non-GSAP motion on the site; could be migrated for consistency.
+- **Case-study visual richness** — the template is editorial but text-heavy. Inline diagrams or before/after image pairs would make Vlier and VEO read better.

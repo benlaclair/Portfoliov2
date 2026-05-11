@@ -114,6 +114,8 @@ Full reference in [docs/DESIGN-SYSTEM.md](docs/DESIGN-SYSTEM.md).
 - **Phase 2** — Warm parchment editorial system (Inter Tight + Instrument Serif italic), full motion layer
 - **Phase 3** — Perplexity comp visual integration (Clash Display + Satoshi, light/dark chapter rhythm, SVG B-mark, word-reveal, live-dot pulse, `[data-reveal]` cascade, clip-path mobile menu)
 - **Phase 4** — Reduced-motion + motion-correctness hardening
-- **Phase 5** — Case-study architecture refactor (slug-keyed registry, modular renderers) — **current**
+- **Phase 5** — Case-study architecture refactor (slug-keyed registry, modular renderers)
+- **Phase 6** — Section-contrast pass (3-value rhythm, card-on-canvas, 60px mode-aware navbar, three-room horizontal Work)
+- **Phase 7** — Architectural migration (`src/lib/motion.ts`, design tokens, `<Image />`, `[data-reveal]` rollout, `<RowList />` + `<Grid />` primitives) — **current**
 
 See [HANDOFF.md](HANDOFF.md) for the full state and roadmap.

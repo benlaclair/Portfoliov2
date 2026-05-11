@@ -46,6 +46,19 @@ If you change a token name, it breaks silently — there's no compile-time check
 | `--color-accent-hover` | `#ff7232` | Hover state |
 | `--color-accent-soft` | `rgba(255, 92, 26, 0.14)` | Soft halos, pulse rings |
 
+### Elevation (shadow tokens)
+
+Card shadow recipes — light / dark / active variants. Consume via `box-shadow: var(--shadow-card)`. Don't hand-roll new stacks; if a card needs a different elevation, add a named token here.
+
+| Token | Use |
+|---|---|
+| `--shadow-card` | Base card on cream/light canvas. Timeline pin, Tools rows, light Work panels |
+| `--shadow-card-active` | Active light card. Deeper drop, no glow |
+| `--shadow-card-dark` | Base card on dark room. Inset highlight + downward shadow |
+| `--shadow-card-dark-active` | Active dark card. Inset highlight + dark shadow + accent-tinted ambient glow |
+| `--shadow-nav-substrate` | Inset bottom-edge for navbar substrate (light mode) |
+| `--shadow-nav-substrate-dark` | Same for dark mode |
+
 ---
 
 ## Typography
@@ -85,6 +98,25 @@ Three families, three roles. Drop everything else.
 | `--text-hero` | `clamp(3rem, 9vw, 7.5rem)` | Homepage hero only |
 
 In practice, the homepage hero and CTA use bespoke `clamp()` values — they don't pull from the scale because they need to fill the viewport at extreme sizes.
+
+### Utility classes (Phase 7)
+
+Composed recipes for the recurring typography roles. Prefer these over re-typing inline font stacks. Defined as `@utility` in `global.css`.
+
+| Class | Composition |
+|---|---|
+| `.text-display-xl` | Clash 500 · `clamp(64px, 11vw, 180px)` · 0.92 lh · -0.045em | Page hero h1 |
+| `.text-display-lg` | Clash 500 · `clamp(48px, 6.6vw, 100px)` · 0.96 lh · -0.04em |
+| `.text-display-md` | Clash 500 · `clamp(36px, 4.4vw, 64px)` · 1.0 lh · -0.03em |
+| `.text-display-sm` | Clash 500 · `clamp(24px, 3vw, 40px)` · 1.1 lh · -0.03em |
+| `.text-eyebrow` | Mono · 11px · 0.12em tracking · uppercase · `--color-ink-2` |
+| `.text-eyebrow-accent` | Same as above, colored `--color-accent` |
+| `.text-meta` | Mono · 10px · 0.14em tracking · uppercase · `--color-muted` |
+| `.text-body-lg` | 18px · 1.55 lh · `--color-ink-2` |
+| `.text-body` | 15px · 1.6 lh · `--color-ink-2` |
+| `.text-body-sm` | 14px · 1.6 lh · `--color-ink-2` |
+
+When extending the system: if a typography recipe is used 2+ times, promote it to a utility class. Per-instance overrides (margin, max-width) stay inline.
 
 ### Accent words
 
