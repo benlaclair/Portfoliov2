@@ -1,7 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import HorizontalWork from '../components/HorizontalWork.astro';
-import Marquee from '../components/Marquee.astro';
 ---
 
 <BaseLayout initialMode="dark">
@@ -75,7 +74,6 @@ import Marquee from '../components/Marquee.astro';
 
   <!-- ============ TAGLINE (light) ============ -->
   <section class="tagline atmo-warmth-tl">
-    <div class="tagline-num section-num">— 01 / Statement</div>
     <p class="tagline-text" id="tagline-text">
       I help teams turn complicated ideas into <span class="accent">measurably simpler</span> products — with type that reads, motion that means something, and details that hold up under scrutiny.
     </p>
@@ -86,22 +84,18 @@ import Marquee from '../components/Marquee.astro';
   <!-- ============ VISUAL BREAK (dark parallax strip) ============ -->
   <section class="vbreak is-dark" data-section-mode="dark" aria-hidden="true">
     <div class="vbreak-bg" id="vbreak-bg">
-      <p class="vbreak-quote" data-reveal>Type that reads. Motion that means something.</p>
+      <p class="vbreak-quote" data-reveal>Details that hold up under scrutiny.</p>
     </div>
   </section>
 
   <!-- ============ SELECTED WORK (horizontal pinned, light) ============ -->
   <HorizontalWork />
 
-  <!-- ============ MARQUEE (light) ============ -->
-  <Marquee />
-
   <!-- ============ TIMELINE (light) ============ -->
   <section class="timeline" id="timeline">
     <div class="timeline-stage" id="timeline-stage">
       <div class="timeline-pin" id="timeline-pin">
         <div class="timeline-top">
-          <span>— 04 / On the record</span>
           <span id="timeline-progress">01 / 05</span>
         </div>
         <div class="timeline-mid">
@@ -124,7 +118,6 @@ import Marquee from '../components/Marquee.astro';
 
   <!-- ============ CTA (dark + radial halos) ============ -->
   <section class="cta is-dark has-halos" id="cta" data-section-mode="dark">
-    <div class="cta-num">— 05 / Reach out</div>
     <h2 class="cta-title" id="cta-title">
       <span class="line"><span>Have something</span></span>
       <span class="line"><span><span class="accent">worth making?</span></span></span>
@@ -185,9 +178,8 @@ import Marquee from '../components/Marquee.astro';
   .divider { height: 1px; background: var(--color-line); margin: 0 40px; }
 
   /* tagline — light, mid-tone canvas (3-value rhythm) */
-  .tagline { padding: 120px 40px; background: var(--color-bg-2); display: grid; grid-template-columns: 1fr 2fr; gap: 80px; align-items: start; }
-  .tagline-num { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em; color: var(--color-ink-2); text-transform: uppercase; }
-  .tagline-text { font-family: var(--font-body); font-weight: 400; font-size: clamp(28px, 3.4vw, 52px); line-height: 1.15; letter-spacing: -0.025em; color: var(--color-ink); }
+  .tagline { padding: 120px 40px; background: var(--color-bg-2); }
+  .tagline-text { font-family: var(--font-body); font-weight: 400; font-size: clamp(28px, 3.4vw, 52px); line-height: 1.15; letter-spacing: -0.025em; color: var(--color-ink); max-width: 1200px; }
   .tagline-text .tag-word { display: inline-block; opacity: 0.18; transition: opacity 0.4s ease; will-change: opacity; }
 
   /* timeline */
@@ -206,7 +198,7 @@ import Marquee from '../components/Marquee.astro';
     border-radius: 22px;
     box-shadow: var(--shadow-card);
   }
-  .timeline-top { display: flex; justify-content: space-between; align-items: baseline; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em; color: var(--color-ink-2); text-transform: uppercase; }
+  .timeline-top { display: flex; justify-content: flex-end; align-items: baseline; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em; color: var(--color-ink-2); text-transform: uppercase; }
   .timeline-mid { display: grid; place-items: center; position: relative; }
   .timeline-num { font-family: var(--font-display); font-weight: 500; font-style: normal; font-size: clamp(160px, 30vw, 460px); line-height: 0.85; letter-spacing: -0.04em; color: var(--color-ink); position: relative; }
   .timeline-cap { display: grid; grid-template-columns: 1fr 2fr 1fr; gap: 40px; align-items: end; padding-bottom: 20px; }
@@ -221,7 +213,6 @@ import Marquee from '../components/Marquee.astro';
 
   /* cta — dark chapter */
   .cta { padding: 200px 40px 120px; }
-  .cta-num { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em; color: var(--color-dark-muted); text-transform: uppercase; margin-bottom: 40px; }
   .cta-title { font-family: var(--font-display); font-weight: 500; font-size: clamp(64px, 11.5vw, 200px); line-height: 0.92; letter-spacing: -0.05em; color: var(--color-dark-ink); }
   .cta-title .accent { color: var(--color-accent); }
   .cta-row { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: end; margin-top: 80px; }
@@ -231,7 +222,7 @@ import Marquee from '../components/Marquee.astro';
   .cta-side { font-size: 14px; line-height: 1.6; color: var(--color-dark-ink-2); max-width: 360px; padding-bottom: 24px; font-family: var(--font-body); }
 
   @media (max-width: 900px) {
-    .hero-foot, .tagline, .cta-row { grid-template-columns: 1fr !important; gap: 32px !important; }
+    .hero-foot, .cta-row { grid-template-columns: 1fr !important; gap: 32px !important; }
     .timeline-cap { grid-template-columns: 1fr !important; }
     .hero-eyebrow { flex-direction: column; gap: 12px; }
     .timeline-num { font-size: clamp(120px, 22vw, 280px) !important; }

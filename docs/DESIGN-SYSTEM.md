@@ -155,12 +155,11 @@ The homepage alternates dark and light sections to create chromatic rhythm. Main
 | 3 | Tagline | light + warmth | `atmo-warmth-tl` softens the hand-off from dark vbreak |
 | 4 | Vbreak | dark | Continuous strip, parallax background |
 | 5 | HorizontalWork | light | Editorial focus, panels readable |
-| 6 | Marquee | light | Re-typography |
-| 7 | Timeline | light | Year numerals in Clash Display |
-| 8 | CTA | dark + halos | Closing chromatic anchor |
-| 9 | Footer | dark + grain | `atmo-grain-dark` adds film grain to the closing block |
+| 6 | Timeline | light | Year numerals in Clash Display |
+| 7 | CTA | dark + halos | Closing chromatic anchor |
+| 8 | Footer | dark + grain | `atmo-grain-dark` adds film grain to the closing block |
 
-Pattern: **D · D · L · D · L · L · L · D · D**. Hero and CTA/Footer are the two anchors; Vbreak is the mid-page beat between them.
+Pattern: **D · D · L · D · L · L · D · D**. Hero and CTA/Footer are the two anchors; Vbreak is the mid-page beat between them.
 
 ### Painting a section dark
 
