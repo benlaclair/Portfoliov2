@@ -42,9 +42,9 @@ If you change a token name, it breaks silently — there's no compile-time check
 
 | Token | Value | Use |
 |---|---|---|
-| `--color-accent` | `#ff5c1a` | The orange. Used everywhere accent meaning matters |
-| `--color-accent-hover` | `#ff7232` | Hover state |
-| `--color-accent-soft` | `rgba(255, 92, 26, 0.14)` | Soft halos, pulse rings |
+| `--color-accent` | `#5b6cab` | Muted indigo. Used everywhere accent meaning matters |
+| `--color-accent-hover` | `#7080c0` | Hover state |
+| `--color-accent-soft` | `rgba(91, 108, 171, 0.14)` | Soft halos, pulse rings |
 
 ### Elevation (shadow tokens)
 
@@ -120,7 +120,7 @@ When extending the system: if a typography recipe is used 2+ times, promote it t
 
 ### Accent words
 
-The **orange accent role** is a `<span class="accent">` with `var(--color-accent)`. No italics, no font swap. Examples:
+The **indigo accent role** is a `<span class="accent">` with `var(--color-accent)`. No italics, no font swap. Examples:
 
 ```html
 Designer

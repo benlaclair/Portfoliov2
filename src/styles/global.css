@@ -26,15 +26,15 @@
   --color-dark-line-strong: rgba(244, 239, 228, 0.32);
 
   /* Accent */
-  --color-accent: #ff5c1a;
-  --color-accent-hover: #ff7232;
-  --color-accent-soft: rgba(255, 92, 26, 0.14);
+  --color-accent: #5b6cab;
+  --color-accent-hover: #7080c0;
+  --color-accent-soft: rgba(91, 108, 171, 0.14);
 
   /* Elevation — card shadow recipes for light/dark + active states */
   --shadow-card: 0 1px 0 rgba(22, 21, 18, 0.04), 0 30px 70px -28px rgba(22, 21, 18, 0.14);
   --shadow-card-active: 0 1px 0 rgba(22, 21, 18, 0.06), 0 50px 110px -30px rgba(22, 21, 18, 0.24);
   --shadow-card-dark: inset 0 1px 0 rgba(244, 239, 228, 0.05), 0 30px 70px -28px rgba(0, 0, 0, 0.55);
-  --shadow-card-dark-active: inset 0 1px 0 rgba(244, 239, 228, 0.07), 0 50px 110px -30px rgba(0, 0, 0, 0.7), 0 40px 80px -20px rgba(255, 92, 26, 0.18);
+  --shadow-card-dark-active: inset 0 1px 0 rgba(244, 239, 228, 0.07), 0 50px 110px -30px rgba(0, 0, 0, 0.7), 0 40px 80px -20px rgba(91, 108, 171, 0.18);
   --shadow-nav-substrate: inset 0 -1px 0 var(--color-line-soft);
   --shadow-nav-substrate-dark: inset 0 -1px 0 var(--color-dark-line);
 
@@ -134,7 +134,7 @@
   background: radial-gradient(60% 60% at 88% 12%, var(--color-accent-soft), transparent 70%);
 }
 .has-halos::after {
-  background: radial-gradient(70% 60% at 6% 90%, rgba(80, 130, 220, 0.10), transparent 70%);
+  background: radial-gradient(70% 60% at 6% 90%, rgba(220, 170, 110, 0.10), transparent 70%);
 }
 
 /* Atmospheric utilities — finite, named alternatives to per-section radial snowflakes.
@@ -157,10 +157,10 @@
   z-index: -1;
 }
 .atmo-warmth-tl::before {
-  background: radial-gradient(55% 65% at 4% 0%, rgba(255, 92, 26, 0.08), transparent 70%);
+  background: radial-gradient(55% 65% at 4% 0%, rgba(220, 170, 110, 0.10), transparent 70%);
 }
 .atmo-warmth-br::before {
-  background: radial-gradient(55% 65% at 100% 100%, rgba(255, 92, 26, 0.07), transparent 70%);
+  background: radial-gradient(55% 65% at 100% 100%, rgba(220, 170, 110, 0.09), transparent 70%);
 }
 .atmo-grain-light::after,
 .atmo-grain-dark::after {
@@ -462,7 +462,7 @@ body[data-mode="dark"] .cursor-label {
 .vbreak-bg {
   height: clamp(180px, 26vh, 340px);
   background:
-    radial-gradient(ellipse 55% 85% at 20% 65%, rgba(255, 92, 26, 0.09) 0%, transparent 60%),
+    radial-gradient(ellipse 55% 85% at 20% 65%, rgba(91, 108, 171, 0.12) 0%, transparent 60%),
     linear-gradient(158deg, #141210 0%, #0d0c0a 55%, #080604 100%);
   display: grid;
   place-items: center;
