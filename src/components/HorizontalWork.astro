@@ -158,12 +158,12 @@ const featured: Project[] = PROJECTS.slice(0, 3);
   }
 
   /* Dark room: card uses dark-bg-alt so cursor (cream) stays readable
-     on the card surface. Accent stroke defines the edge against the
-     near-identical #0d0c0a room and signals this card as the dramatic
-     anchor of the three-room rhythm. */
+     on the card surface. 2px accent stroke defines the edge against
+     the near-identical #0d0c0a room and signals this card as the
+     dramatic anchor of the three-room rhythm. */
   .hwork-panel[data-index="1"] .hwork-panel-inner {
     background: var(--color-dark-bg-alt);
-    border-color: var(--color-accent);
+    border: 2px solid var(--color-accent);
     box-shadow:
       inset 0 1px 0 rgba(244, 239, 228, 0.05),
       0 30px 70px -28px rgba(0, 0, 0, 0.55);
@@ -175,10 +175,13 @@ const featured: Project[] = PROJECTS.slice(0, 3);
       0 1px 0 rgba(22, 21, 18, 0.06),
       0 50px 110px -30px rgba(22, 21, 18, 0.24);
   }
+  /* Active dark card: accent-tinted glow propagates the orange edge
+     into ambient light cast on the room. */
   .hwork-panel[data-index="1"] .hwork-panel-inner.is-active {
     box-shadow:
       inset 0 1px 0 rgba(244, 239, 228, 0.07),
-      0 50px 110px -30px rgba(0, 0, 0, 0.7);
+      0 50px 110px -30px rgba(0, 0, 0, 0.7),
+      0 40px 80px -20px rgba(255, 92, 26, 0.18);
   }
   .hwork-meta-num {
     font-family: var(--font-mono);
