@@ -3,7 +3,7 @@
 In-progress build. Hero rebuild, indigo accent, vertical work cards, infinite-loop gallery, copy audit.
 
 > **Last touched:** 2026-05-11
-> **Next up:** Phase C — hero rebuild (minimal phrase → HeroGallery + CTA)
+> **Next up:** Phase D — scroll-past curtain wipe
 > **Resume how:** `git pull origin main && git log --oneline | grep "Phase"` then pick up at the first unchecked phase below.
 
 This doc is the resumption beacon for working across multiple chat sessions / machines. A fresh chat reads this first, then [HANDOFF.md](../HANDOFF.md) for general orientation.
@@ -44,11 +44,12 @@ This doc is the resumption beacon for working across multiple chat sessions / ma
   - Loader copy preserved; timeline data preserved
   - **What landed:** All audit cuts shipped. Marquee deleted (file count 40 → 39). Orphaned CSS rules removed (`.tagline-num`, `.cta-num`, `.hwork-num`, `.hwork-header-right`); `.timeline-top` re-anchored to `justify-content: flex-end` since the eyebrow span is gone. Chapter rhythm in DESIGN-SYSTEM.md updated to D · D · L · D · L · L · D · D. Check + build clean.
 
-- [ ] **Phase C — Hero rebuild (minimal phrase → HeroGallery + CTA)**
+- [x] **Phase C — Hero rebuild (minimal phrase → HeroGallery + CTA)** (commit `9980172`)
   - Rewrite hero markup in [src/pages/index.astro](../src/pages/index.astro)
   - New component [src/components/HeroGallery.astro](../src/components/HeroGallery.astro): 4 columns, round-robin distribute 86 images, doubled-list seamless loop, per-column varied speed (60/45/75/50s), odd cols up + even cols down for layered counter-motion
   - Sequencing: existing loader → phrase word-reveal (~1.1s) → 3.5s dwell → phrase exit + gallery fade-in + CTA fade-in
   - Reduced-motion: static grid
+  - **What landed:** Hero rebuilt as overlapping stack (gallery behind a dim scrim z:1-2, phrase centered z:3, CTA pill bottom-center z:4). All three children opacity-keyed so the sequencing is purely tween-driven. Bottom-center CTA chosen over middle to keep gallery focal. **Perf note for Phase G QA:** 86 `<img loading="lazy">` will partially lazy-load since most are below the viewport, but the first row decodes immediately. If LCP regresses, gate decoding behind the phrase-exit moment (intersection observer or explicit data-src swap). **Follow-up:** divider between hero and tagline removed (the dark/light handoff is now the natural background contrast; Phase D will add the curtain wipe to dramatize it).
 
 - [ ] **Phase D — Scroll-past curtain wipe**
   - New `<div class="hero-curtain">` inside `.hero` (NOT BaseLayout's `.page-curtain`)
