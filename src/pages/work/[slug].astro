@@ -107,15 +107,10 @@ const postSections = caseStudy?.post ?? [];
 </BaseLayout>
 
 <style is:global>
-  /* Global because .cs-* elements are emitted by child components in
-     src/components/case-study/ — Astro's default scoping wouldn't reach
-     them. Selectors are namespaced under .cs-* so collision risk is low. */
+  /* Mobile collapse for the meta+overview grid (the rest is now owned by
+     case-study/Grid.astro and case-study/RowList.astro). */
   @media (max-width: 900px) {
-    .cs-stats { grid-template-columns: repeat(2, 1fr) !important; }
-    .cs-cards { grid-template-columns: 1fr !important; }
     .cs-meta-grid { grid-template-columns: 1fr !important; gap: 32px !important; }
-    .cs-decision, .cs-process, .cs-challenge { grid-template-columns: 1fr !important; gap: 16px !important; }
-    .cs-outcomes { grid-template-columns: 1fr !important; }
   }
   .cs-next:hover h2 { color: var(--color-accent); }
 </style>

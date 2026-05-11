@@ -1,0 +1,44 @@
+---
+// Left-label + right-content rows. Used by Decisions / Process / Challenges
+// (and About's experience timeline, which has the same shape but lives outside
+// the case-study folder). The actual rows are projected via <slot />; this
+// component owns the layout shell only.
+interface Props {
+  /** Grid template columns. Defaults to "200px 1fr" — override for wider
+      labels (e.g. About's "200px 1fr") or narrower number columns
+      ("80px 1fr" for numbered lists). */
+  cols?: string;
+  /** Top border between rows. Set to false when rows already have their
+      own bottom-border or live inside a card. */
+  divider?: boolean;
+  /** Vertical padding per row. */
+  pad?: string;
+}
+const { cols = '200px 1fr', divider = true, pad = '40px' } = Astro.props;
+---
+<div
+  class="row-list"
+  data-divider={divider}
+  style={`--row-cols: ${cols}; --row-pad: ${pad};`}
+>
+  <slot />
+</div>
+
+<style is:global>
+  .row-list > * {
+    display: grid;
+    grid-template-columns: var(--row-cols);
+    gap: 60px;
+    padding: var(--row-pad) 0;
+    align-items: start;
+  }
+  .row-list[data-divider="true"] > * {
+    border-top: 1px solid var(--color-line);
+  }
+  @media (max-width: 900px) {
+    .row-list > * {
+      grid-template-columns: 1fr !important;
+      gap: 16px !important;
+    }
+  }
+</style>

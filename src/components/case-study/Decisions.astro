@@ -1,5 +1,6 @@
 ---
 import SectionShell from './SectionShell.astro';
+import RowList from './RowList.astro';
 import type { DecisionItem } from '../../data/caseStudies/types';
 
 interface Props {
@@ -10,13 +11,9 @@ const { label, items } = Astro.props;
 ---
 {items.length > 0 && (
   <SectionShell label={label}>
-    <div style="display: flex; flex-direction: column">
+    <RowList cols="200px 1fr">
       {items.map((d) => (
-        <div
-          class="cs-decision"
-          data-reveal
-          style="display: grid; grid-template-columns: 200px 1fr; gap: 60px; padding: 40px 0; border-top: 1px solid var(--color-line)"
-        >
+        <div class="cs-decision" data-reveal>
           <div>
             <p style="font-family: var(--font-mono); font-size: 11px; color: var(--color-ink-2); margin-bottom: 6px">{d.number}</p>
             <p style="font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-accent)">{d.label}</p>
@@ -39,6 +36,6 @@ const { label, items } = Astro.props;
           </div>
         </div>
       ))}
-    </div>
+    </RowList>
   </SectionShell>
 )}

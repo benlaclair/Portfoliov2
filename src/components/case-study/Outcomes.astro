@@ -1,5 +1,6 @@
 ---
 import SectionShell from './SectionShell.astro';
+import Grid from './Grid.astro';
 import type { OutcomeItem } from '../../data/caseStudies/types';
 
 interface Props {
@@ -10,13 +11,13 @@ const { label, items } = Astro.props;
 ---
 {items.length > 0 && (
   <SectionShell label={label}>
-    <div class="cs-outcomes" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--color-line)">
+    <Grid columns={3}>
       {items.map((o) => (
-        <div style="background: var(--color-bg); padding: 32px">
+        <div class="cs-outcome">
           <p style="font-family: var(--font-mono); font-size: 11px; color: var(--color-accent); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 16px">{o.label}</p>
           <p style="font-family: var(--font-display); font-weight: 500; font-size: 22px; line-height: 1.25; letter-spacing: -0.02em; color: var(--color-ink)">{o.value}</p>
         </div>
       ))}
-    </div>
+    </Grid>
   </SectionShell>
 )}

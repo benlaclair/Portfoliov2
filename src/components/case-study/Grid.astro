@@ -1,0 +1,44 @@
+---
+// Bordered cell grid. Used by Stats / Cards / Outcomes — the 1px-gap-on-line
+// trick where the parent fill IS the divider rule and each cell paints its
+// own background over it.
+//
+// Cell bg + padding are applied via direct-child selector so slot content
+// stays minimal (consumers just emit data shells without per-cell styling).
+interface Props {
+  columns: 2 | 3 | 4;
+  /** Cell padding. Override for tighter or roomier cells. */
+  cellPad?: string;
+}
+const { columns, cellPad = '32px' } = Astro.props;
+---
+<div
+  class="cs-grid"
+  data-columns={columns}
+  style={`grid-template-columns: repeat(${columns}, 1fr); --cs-grid-pad: ${cellPad};`}
+>
+  <slot />
+</div>
+
+<style is:global>
+  .cs-grid {
+    display: grid;
+    gap: 1px;
+    background: var(--color-line);
+  }
+  .cs-grid > * {
+    background: var(--color-bg);
+    padding: var(--cs-grid-pad, 32px);
+  }
+  /* Mobile: 4-col grids halve to 2; 2 or 3 columns collapse to 1. Matches
+     the pre-primitive per-consumer media queries that lived in [slug].astro. */
+  @media (max-width: 900px) {
+    .cs-grid[data-columns="4"] {
+      grid-template-columns: repeat(2, 1fr) !important;
+    }
+    .cs-grid[data-columns="3"],
+    .cs-grid[data-columns="2"] {
+      grid-template-columns: 1fr !important;
+    }
+  }
+</style>
