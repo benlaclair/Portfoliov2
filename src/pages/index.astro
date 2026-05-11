@@ -63,6 +63,8 @@ import HeroGallery from '../components/HeroGallery.astro';
     </a>
   </section>
 
+  <div class="hero-curtain" id="hero-curtain" aria-hidden="true"></div>
+
   <!-- ============ TAGLINE (light) ============ -->
   <section class="tagline atmo-warmth-tl">
     <p class="tagline-text" id="tagline-text">
@@ -205,6 +207,19 @@ import HeroGallery from '../components/HeroGallery.astro';
   }
   .hero-cta:hover .hero-cta-arrow { transform: translateX(4px); }
 
+  /* Curtain that wipes bottom→top across the hero-to-tagline scroll boundary.
+     Sits as a fixed overlay so it animates against the viewport, not document flow.
+     Lives outside .hero so the section's overflow: hidden doesn't clip it. */
+  .hero-curtain {
+    position: fixed;
+    inset: 0;
+    background: var(--color-dark-bg);
+    pointer-events: none;
+    z-index: 8000;
+    transform: translateY(100%);
+    will-change: transform;
+  }
+
   .divider { height: 1px; background: var(--color-line); margin: 0 40px; }
 
   /* tagline — light, mid-tone canvas (3-value rhythm) */
@@ -303,6 +318,23 @@ import HeroGallery from '../components/HeroGallery.astro';
     gsap.set('#site-nav', { opacity: 1 });
     gsap.set('#hero-phrase', { opacity: 0 });
     gsap.set('#hero-gallery, #hero-cta', { opacity: 1 });
+  }
+
+  // ============ HERO → TAGLINE CURTAIN WIPE ============
+  // Curtain rises from below as the user scrolls past the hero, briefly covers
+  // the viewport at the dark/light boundary, then continues upward revealing
+  // the tagline. Scrub-bound so the user controls the pace.
+  if (!reduceMotion.current) {
+    const wipe = gsap.timeline({
+      scrollTrigger: {
+        trigger: '#hero',
+        start: 'bottom bottom',
+        end: 'bottom top',
+        scrub: 0.6,
+      },
+    });
+    wipe.fromTo('#hero-curtain', { yPercent: 100 }, { yPercent: 0, duration: 0.5, ease: 'none' });
+    wipe.to('#hero-curtain', { yPercent: -100, duration: 0.5, ease: 'none' });
   }
 
   // ============ VBREAK PARALLAX ============
