@@ -24,21 +24,16 @@ const num = '/' + String(index + 1).padStart(2, '0');
     >{num}</div>
 
     <div class="project-meta" data-reveal style="padding-top: 4px">
-      <div
-        style="font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em; color: var(--color-accent); text-transform: uppercase; margin-bottom: 16px"
-      >{project.category} &middot; {project.year}</div>
-      <h3
-        class="project-title"
-        style="font-family: var(--font-display); font-weight: 500; font-size: clamp(36px, 4.4vw, 64px); line-height: 1.0; letter-spacing: -0.03em; margin-bottom: 24px"
-      >
+      <div class="text-eyebrow-accent" style="margin-bottom: 16px">{project.category} &middot; {project.year}</div>
+      <h3 class="project-title text-display-md" style="margin-bottom: 24px">
         {project.shortTitle}
       </h3>
-      <p style="font-size: 15px; line-height: 1.6; color: var(--color-ink-2); max-width: 480px; margin-bottom: 28px">
+      <p class="text-body" style="max-width: 480px; margin-bottom: 28px">
         {project.description}
       </p>
       <span
-        class="project-link"
-        style="display: inline-flex; align-items: center; gap: 12px; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-ink)"
+        class="project-link text-eyebrow"
+        style="display: inline-flex; align-items: center; gap: 12px; color: var(--color-ink)"
       >
         Read case
         <span class="arrow" style="display: inline-block; transition: transform 0.5s cubic-bezier(.7,0,.2,1)">→</span>
