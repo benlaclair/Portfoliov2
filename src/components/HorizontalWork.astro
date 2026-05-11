@@ -158,11 +158,12 @@ const featured: Project[] = PROJECTS.slice(0, 3);
   }
 
   /* Dark room: card uses dark-bg-alt so cursor (cream) stays readable
-     on the card surface. Subtle elevation off the #0d0c0a room defined
-     by border + shadow rather than tone delta. */
+     on the card surface. Accent stroke defines the edge against the
+     near-identical #0d0c0a room and signals this card as the dramatic
+     anchor of the three-room rhythm. */
   .hwork-panel[data-index="1"] .hwork-panel-inner {
     background: var(--color-dark-bg-alt);
-    border-color: var(--color-dark-line);
+    border-color: var(--color-accent);
     box-shadow:
       inset 0 1px 0 rgba(244, 239, 228, 0.05),
       0 30px 70px -28px rgba(0, 0, 0, 0.55);
