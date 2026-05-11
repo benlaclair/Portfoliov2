@@ -3,7 +3,7 @@
 In-progress build. Hero rebuild, indigo accent, vertical work cards, infinite-loop gallery, copy audit.
 
 > **Last touched:** 2026-05-11
-> **Next up:** Phase D — scroll-past curtain wipe
+> **Next up:** Phase E — HorizontalWork → VerticalWork conversion
 > **Resume how:** `git pull origin main && git log --oneline | grep "Phase"` then pick up at the first unchecked phase below.
 
 This doc is the resumption beacon for working across multiple chat sessions / machines. A fresh chat reads this first, then [HANDOFF.md](../HANDOFF.md) for general orientation.
@@ -51,10 +51,11 @@ This doc is the resumption beacon for working across multiple chat sessions / ma
   - Reduced-motion: static grid
   - **What landed:** Hero rebuilt as overlapping stack (gallery behind a dim scrim z:1-2, phrase centered z:3, CTA pill bottom-center z:4). All three children opacity-keyed so the sequencing is purely tween-driven. Bottom-center CTA chosen over middle to keep gallery focal. **Perf note for Phase G QA:** 86 `<img loading="lazy">` will partially lazy-load since most are below the viewport, but the first row decodes immediately. If LCP regresses, gate decoding behind the phrase-exit moment (intersection observer or explicit data-src swap). **Follow-up:** divider between hero and tagline removed (the dark/light handoff is now the natural background contrast; Phase D will add the curtain wipe to dramatize it).
 
-- [ ] **Phase D — Scroll-past curtain wipe**
-  - New `<div class="hero-curtain">` inside `.hero` (NOT BaseLayout's `.page-curtain`)
+- [x] **Phase D — Scroll-past curtain wipe** (commit `1dea81e`)
+  - New `<div class="hero-curtain">` placed OUTSIDE `.hero` (the section's `overflow: hidden` would clip it otherwise — deviation from plan, but visually identical and z-index isolation is preserved)
   - ScrollTrigger on `.hero` with `start: 'bottom bottom'`, `end: 'bottom top'`, scrub 0.6
   - Animates `yPercent: 100 → 0 → -100` — rises from below, covers, exits up revealing tagline
+  - **What landed:** Two-keyframe timeline (rise to 0, then continue to -100) scrub-bound across the hero-bottom-leaves-viewport scroll range. z:8000 keeps it under page-curtain (z:9999). Reduced motion: no ScrollTrigger, hero scrolls naturally.
 
 - [ ] **Phase E — HorizontalWork → VerticalWork**
   - Rewrite [src/components/HorizontalWork.astro](../src/components/HorizontalWork.astro) in place (preserve import in index.astro)
