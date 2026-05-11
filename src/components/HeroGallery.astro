@@ -1,0 +1,130 @@
+---
+import { DESIGN_GROUPS } from '../data/graphicDesign';
+
+interface Props {
+  fullPage?: boolean;
+}
+
+const { fullPage = false } = Astro.props;
+
+const allImages = DESIGN_GROUPS.flatMap((g) => g.images);
+
+const COLS = 4;
+const columns: { src: string; alt: string }[][] = Array.from({ length: COLS }, () => []);
+allImages.forEach((img, i) => columns[i % COLS].push(img));
+
+const colMeta = [
+  { speed: fullPage ? 90 : 60, dir: 'up' },
+  { speed: fullPage ? 65 : 45, dir: 'down' },
+  { speed: fullPage ? 110 : 75, dir: 'up' },
+  { speed: fullPage ? 75 : 50, dir: 'down' },
+];
+---
+
+<div class="hg-root" data-gallery-root data-fullpage={fullPage ? 'true' : 'false'}>
+  {columns.map((col, i) => (
+    <div
+      class="hg-col"
+      data-speed={colMeta[i].speed}
+      data-dir={colMeta[i].dir}
+    >
+      {/* Render twice for seamless loop — animation distance is exactly half scrollHeight */}
+      {[0, 1].map(() => (
+        <div class="hg-set" aria-hidden={undefined}>
+          {col.map((img) => (
+            <img src={img.src} alt={img.alt} loading="lazy" decoding="async" />
+          ))}
+        </div>
+      ))}
+    </div>
+  ))}
+</div>
+
+<style>
+  .hg-root {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    padding: 0 16px;
+  }
+  .hg-col {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    will-change: transform;
+  }
+  .hg-set {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .hg-col img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 6px;
+    background: rgba(244, 239, 228, 0.04);
+  }
+  @media (max-width: 900px) {
+    .hg-root { grid-template-columns: repeat(2, 1fr); }
+    .hg-col:nth-child(n+3) { display: none; }
+  }
+  @media (max-width: 600px) {
+    .hg-root { grid-template-columns: 1fr; }
+    .hg-col:nth-child(n+2) { display: none; }
+  }
+</style>
+
+<script>
+  import { gsap, reduceMotion } from '../lib/motion';
+
+  function initGallery(root: HTMLElement) {
+    const cols = root.querySelectorAll<HTMLElement>('.hg-col');
+    const imgs = Array.from(root.querySelectorAll<HTMLImageElement>('img'));
+
+    // Wait for visible columns' images to decode so scrollHeight is accurate.
+    // :nth-child(n+3) cols hide at <=900px but their images still preload;
+    // the loop only runs for columns currently in flow.
+    const decoded = imgs.map((img) =>
+      img.complete && img.naturalHeight > 0
+        ? Promise.resolve()
+        : new Promise<void>((resolve) => {
+            img.addEventListener('load', () => resolve(), { once: true });
+            img.addEventListener('error', () => resolve(), { once: true });
+          })
+    );
+
+    Promise.all(decoded).then(() => {
+      if (reduceMotion.current) return;
+      cols.forEach((col) => {
+        if (col.offsetParent === null) return; // hidden at this breakpoint
+        const speed = parseFloat(col.dataset.speed || '60');
+        const dir = col.dataset.dir || 'up';
+        const halfHeight = col.scrollHeight / 2;
+        if (halfHeight < 50) return; // bail if images failed to load
+
+        if (dir === 'up') {
+          gsap.fromTo(col, { y: 0 }, {
+            y: -halfHeight,
+            duration: speed,
+            ease: 'none',
+            repeat: -1,
+          });
+        } else {
+          gsap.fromTo(col, { y: -halfHeight }, {
+            y: 0,
+            duration: speed,
+            ease: 'none',
+            repeat: -1,
+          });
+        }
+      });
+    });
+  }
+
+  document.querySelectorAll<HTMLElement>('[data-gallery-root]').forEach(initGallery);
+</script>

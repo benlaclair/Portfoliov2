@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import HorizontalWork from '../components/HorizontalWork.astro';
+import HeroGallery from '../components/HeroGallery.astro';
 ---
 
 <BaseLayout initialMode="dark">
@@ -35,42 +36,32 @@ import HorizontalWork from '../components/HorizontalWork.astro';
     </div>
   </div>
 
-  <!-- ============ HERO (dark + radial halos) ============ -->
-  <section class="hero is-dark has-halos" id="hero" data-section-mode="dark">
-    <div class="hero-eyebrow" id="hero-eyebrow">
-      <span class="ind">Available &middot; Q3 2026</span>
-      <span>Newark, NJ — 40.7357° N</span>
-      <span>Portfolio v2 &middot; Index 26</span>
+  <!-- ============ HERO (dark) — phrase → gallery + CTA ============ -->
+  <section class="hero is-dark" id="hero" data-section-mode="dark">
+    <div class="hero-gallery" id="hero-gallery">
+      <HeroGallery />
+      <div class="hero-gallery-scrim" aria-hidden="true"></div>
     </div>
 
-    <h1 class="hero-title" id="hero-title">
-      Designer
-      <br/><span class="accent">shaping</span> interfaces,
-      <br/>brands &amp; <span class="accent">moving</span>
-      <br/>pictures.
-    </h1>
-
-    <div class="hero-foot" id="hero-foot">
-      <div data-reveal>
-        <div class="col-label">Currently</div>
-        <div class="col-value"><strong>Graphic / AI Designer</strong> at Market Mentors LLC. Building this site in <strong>Astro + GSAP</strong>.</div>
-      </div>
-      <div data-reveal>
-        <div class="col-label">Practice</div>
-        <div class="col-value">UX/UI &middot; brand systems &middot; AI-led video &middot; web development.</div>
-      </div>
-      <div data-reveal>
-        <div class="col-label">Recent</div>
-        <div class="col-value"><strong>VEO Olympics spot</strong> — Feb 2026. <strong>Vlier.com</strong> — Q4 2025.</div>
-      </div>
-      <div data-reveal>
-        <div class="col-label">↳ Next</div>
-        <div class="col-value"><a href="#hwork" data-cursor="browse">Three case studies, eighty-six designs, five years</a>.</div>
-      </div>
+    <div class="hero-phrase" id="hero-phrase">
+      <h1 class="hero-phrase-text" id="hero-phrase-text">
+        <span class="word"><span>Type</span></span> <span class="word"><span>that</span></span> <span class="word"><span>reads.</span></span>
+        <br/>
+        <span class="word"><span>Motion</span></span> <span class="word"><span>that</span></span> <span class="word"><span>means</span></span> <span class="word"><span>something.</span></span>
+      </h1>
     </div>
+
+    <a
+      href="/work/graphic-design"
+      class="hero-cta"
+      id="hero-cta"
+      data-cursor="browse"
+      data-magnetic="0.3"
+    >
+      <span>View design work</span>
+      <span class="hero-cta-arrow">→</span>
+    </a>
   </section>
-
-  <div class="divider"></div>
 
   <!-- ============ TAGLINE (light) ============ -->
   <section class="tagline atmo-warmth-tl">
@@ -145,35 +136,74 @@ import HorizontalWork from '../components/HorizontalWork.astro';
   .loader-bar { height: 1px; background: rgba(244, 239, 228, 0.15); position: relative; overflow: hidden; }
   .loader-bar i { position: absolute; left: 0; top: 0; bottom: 0; width: 0%; background: var(--color-dark-ink); }
 
-  /* hero — dark chapter */
-  .hero { min-height: 100vh; padding: 140px 40px 60px; display: flex; flex-direction: column; justify-content: space-between; position: relative; }
-  .hero-eyebrow { display: flex; justify-content: space-between; gap: 24px; flex-wrap: wrap; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em; color: var(--color-dark-muted); text-transform: uppercase; opacity: 0; }
-
-  .hero-title {
+  /* hero — dark chapter; phrase first, then gallery + CTA */
+  .hero {
+    position: relative;
+    height: 100vh;
+    min-height: 600px;
+    overflow: hidden;
+  }
+  .hero-gallery {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    opacity: 0;
+  }
+  .hero-gallery-scrim {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    background:
+      radial-gradient(60% 50% at 50% 60%, rgba(13, 12, 10, 0) 0%, rgba(13, 12, 10, 0.55) 100%),
+      linear-gradient(180deg, rgba(13, 12, 10, 0.35) 0%, rgba(13, 12, 10, 0.45) 50%, rgba(13, 12, 10, 0.7) 100%);
+    pointer-events: none;
+  }
+  .hero-phrase {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    display: grid;
+    place-items: center;
+    padding: 0 40px;
+    pointer-events: none;
+  }
+  .hero-phrase-text {
     font-family: var(--font-display);
     font-weight: 500;
-    font-size: clamp(64px, 13.2vw, 200px);
-    line-height: 0.92;
-    letter-spacing: -0.045em;
-    margin-top: 60px;
+    font-size: clamp(40px, 8vw, 140px);
+    line-height: 0.96;
+    letter-spacing: -0.04em;
+    text-align: center;
     color: var(--color-dark-ink);
-    /* Hidden until the intro timeline's word-wrap callback fires —
-       otherwise the raw text paints during loader exit, then flashes
-       out when JS wraps it into the .word > span overflow boxes.
-       Using visibility (not opacity) so the scrub-out tween below
-       captures opacity: 1 as its natural from-state — otherwise
-       reversing the scrub on scroll-up would fade the title to 0. */
-    visibility: hidden;
+    max-width: 1200px;
   }
-  .hero-title .accent { color: var(--color-accent); }
-  .hero-title .word { display: inline-block; overflow: hidden; vertical-align: bottom; }
-  .hero-title .word > span { display: inline-block; will-change: transform; }
-
-  .hero-foot { display: grid; grid-template-columns: repeat(4, 1fr); gap: 40px; align-items: end; margin-top: 80px; opacity: 0; }
-  .col-label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.14em; color: var(--color-dark-muted); margin-bottom: 12px; text-transform: uppercase; }
-  .col-value { font-size: 14px; line-height: 1.55; color: var(--color-dark-ink-2); font-family: var(--font-body); }
-  .col-value strong { color: var(--color-dark-ink); font-weight: 600; }
-  .col-value a { border-bottom: 1px solid currentColor; padding-bottom: 1px; color: var(--color-dark-ink-2); }
+  .hero-cta {
+    position: absolute;
+    left: 50%;
+    bottom: 64px;
+    transform: translateX(-50%);
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 26px;
+    background: var(--color-accent);
+    color: var(--color-dark-ink);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    border-radius: 999px;
+    text-decoration: none;
+    z-index: 4;
+    opacity: 0;
+    transition: background 0.3s ease;
+  }
+  .hero-cta:hover { background: var(--color-accent-hover); }
+  .hero-cta-arrow {
+    display: inline-block;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .hero-cta:hover .hero-cta-arrow { transform: translateX(4px); }
 
   .divider { height: 1px; background: var(--color-line); margin: 0 40px; }
 
@@ -222,21 +252,23 @@ import HorizontalWork from '../components/HorizontalWork.astro';
   .cta-side { font-size: 14px; line-height: 1.6; color: var(--color-dark-ink-2); max-width: 360px; padding-bottom: 24px; font-family: var(--font-body); }
 
   @media (max-width: 900px) {
-    .hero-foot, .cta-row { grid-template-columns: 1fr !important; gap: 32px !important; }
+    .cta-row { grid-template-columns: 1fr !important; gap: 32px !important; }
     .timeline-cap { grid-template-columns: 1fr !important; }
-    .hero-eyebrow { flex-direction: column; gap: 12px; }
     .timeline-num { font-size: clamp(120px, 22vw, 280px) !important; }
+    .hero-cta { bottom: 40px; padding: 14px 20px; font-size: 11px; }
   }
 </style>
 
 <script>
   import { gsap, ScrollTrigger, ease, reduceMotion } from '../lib/motion';
 
-  // ============ LOADER → HERO INTRO ============
+  // ============ LOADER → HERO PHRASE → GALLERY + CTA ============
   if (!reduceMotion.current) {
     // Loader controls #site-nav visibility on the homepage only;
     // hide it now so the timeline can fade it in after the wipe.
     gsap.set('#site-nav', { opacity: 0 });
+    gsap.set('#hero-cta', { y: 20 });
+
     const intro = gsap.timeline({ defaults: { ease: ease.expo } });
     const pct = { v: 0 };
     intro
@@ -252,72 +284,25 @@ import HorizontalWork from '../components/HorizontalWork.astro';
       .to('#loader', { yPercent: -100, duration: 1.0, ease: 'expo.inOut' }, '+=0.6')
       .set('#loader', { display: 'none' })
       .to('#site-nav', { opacity: 1, duration: 0.6, ease: ease.out }, '-=0.5')
-      .to('#hero-eyebrow', { opacity: 1, duration: 0.6, ease: ease.out }, '-=0.4')
-      .add(() => {
-        // Word-by-word hero reveal
-        const titleEl = document.getElementById('hero-title');
-        if (!titleEl) return;
-        // Wrap each word in .word > span if not already done
-        if (!titleEl.querySelector('.word')) {
-          const walker = document.createTreeWalker(titleEl, NodeFilter.SHOW_TEXT, null);
-          const textNodes: Text[] = [];
-          let node;
-          while ((node = walker.nextNode())) textNodes.push(node as Text);
-          textNodes.forEach((tn) => {
-            if (!tn.textContent?.trim()) return;
-            const frag = document.createDocumentFragment();
-            const parts = tn.textContent.split(/(\s+)/);
-            parts.forEach((part) => {
-              if (/^\s+$/.test(part)) {
-                frag.appendChild(document.createTextNode(part));
-              } else if (part) {
-                const outer = document.createElement('span');
-                outer.className = 'word';
-                const inner = document.createElement('span');
-                inner.textContent = part;
-                outer.appendChild(inner);
-                frag.appendChild(outer);
-              }
-            });
-            tn.replaceWith(frag);
-          });
-        }
-        // Words are now wrapped (and hidden inside .word > span overflow
-        // boxes via the global translateY(115%) rule). Safe to flip the
-        // title visible — no flash, because the text is hidden by the
-        // word transforms until the fromTo below tweens them up.
-        gsap.set(titleEl, { visibility: 'visible' });
-        const words = titleEl.querySelectorAll<HTMLElement>('.word > span');
-        // The global .word > span CSS sets transform: translateY(115%); GSAP
-        // resolves that into a pixel `y` channel that fromTo's `yPercent` never
-        // touches, so without an explicit y:0 the words stay translated 115%
-        // down after the tween — invisible inside the .word overflow box.
-        gsap.fromTo(words, { yPercent: 115, y: 0 }, { yPercent: 0, y: 0, stagger: 0.04, duration: 1.1, ease: 'expo.out' });
-      }, '-=0.3')
-      .to('#hero-foot', { opacity: 1, duration: 0.7, ease: ease.out }, '-=0.6');
+      // Hero phrase word-reveal (global .word > span CSS hides at translateY 115%; tween to 0).
+      .fromTo('#hero-phrase-text .word > span',
+        { yPercent: 115, y: 0 },
+        { yPercent: 0, y: 0, stagger: 0.04, duration: 1.1, ease: 'expo.out' },
+        '-=0.4'
+      )
+      // Dwell — let the phrase sit and read
+      .to({}, { duration: 3.5 })
+      // Phrase exits upward as gallery + CTA fade in
+      .to('#hero-phrase', { yPercent: -15, opacity: 0, duration: 0.8, ease: 'expo.in' })
+      .to('#hero-gallery', { opacity: 1, duration: 1.0, ease: ease.out }, '-=0.6')
+      .to('#hero-cta', { opacity: 1, y: 0, duration: 0.7, ease: ease.out }, '-=0.4');
   } else {
+    // Reduced motion: skip loader, show gallery + CTA immediately, hide phrase.
     const loader = document.getElementById('loader');
     if (loader) loader.style.display = 'none';
-    gsap.set('#site-nav, #hero-eyebrow, #hero-foot', { opacity: 1 });
-    gsap.set('#hero-title', { visibility: 'visible' });
-    // Show all words instantly
-    const titleEl = document.getElementById('hero-title');
-    if (titleEl) {
-      titleEl.querySelectorAll('.word > span').forEach((s) => {
-        (s as HTMLElement).style.transform = 'none';
-      });
-    }
-  }
-
-  // ============ HERO TITLE SCRUB-OUT ============
-  if (!reduceMotion.current) {
-    gsap.to('#hero-title', {
-      scale: 0.96,
-      yPercent: -8,
-      opacity: 0.4,
-      ease: 'none',
-      scrollTrigger: { trigger: '#hero', start: 'bottom bottom', end: 'bottom 30%', scrub: true },
-    });
+    gsap.set('#site-nav', { opacity: 1 });
+    gsap.set('#hero-phrase', { opacity: 0 });
+    gsap.set('#hero-gallery, #hero-cta', { opacity: 1 });
   }
 
   // ============ VBREAK PARALLAX ============
