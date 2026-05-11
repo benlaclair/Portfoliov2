@@ -11,7 +11,7 @@ If you change a token name, it breaks silently — there's no compile-time check
 ### Light chapter (default body)
 
 | Token | Value | Use |
-|---|---|---|
+| --- | --- | --- |
 | `--color-bg` | `#f4efe4` | Page background (warm parchment) |
 | `--color-bg-alt` | `#ece6d6` | Alternate panels, slightly cooler |
 | `--color-bg-2` | `#ece6d6` | Compat alias |
@@ -28,7 +28,7 @@ If you change a token name, it breaks silently — there's no compile-time check
 ### Dark chapter
 
 | Token | Value | Use |
-|---|---|---|
+| --- | --- | --- |
 | `--color-dark-bg` | `#0d0c0a` | Dark section background |
 | `--color-dark-bg-alt` | `#131210` | Alternate dark surface |
 | `--color-dark-panel` | `rgba(25, 23, 20, 0.06)` | Subtle dark panel |
@@ -41,7 +41,7 @@ If you change a token name, it breaks silently — there's no compile-time check
 ### Accent
 
 | Token | Value | Use |
-|---|---|---|
+| --- | --- | --- |
 | `--color-accent` | `#5b6cab` | Muted indigo. Used everywhere accent meaning matters |
 | `--color-accent-hover` | `#7080c0` | Hover state |
 | `--color-accent-soft` | `rgba(91, 108, 171, 0.14)` | Soft halos, pulse rings |
@@ -51,7 +51,7 @@ If you change a token name, it breaks silently — there's no compile-time check
 Card shadow recipes — light / dark / active variants. Consume via `box-shadow: var(--shadow-card)`. Don't hand-roll new stacks; if a card needs a different elevation, add a named token here.
 
 | Token | Use |
-|---|---|
+| --- | --- |
 | `--shadow-card` | Base card on cream/light canvas. Timeline pin, Tools rows, light Work panels |
 | `--shadow-card-active` | Active light card. Deeper drop, no glow |
 | `--shadow-card-dark` | Base card on dark room. Inset highlight + downward shadow |
@@ -66,7 +66,7 @@ Card shadow recipes — light / dark / active variants. Consume via `box-shadow:
 Three families, three roles. Drop everything else.
 
 | Family | Weights | Role | Source |
-|---|---|---|---|
+| --- | --- | --- | --- |
 | **Clash Display** | 500, 600 | Headings, hero, large display, accent words | Fontshare CDN |
 | **Satoshi** | 400, 500, 700 | Body text, UI, links | Fontshare CDN |
 | **JetBrains Mono** | 400, 500 | Mono labels, eyebrow text, timestamps | `@fontsource/jetbrains-mono` |
@@ -85,7 +85,7 @@ Three families, three roles. Drop everything else.
 ### Type scale (fluid, in `@theme`)
 
 | Token | Value | Typical use |
-|---|---|---|
+| --- | --- | --- |
 | `--text-xs` | `0.74rem` | Micro labels |
 | `--text-sm` | `0.88rem` | Eyebrow, footnotes |
 | `--text-base` | `1rem` | Body |
@@ -104,7 +104,7 @@ In practice, the homepage hero and CTA use bespoke `clamp()` values — they don
 Composed recipes for the recurring typography roles. Prefer these over re-typing inline font stacks. Defined as `@utility` in `global.css`.
 
 | Class | Composition |
-|---|---|
+| --- | --- |
 | `.text-display-xl` | Clash 500 · `clamp(64px, 11vw, 180px)` · 0.92 lh · -0.045em | Page hero h1 |
 | `.text-display-lg` | Clash 500 · `clamp(48px, 6.6vw, 100px)` · 0.96 lh · -0.04em |
 | `.text-display-md` | Clash 500 · `clamp(36px, 4.4vw, 64px)` · 1.0 lh · -0.03em |
@@ -149,12 +149,12 @@ GSAP code uses string easings (`'expo.out'`, `'power3.out'`) directly. CSS trans
 The homepage alternates dark and light sections to create chromatic rhythm. Maintain this when adding sections.
 
 | # | Section | Mode | Notes |
-|---|---|---|---|
+| --- | --- | --- | --- |
 | 1 | Loader | dark | `--color-dark-bg`, SVG B-mark stroke-painted in |
-| 2 | Hero | dark + halos | `is-dark has-halos`, orange + cool-blue radials |
-| 3 | Tagline | light + warmth | `atmo-warmth-tl` softens the hand-off from dark vbreak |
+| 2 | Hero | dark | Phrase → 4-col `<HeroGallery />` + CTA (Phase 8). Dark canvas with dim scrim over the gallery |
+| 3 | Tagline | light + warmth | `atmo-warmth-tl` softens the hand-off after the `.hero-curtain` wipe |
 | 4 | Vbreak | dark | Continuous strip, parallax background |
-| 5 | HorizontalWork | light | Editorial focus, panels readable |
+| 5 | VerticalWork | light | Three stacked sticky-pin cards (Phase 8) — was horizontal pinned scroll |
 | 6 | Timeline | light | Year numerals in Clash Display |
 | 7 | CTA | dark + halos | Closing chromatic anchor |
 | 8 | Footer | dark + grain | `atmo-grain-dark` adds film grain to the closing block |
@@ -170,7 +170,7 @@ Pattern: **D · D · L · D · L · L · D · D**. Hero and CTA/Footer are the t
 ```
 
 - `is-dark` flips background + text colors via the global rule in `global.css`.
-- `has-halos` adds two radial gradient halos (orange top-right, cool-blue bottom-left) via `::before/::after`. Optional — only the hero and CTA use it.
+- `has-halos` adds two radial gradient halos (indigo top-right, warm cream-amber bottom-left) via `::before/::after`. Optional — only the CTA currently uses it (hero dropped halos in Phase 8 in favor of the gallery + scrim).
 - `data-section-mode="dark"` hooks into the `BaseLayout.astro` ScrollTrigger that flips `body[data-mode]`. This is what swaps the cursor color from ink to dark-ink. **Always pair `is-dark` with this attribute** if the section is full-bleed and the user can pause inside it.
 
 ### Atmospheric utilities
@@ -178,13 +178,14 @@ Pattern: **D · D · L · D · L · L · D · D**. Hero and CTA/Footer are the t
 Four named, finite utilities for sections that want softness or texture without rolling a per-section snowflake.
 
 | Utility | Slot | Effect |
-|---|---|---|
+| --- | --- | --- |
 | `atmo-warmth-tl` | `::before` | Soft accent radial anchored top-left (light sections) |
 | `atmo-warmth-br` | `::before` | Soft accent radial anchored bottom-right (variation for rhythm) |
 | `atmo-grain-light` | `::after` | Subtle paper grain via SVG turbulence, `mix-blend-mode: multiply` |
 | `atmo-grain-dark` | `::after` | Subtle film grain via SVG turbulence, `mix-blend-mode: overlay` |
 
 Composition rules:
+
 - Warmth utilities own `::before`; grain utilities own `::after`. You can stack one warmth + one grain on the same section.
 - **Do not combine with `has-halos`** — halos already claim both pseudos, so atmo classes will be overwritten or overwrite the halos depending on order.
 - Pick at most one variant from each slot. The audit guidance is "not per-section snowflakes" — these are intentional, repeatable choices.
@@ -231,9 +232,10 @@ Most homepage sections use `padding: 200px 40px;` (or similar generous vertical)
 ### Mobile breakpoint
 
 `@media (max-width: 900px)` is the universal mobile breakpoint. At this width:
+
 - Multi-column grids collapse to 1 column
-- Hero font scales drop
-- HorizontalWork falls back to vertical stacking (the pin/scroll is desktop-only)
+- Hero font scales drop; HeroGallery collapses 4 cols → 2 cols (and 1 col at ≤600px)
+- VerticalWork card inner grids collapse to stacked metadata + visual
 - Timeline numeral shrinks
 - Navbar's right-side cluster (clock) is hidden via `hidden md:flex`
 

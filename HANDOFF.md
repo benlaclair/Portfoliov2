@@ -14,7 +14,7 @@ Personal portfolio for Ben LaClair (UX/UI + Graphic Designer). Static Astro site
 
 - **Repo**: `benlaclair/Portfoliov2` ([github.com/benlaclair/Portfoliov2](https://github.com/benlaclair/Portfoliov2))
 - **Branch model**: single-branch — `main` is where work happens.
-- **Deploy**: `main` push → https://portfoliov2-jet-six.vercel.app (auto-deploys via Vercel). Separate Vercel project from the v1 site at benlaclair.com — anything done here does not touch the live portfolio.
+- **Deploy**: `main` push → <https://portfoliov2-jet-six.vercel.app> (auto-deploys via Vercel). Separate Vercel project from the v1 site at benlaclair.com — anything done here does not touch the live portfolio.
 
 The current visual language is the result of seven phases:
 
@@ -33,7 +33,7 @@ Phase 3 is a **visual/animation layer over Phase 2's content layout** — page s
 ## Stack
 
 | Layer | Choice |
-|---|---|
+| --- | --- |
 | Framework | Astro 5 (static, file-based routing) |
 | Styling | Tailwind v4 via `@tailwindcss/vite` + custom `@theme` tokens in `src/styles/global.css` |
 | Motion | GSAP 3.13 + ScrollTrigger; Lenis 1.1 for smooth scroll |
@@ -48,7 +48,7 @@ No PostCSS config, no CSS preprocessor, no SSR. The site is pure static + client
 
 ## File map
 
-```
+```text
 src/
   layouts/
     BaseLayout.astro      Page chrome: <head>, fonts, cursor, curtain,
@@ -59,9 +59,11 @@ src/
                           accent underline, EST clock, mode-aware
                           frosted substrate, clip-path mobile menu
     Footer.astro          Dark chapter, large SVG B-mark + wordmark, info grid
-    HorizontalWork.astro  Pinned horizontal scroll, 3 case study panels,
-                          shrink-on-focus, side-rail wayfinding
-    Marquee.astro         Looping ticker, hover-slow
+    HorizontalWork.astro  Phase 8 — vertical sticky-pin cards (file name
+                          preserved for import stability), three-room
+                          rhythm with dark middle card
+    HeroGallery.astro     Phase 8 — 4-column infinite-loop gallery used by
+                          the homepage hero AND /work/graphic-design
     ProjectCard.astro     Vertical project row used on /work
     ContactForm.astro     Form → /api/contact → Formspree
     case-study/           Phase 5 — modular case-study renderers
@@ -80,13 +82,14 @@ src/
       MetaOverview.astro    Meta block + overview text
       Video.astro           Embedded video w/ caption
   pages/
-    index.astro           Homepage — Loader → Hero → Tagline → Vbreak →
-                          HorizontalWork → Marquee → Timeline → CTA
+    index.astro           Homepage — Loader → Hero (phrase → gallery + CTA)
+                          → Tagline → Vbreak → VerticalWork → Timeline → CTA
     work/
       index.astro         All projects grid (uses ProjectCard)
       [slug].astro        Case study template; reads from caseStudies
                           registry, no per-slug branches
-      graphic-design.astro Masonry gallery + vanilla JS lightbox
+      graphic-design.astro Phase 8 — full-page <HeroGallery fullPage />
+                          (was masonry + lightbox)
     about.astro           Hero + stats + bio + experience timeline
     contact.astro         Hero + ContactForm + email/social links
     tools.astro           Editorial rows for AI tools
@@ -109,7 +112,7 @@ src/
                           @utility classes (text-display-{xl,lg,md,sm},
                           text-eyebrow{,-accent}, text-meta, text-body*),
                           base, motion helpers, cursor, curtain, vbreak,
-                          [data-reveal], pulse
+                          [data-reveal], pulse, atmo-* utilities
 public/
   graphics/               86 design webp images   (untracked, copy from v1)
   images/                 project covers + assets (untracked, copy from v1)
@@ -122,12 +125,13 @@ public/
 
 ## Mental model
 
-**The homepage is a sequence of "chapters"** — each section is painted either dark or light to create rhythm. The dark chapters (Loader, Hero, Vbreak, CTA, Footer) are the chromatic anchors; light chapters (Tagline, HorizontalWork, Marquee, Timeline) are the editorial reading beats.
+**The homepage is a sequence of "chapters"** — each section is painted either dark or light to create rhythm. The dark chapters (Loader, Hero, Vbreak, CTA, Footer) are the chromatic anchors; light chapters (Tagline, VerticalWork, Timeline) are the editorial reading beats.
 
 **Motion is layered, not orchestrated.** Each section owns its own GSAP code. The only cross-section coordination is the loader-to-hero intro timeline (in `src/pages/index.astro`) and `body[data-mode]` tracking (in `BaseLayout.astro`).
 
 **Text reveals come in three flavors**, used deliberately:
-- **Word-reveal** (`.word > span` yPercent 115→0): hero only, after loader exits
+
+- **Word-reveal** (`.word > span` yPercent 115→0): hero phrase, after loader exits
 - **Line-reveal** (`.line > span` yPercent 110→0): CTA, contact, work hero, etc.
 - **`[data-reveal]` cascade** (opacity 0→1 + translateY 18→0 with sibling stagger): everything else — fills the gaps, keeps the page feeling consistently animated without one-off ScrollTrigger plumbing per element
 
@@ -155,11 +159,14 @@ Asset migration if you're cloning fresh: `public/graphics/`, `public/images/`, `
 ## Working on this project
 
 ### Branches
+
 - `main` is the only branch. Push triggers a Vercel deploy. No PR flow, no preview branches.
 - For experimental work, branch off main locally if you want to compare a state before pushing. Don't push exploratory branches to origin — keep the remote tidy.
 
 ### Commit style
+
 Subject line uses conventional-commit-ish prefixes:
+
 - `feat:` new feature or section
 - `fix:` bug fix
 - `refactor:` non-behavioral change
@@ -170,25 +177,30 @@ Body bullets describe the why, not the diff. See `git log --oneline main` for ex
 
 ### Common tasks
 
-**Add a new project case study**
+#### Add a new project case study
+
 1. Add entry to `src/data/projects.ts` (the `Project` type tells you the shape).
 2. If it has detailed sections, create `src/data/caseStudies/<slug>.ts` modeled on `vlier.ts` / `portfolio.ts`. Section types are defined in `caseStudies/types.ts` (discriminated union by `kind`).
 3. Register the case study in `src/data/caseStudies/index.ts`. The `[slug].astro` template reads the registry — no per-slug branches needed anymore.
 4. Drop hero asset in `public/images/`, set `coverImage` in the project entry.
 
-**Add a homepage section**
+#### Add a homepage section
+
 1. Decide light vs dark — match the chapter rhythm in [docs/DESIGN-SYSTEM.md](docs/DESIGN-SYSTEM.md).
 2. Add the markup to `src/pages/index.astro` between the existing sections. If dark, add `class="is-dark has-halos"` (halos optional) and `data-section-mode="dark"`.
 3. Add `data-reveal` attributes to the children you want cascaded. They'll be picked up automatically by the IntersectionObserver in `BaseLayout.astro`.
 4. Don't forget mobile breakpoint (`@media (max-width: 900px)`).
 
-**Tweak a typography token**
+#### Tweak a typography token
+
 Edit `src/styles/global.css` `@theme` block. Avoid changing token names — the inline `var(--font-display)` references in pages will break silently if renamed.
 
-**Add a new animation**
+#### Add a new animation
+
 Read [docs/ANIMATIONS.md](docs/ANIMATIONS.md) first. Most additions should be either a `[data-reveal]` (free, no JS needed) or a section-local ScrollTrigger in the page's `<script>` block. Don't pile new globals into `BaseLayout.astro` unless they apply site-wide.
 
-**Test reduced-motion**
+#### Test reduced-motion
+
 DevTools → Rendering → Emulate `prefers-reduced-motion: reduce`. The loader should skip, the hero should be visible immediately, the cursor should hide, Lenis should be off, and `[data-reveal]` elements should be visible without transition.
 
 ---
@@ -209,11 +221,11 @@ Phase 6 (section contrast) and Phase 7 (architectural migration) both shipped to
 
 ### Open items (smaller, surgical)
 
-- **Real assets** — copy `public/graphics/`, `public/images/`, `public/videos/`, `public/resume.pdf` from the v1 repo. The four project covers in `src/data/projects.ts` reference `/images/projects/*.jpg` (1440×900) that need to actually exist. Re-shoot or re-render the featured project covers in a consistent treatment.
-- **Graphic-design lightbox `<Image />` migration** — the 86-image gallery in `work/graphic-design.astro` is still raw `<img>`. Deferred from Phase 7 pending per-image dimensions from real binaries. Once assets arrive: add `width`/`height` per entry in `src/data/graphicDesign.ts` and swap `<img>` → `<Image>` with `widths={[300, 600, 900]}` and `sizes="(max-width: 900px) 50vw, 33vw"`.
-- **`<ClientRouter />` (View Transitions API)** — parked from Phase 7 plan as a separate initiative. Would replace the hand-rolled `.page-curtain` in `BaseLayout.astro` (lines ~202-243) with Astro 5's `<ClientRouter />`. Real upside: SPA-like navigation, persistent Lenis + cursor state, shared-element flights between `/work` grid and case-study heros. Real risk: requires re-binding ScrollTrigger and `[data-section-mode]` observers on `astro:after-swap`.
-- **Tier 3 audit smalls** — inline `onmouseover` handlers in `work/graphic-design.astro:68-69` should move to scoped CSS hover. Duplicate count-up animation pattern (`about.astro` stat counters + `index.astro` loader pct) could become a single `<Counter />` component. ContactForm error surface shows a single generic message for all non-200s — should distinguish 422 / 429 / 500. No linter/prettier in `package.json` — CRLF/LF warnings on every commit, would be solved by a `.gitattributes` + prettier config.
-- **Atmospheric effects on light/dark sections** — never implemented from the original Phase 6 audit. Light sections could get soft radial warmth mirroring the dark `has-halos` class; dark sections could get subtle film grain via SVG-as-data-URL with `mix-blend-mode: overlay`. CSS-only, no asset cost. Build 3-4 named utilities (`atmo-warmth-tl`, `atmo-grain-dark`) — not per-section snowflakes.
+- **Real assets** — copy `public/graphics/`, `public/images/`, `public/videos/`, `public/resume.pdf` from the v1 repo. The four project covers in `src/data/projects.ts` reference `/images/projects/*.jpg` (1440×900) that need to actually exist. Re-shoot or re-render the featured project covers in a consistent treatment. **Phase 8 also expects 86 webp files in `public/graphics/`** — without them the HeroGallery on home + `/work/graphic-design` renders empty columns.
+- **HeroGallery `<Image />` migration** — Phase 8 ships with raw `<img loading="lazy">` and natural aspect ratios (per the "flex to art" guidance). If LCP regresses or responsive serving becomes worth it, add `width`/`height` per entry in `src/data/graphicDesign.ts` and swap to `<Image widths={[300, 600, 900]} sizes="…">`.
+- **HeroGallery perf gate** — 86 lazy images in the homepage hero. Most decode below the fold so lazy works, but if Lighthouse flags LCP, gate column initialization (and `src=` swap from `data-src`) on the phrase-exit moment instead of immediate decode.
+- **`<ClientRouter />` (View Transitions API)** — parked from Phase 7 plan as a separate initiative. Would replace the hand-rolled `.page-curtain` in `BaseLayout.astro` (lines ~202-243) with Astro 5's `<ClientRouter />`. Real upside: SPA-like navigation, persistent Lenis + cursor state, shared-element flights between `/work` grid and case-study heros. Real risk: requires re-binding ScrollTrigger and `[data-section-mode]` observers on `astro:after-swap`. Also needs to coordinate with the new `.hero-curtain` from Phase D.
+- **Tier 3 audit remnants** — Duplicate count-up animation pattern (`about.astro` stat counters + `index.astro` loader pct) could become a single `<Counter />` component. ContactForm error surface shows a single generic message for all non-200s — should distinguish 422 / 429 / 500. No linter/prettier in `package.json` — CRLF/LF warnings on every commit, would be solved by a `.gitattributes` + prettier config. (Graphic-design `onmouseover` resolved in Phase F.)
 - **Performance pass** — Lighthouse audit, font self-hosting from Fontshare woff2s if LCP regresses, real-asset image weight check once binaries land.
 - **Content polish** — write the portfolio case study with screenshots; add a 4th project to the homepage hero count if `projects.ts` grows.
 - **Case-study visual richness** — the template is editorial but text-heavy. Inline diagrams or before/after image pairs would make Vlier and VEO read better.

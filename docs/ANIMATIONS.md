@@ -22,7 +22,7 @@ import { gsap, ScrollTrigger, ease, reduceMotion, revealLines } from '../lib/mot
 ## What runs where
 
 | File | Motion it owns |
-|---|---|
+| --- | --- |
 | `BaseLayout.astro` | Lenis init, custom cursor, magnetic links, page curtain, `body[data-mode]` ScrollTrigger, `[data-reveal]` IntersectionObserver |
 | `index.astro` | Loader → hero intro timeline, hero word-reveal, hero scrub-out, vbreak parallax, tagline word-scrub, timeline pin, CTA line-reveal |
 | `HorizontalWork.astro` | Pinned horizontal scroll, shrink-on-focus + Y-drift on whole `.hwork-panel-inner` cards, `is-active` shadow upgrade, side-rail, clip-path entrance, inner-image parallax, body-mode flip when middle (dark) card is active |
@@ -225,7 +225,7 @@ Five timeline entries (`tlData`). ScrollTrigger pins `#timeline-pin` for `280vh`
 ## Reveal patterns — when to use which
 
 | Pattern | Class / attr | When |
-|---|---|---|
+| --- | --- | --- |
 | **Word-reveal** | `<span class="word"><span>w</span></span>` + GSAP yPercent 115→0 | Hero only. Loader-chained. Don't use elsewhere. |
 | **Line-reveal** | `<span class="line"><span>...</span></span>` + GSAP y 110%→0 | Multi-line headlines (CTA, contact, work hero, about hero). Per-line stagger. |
 | **`[data-reveal]` cascade** | `data-reveal` attribute | Anything else: meta, body copy, info grid cells, footer columns. Free, automatic stagger. Default choice. |
@@ -262,7 +262,7 @@ After you add:
 ## Easings used on this site
 
 | Where | Easing |
-|---|---|
+| --- | --- |
 | Loader counter, bar | `power1.inOut` |
 | Loader B-mark stroke paint | `power3.out` |
 | Loader exit wipe, hero word-reveal | `expo.out` / `expo.inOut` |

@@ -66,19 +66,20 @@ cp public/resume.pdf  ../Portfoliov2/public/
 
 ## Project structure
 
-```
+```text
 src/
   layouts/    BaseLayout.astro — head, fonts, cursor, Lenis, curtain, observers
-  components/ Navbar, Footer, HorizontalWork, Marquee, ProjectCard, ContactForm
+  components/ Navbar, Footer, HorizontalWork (vertical sticky-pin since Phase 8),
+              HeroGallery (4-col infinite loop), ProjectCard, ContactForm
               case-study/  modular renderers (Section, Stats, Cards, Decisions, …)
   data/       projects, graphicDesign, tools
               caseStudies/  slug-keyed registry (types, index, vlier, veo, portfolio)
   pages/
-    index.astro            Homepage (loader → hero → tagline → vbreak →
-                           horizontal work → marquee → timeline → CTA)
+    index.astro            Homepage (loader → hero phrase → gallery + CTA →
+                           tagline → vbreak → vertical work → timeline → CTA)
     work/index.astro       All projects grid
     work/[slug].astro      Case study template (registry-driven)
-    work/graphic-design.astro  86-image gallery + lightbox
+    work/graphic-design.astro  Full-page HeroGallery (Phase 8)
     about.astro
     contact.astro
     tools.astro
@@ -90,12 +91,12 @@ public/                     favicon.svg (tracked); graphics/, images/, videos/, 
 
 ## Deploy
 
-`main` push → https://portfoliov2-jet-six.vercel.app (auto-deploys via Vercel). Separate Vercel project from the v1 site at benlaclair.com — anything done here does not touch the live portfolio.
+`main` push → <https://portfoliov2-jet-six.vercel.app> (auto-deploys via Vercel). Separate Vercel project from the v1 site at benlaclair.com — anything done here does not touch the live portfolio.
 
 ## Color tokens
 
 | Token | Value | Use |
-|---|---|---|
+| --- | --- | --- |
 | `--color-bg` | `#f4efe4` | Page background (warm parchment) |
 | `--color-ink` | `#161512` | Primary text |
 | `--color-ink-2` | `#2c2a25` | Secondary text |
@@ -103,8 +104,8 @@ public/                     favicon.svg (tracked); graphics/, images/, videos/, 
 | `--color-line` | `rgba(22, 21, 18, 0.14)` | Borders |
 | `--color-dark-bg` | `#0d0c0a` | Dark chapter background |
 | `--color-dark-ink` | `#f4efe4` | Text on dark |
-| `--color-accent` | `#ff5c1a` | Orange accent (the only "pop" color) |
-| `--color-accent-soft` | `rgba(255, 92, 26, 0.14)` | Halos, pulse rings |
+| `--color-accent` | `#5b6cab` | Muted indigo accent (the only "pop" color) |
+| `--color-accent-soft` | `rgba(91, 108, 171, 0.14)` | Halos, pulse rings |
 
 Full reference in [docs/DESIGN-SYSTEM.md](docs/DESIGN-SYSTEM.md).
 
@@ -116,6 +117,7 @@ Full reference in [docs/DESIGN-SYSTEM.md](docs/DESIGN-SYSTEM.md).
 - **Phase 4** — Reduced-motion + motion-correctness hardening
 - **Phase 5** — Case-study architecture refactor (slug-keyed registry, modular renderers)
 - **Phase 6** — Section-contrast pass (3-value rhythm, card-on-canvas, 60px mode-aware navbar, three-room horizontal Work)
-- **Phase 7** — Architectural migration (`src/lib/motion.ts`, design tokens, `<Image />`, `[data-reveal]` rollout, `<RowList />` + `<Grid />` primitives) — **current**
+- **Phase 7** — Architectural migration (`src/lib/motion.ts`, design tokens, `<Image />`, `[data-reveal]` rollout, `<RowList />` + `<Grid />` primitives)
+- **Phase 8 (2026-05)** — Homepage rebuild: minimal hero phrase → 4-column infinite-loop gallery + CTA, scroll-past curtain wipe, vertical sticky-pin Work cards, graphic-design page rebuilt with the same gallery, accent swapped orange `#ff5c1a` → indigo `#5b6cab`, copy audit (Marquee dropped) — **current**
 
-See [HANDOFF.md](HANDOFF.md) for the full state and roadmap.
+See [HANDOFF.md](HANDOFF.md) for the full state and roadmap, [docs/REBUILD-2026-05.md](docs/REBUILD-2026-05.md) for Phase 8's per-step tracker.

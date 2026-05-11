@@ -1,6 +1,6 @@
 # Portfoliov2 — 2026-05 rebuild
 
-In-progress build. Hero rebuild, indigo accent, vertical work cards, infinite-loop gallery, copy audit.
+Completed rebuild. Hero rebuild, indigo accent, vertical work cards, infinite-loop gallery, copy audit. Archived for historical reference.
 
 > **Last touched:** 2026-05-11
 > **Status:** ✅ All phases shipped. Tracker archived for reference.
@@ -22,7 +22,7 @@ This doc is the resumption beacon for working across multiple chat sessions / ma
 | CTA destination | `/work/graphic-design`, label "View design work →" |
 | Side-rail (vertical work) | **Dropped** — vertical scroll is its own wayfinding |
 | Lightbox (graphic-design) | **Removed** — gallery is view-only after rebuild |
-| Marquee section | **Removed** — chapter rhythm tightens to D · L · L · L · D · D |
+| Marquee section | **Removed** — chapter rhythm tightens to D · D · L · D · L · L · D · D |
 | Vbreak quote | New copy `Details that hold up under scrutiny.` (hero now owns the old quote) |
 
 ---

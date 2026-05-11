@@ -20,7 +20,7 @@ Vercel adapter is set in `astro.config.mjs`. Local `npm run build` produces a `.
 
 `.env.example` lists everything required:
 
-```
+```text
 FORMSPREE_ID=your_form_id_here
 ```
 
@@ -33,8 +33,8 @@ The contact form route (`src/pages/api/contact.ts`) is the only consumer.
 ## Branches
 
 | Branch | Purpose |
-|---|---|
-| `main` | The only branch. All work happens here. Push triggers a Vercel deploy to https://portfoliov2-jet-six.vercel.app. |
+| --- | --- |
+| `main` | The only branch. All work happens here. Push triggers a Vercel deploy to <https://portfoliov2-jet-six.vercel.app>. |
 
 For experimental work, branch off `main` locally if you want to compare a state before pushing. Don't push exploratory branches to origin — keep the remote tidy.
 
@@ -45,7 +45,7 @@ For experimental work, branch off `main` locally if you want to compare a state 
 Conventional-commit-ish prefixes:
 
 | Prefix | When |
-|---|---|
+| --- | --- |
 | `feat:` | New feature or section |
 | `feat(scope):` | Scoped feature (`feat(deploy):`, `feat(pages):`) |
 | `fix:` | Bug fix |
@@ -56,7 +56,7 @@ Conventional-commit-ish prefixes:
 
 Body: bullets describing **why**, not the diff. Example:
 
-```
+```text
 feat: Phase 3 — Perplexity comp visual integration
 
 - Design tokens: Clash Display + Satoshi replace Inter Tight + Instrument Serif…
@@ -80,14 +80,14 @@ Vercel sees the push and rebuilds. Watch the deploy in the Vercel dashboard. **N
 
 ## Deploy
 
-Vercel is wired to the repo. Push to `main` → deploy to https://portfoliov2-jet-six.vercel.app. (This is a separate Vercel project from the v1 site at benlaclair.com — anything done here does not touch the live portfolio.)
+Vercel is wired to the repo. Push to `main` → deploy to <https://portfoliov2-jet-six.vercel.app>. (This is a separate Vercel project from the v1 site at benlaclair.com — anything done here does not touch the live portfolio.)
 
 Build takes ~30–60 seconds. Watch in the Vercel dashboard or wait until the URL serves the new content.
 
 If a deploy fails, check the Vercel build logs in the dashboard. The most common failures:
 
 | Symptom | Likely cause |
-|---|---|
+| --- | --- |
 | `ETARGET / no matching version` | A dep version in `package.json` doesn't exist on npm. Check `@astrojs/react` is `^3.6.0`, not `^4.x`. |
 | `Cannot find module 'lenis'` | Lenis missing from `package.json`. It's needed even though it's used dynamically. |
 | Font not loading | Fontshare CDN blocked or `display=swap` typo. Check the `<link>` in `BaseLayout.astro`. |
@@ -103,11 +103,11 @@ If a deploy fails, check the Vercel build logs in the dashboard. The most common
 2. Drop the cover into `public/images/`.
 3. If it has detailed sections, create `src/data/caseStudies/<slug>.ts` modeled on `vlier.ts` / `portfolio.ts`. Section types are defined in `caseStudies/types.ts` (discriminated union by `kind`).
 4. Register the case study in `src/data/caseStudies/index.ts`. The `[slug].astro` template reads the registry — no per-slug branches needed.
-5. The homepage's `HorizontalWork.astro` shows `PROJECTS.slice(0, 3)` — if your new project should be featured, reorder the array.
+5. The homepage's `HorizontalWork.astro` (now rendering vertical sticky-pin cards) shows `PROJECTS.slice(0, 3)` — if your new project should be featured, reorder the array.
 
 ### Add a homepage section
 
-1. Pick light or dark per the chapter rhythm in [DESIGN-SYSTEM.md](DESIGN-SYSTEM.md). Don't break **D · D · L · D · L · L · L · D · D**.
+1. Pick light or dark per the chapter rhythm in [DESIGN-SYSTEM.md](DESIGN-SYSTEM.md). Don't break **D · D · L · D · L · L · D · D**.
 2. Insert markup between existing sections in `src/pages/index.astro`.
 3. If dark: add `class="is-dark has-halos"` (halos are optional, anchor-only) and `data-section-mode="dark"`.
 4. Use `[data-reveal]` on subsidiary elements rather than writing custom GSAP.
@@ -127,11 +127,11 @@ Edit `src/styles/global.css` `@theme` block. Don't rename tokens — inline `var
 
 ### Update copy on the homepage
 
-Edit `src/pages/index.astro` directly. The hero title, tagline, vbreak quote, timeline entries (`tlData` array in the script), and CTA copy are all there.
+Edit `src/pages/index.astro` directly. The hero phrase (Phase 8), tagline, vbreak quote, timeline entries (`tlData` array in the script), and CTA copy are all there. The hero CTA label + destination is in the `<a class="hero-cta" href="…">` markup near the top.
 
 ### Update the loader
 
-Loader markup, CSS, and timeline are all in `src/pages/index.astro`. The contract: counter must reach 100, bar must fill, B-mark must paint, then exit-wipe and hand off to nav/eyebrow/word-reveal/foot. Don't touch the order of the post-loader chain.
+Loader markup, CSS, and timeline are all in `src/pages/index.astro`. The contract: counter must reach 100, bar must fill, B-mark must paint, then exit-wipe and hand off to nav, phrase word-reveal, dwell, then phrase exit + gallery fade-in + CTA fade-in. Don't touch the order of the post-loader chain.
 
 ### Test reduced-motion
 
@@ -157,7 +157,7 @@ Targets: Performance 90+, Accessibility 95+, Best Practices 95+, SEO 100. The Fo
 
 ### Verify a specific animation
 
-Use `gsap.globalTimeline.timeScale(0.3)` in the console to slow everything down 3.3×. Useful for verifying the loader-to-hero chain or the HorizontalWork shrink-on-focus.
+Use `gsap.globalTimeline.timeScale(0.3)` in the console to slow everything down 3.3×. Useful for verifying the loader-to-hero chain or the VerticalWork card scale-into-focus animation.
 
 ---
 
