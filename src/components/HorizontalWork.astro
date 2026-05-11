@@ -125,6 +125,20 @@ const featured: Project[] = PROJECTS.slice(0, 3);
     flex-shrink: 0;
     padding: 80px 40px;
   }
+  /* Three-room rhythm — Light · Dark · Mid-tone */
+  .hwork-panel[data-index="0"] { background: var(--color-bg); }
+  .hwork-panel[data-index="1"] {
+    background: var(--color-dark-bg);
+    color: var(--color-dark-ink);
+  }
+  .hwork-panel[data-index="2"] { background: var(--color-bg-2); }
+
+  /* Dark middle panel text overrides */
+  .hwork-panel[data-index="1"] .hwork-meta-num { color: var(--color-dark-muted); }
+  .hwork-panel[data-index="1"] .hwork-desc { color: var(--color-dark-ink-2); }
+  .hwork-panel[data-index="1"] .hwork-title,
+  .hwork-panel[data-index="1"] .hwork-link { color: var(--color-dark-ink); }
+  .hwork-panel[data-index="1"] .hwork-visual-label { color: rgba(244, 239, 228, 0.55); }
   .hwork-panel-inner {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -324,6 +338,9 @@ const featured: Project[] = PROJECTS.slice(0, 3);
           if (self.isActive) {
             if (titleSpan) gsap.to(titleSpan, { y: '0%', duration: 0.9, ease: 'expo.out' });
             if (visual) visual.classList.add('in');
+            // Three-room rhythm: middle panel (i=1) is dark — flip body mode
+            // so the cursor inverts; sibling panels restore light.
+            document.body.dataset.mode = i === 1 ? 'dark' : 'light';
           }
         },
       });
@@ -374,5 +391,21 @@ const featured: Project[] = PROJECTS.slice(0, 3);
         });
       }
     });
+
+    // Stacked-layout mode flip — the middle panel is dark, so track its
+    // viewport position so the body-mode (and therefore the cursor) inverts
+    // while it's on screen.
+    const darkPanel = panels[1];
+    if (darkPanel) {
+      ScrollTrigger.create({
+        trigger: darkPanel,
+        start: 'top 60px',
+        end: 'bottom 60px',
+        onEnter: () => { document.body.dataset.mode = 'dark'; },
+        onLeave: () => { document.body.dataset.mode = 'light'; },
+        onEnterBack: () => { document.body.dataset.mode = 'dark'; },
+        onLeaveBack: () => { document.body.dataset.mode = 'light'; },
+      });
+    }
   }
 </script>
