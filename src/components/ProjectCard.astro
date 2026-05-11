@@ -19,10 +19,11 @@ const num = '/' + String(index + 1).padStart(2, '0');
   >
     <div
       class="project-num"
+      data-reveal
       style="font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.12em; color: var(--color-ink-2); padding-top: 8px"
     >{num}</div>
 
-    <div class="project-meta" style="padding-top: 4px">
+    <div class="project-meta" data-reveal style="padding-top: 4px">
       <div
         style="font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em; color: var(--color-accent); text-transform: uppercase; margin-bottom: 16px"
       >{project.category} &middot; {project.year}</div>
@@ -46,6 +47,7 @@ const num = '/' + String(index + 1).padStart(2, '0');
 
     <div
       class="project-visual"
+      data-reveal
       style="aspect-ratio: 4/3; background: var(--color-paper); position: relative; overflow: hidden; border-radius: 2px"
     >
       <div class="pv-inner" style="position: absolute; inset: -10%; will-change: transform">
@@ -103,34 +105,16 @@ const num = '/' + String(index + 1).padStart(2, '0');
 </style>
 
 <script>
-  import { gsap, ease, reduceMotion } from '../lib/motion';
+  import { gsap, reduceMotion } from '../lib/motion';
 
-  if (reduceMotion.current) {
-    // Without GSAP touching these, the markup renders fully visible already.
-    // Bail to avoid leaving inline opacity/transform from gsap.from().
-  } else {
+  // num / meta / visual reveals handled by [data-reveal] in BaseLayout.
+  // Inner image parallax stays here — it's a scrub, not a reveal.
+  if (!reduceMotion.current) {
     document.querySelectorAll<HTMLElement>('[data-project]').forEach((p) => {
-      const meta = p.querySelector('.project-meta');
-      const num = p.querySelector('.project-num');
       const visual = p.querySelector<HTMLElement>('.project-visual');
       const inner = p.querySelector<HTMLElement>('.pv-inner');
-      if (!meta || !num || !visual || !inner) return;
+      if (!visual || !inner) return;
 
-      gsap.from([num, meta], {
-        y: 30,
-        opacity: 0,
-        duration: 1.0,
-        stagger: 0.08,
-        ease: ease.expo,
-        scrollTrigger: { trigger: p, start: 'top 75%' },
-      });
-      gsap.from(visual, {
-        y: 60,
-        opacity: 0,
-        duration: 1.2,
-        ease: ease.expo,
-        scrollTrigger: { trigger: p, start: 'top 75%' },
-      });
       gsap.fromTo(
         inner,
         { yPercent: -8 },

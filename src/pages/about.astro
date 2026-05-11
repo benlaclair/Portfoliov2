@@ -162,7 +162,7 @@ const stats = [
 
       <div>
         {experience.map((item) => (
-          <div style="display: grid; grid-template-columns: 200px 1fr; gap: 60px; padding: 36px 0; border-bottom: 1px solid var(--color-line)" class="exp-row">
+          <div style="display: grid; grid-template-columns: 200px 1fr; gap: 60px; padding: 36px 0; border-bottom: 1px solid var(--color-line)" class="exp-row" data-reveal>
             <div>
               <div style="font-family: var(--font-mono); font-size: 12px; color: var(--color-ink-2); margin-bottom: 4px">{item.period}</div>
               <div style={`font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: ${item.type === 'work' ? 'var(--color-accent)' : 'var(--color-muted)'}`}>{item.type === 'work' ? 'Work' : 'Education'}</div>
@@ -201,18 +201,7 @@ const stats = [
 
   revealLines('.about-h1 .line span');
 
-  if (!reduceMotion.current) {
-    // Experience rows
-    gsap.utils.toArray<HTMLElement>('.exp-row').forEach((row) => {
-      gsap.from(row, {
-        y: 30,
-        opacity: 0,
-        duration: 0.7,
-        ease: ease.expo,
-        scrollTrigger: { trigger: row, start: 'top 88%' },
-      });
-    });
-  }
+  // exp-row reveals handled by [data-reveal] IntersectionObserver in BaseLayout.
 
   // Stat number tick-up on scroll-into-view. Under reduced motion we still
   // surface the final value (no animated count), so the numbers aren't stuck

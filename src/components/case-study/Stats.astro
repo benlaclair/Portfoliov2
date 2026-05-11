@@ -14,7 +14,7 @@ const { items } = Astro.props;
       style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--color-line)"
     >
       {items.map((s) => (
-        <div class="cs-stat" style="background: var(--color-bg); padding: 40px 32px">
+        <div class="cs-stat" data-reveal style="background: var(--color-bg); padding: 40px 32px">
           <p
             style="font-family: var(--font-display); font-weight: 500; font-size: clamp(40px, 5vw, 72px); line-height: 1; letter-spacing: -0.04em; color: var(--color-ink); margin-bottom: 12px"
           >{s.value}</p>

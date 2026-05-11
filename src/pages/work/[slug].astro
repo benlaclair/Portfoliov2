@@ -142,29 +142,8 @@ const postSections = caseStudy?.post ?? [];
       });
     }
 
-    // Stat reveal
-    gsap.utils.toArray<HTMLElement>('.cs-stat').forEach((el) => {
-      gsap.from(el, {
-        y: 30,
-        opacity: 0,
-        duration: 0.7,
-        ease: ease.expo,
-        scrollTrigger: { trigger: el, start: 'top 88%' },
-      });
-    });
-
-    // Decision/process/challenge rows
-    ['.cs-decision', '.cs-process', '.cs-challenge'].forEach((sel) => {
-      gsap.utils.toArray<HTMLElement>(sel).forEach((row) => {
-        gsap.from(row, {
-          y: 30,
-          opacity: 0,
-          duration: 0.7,
-          ease: ease.expo,
-          scrollTrigger: { trigger: row, start: 'top 88%' },
-        });
-      });
-    });
+    // cs-stat / cs-decision / cs-process / cs-challenge reveals are
+    // handled by the [data-reveal] IntersectionObserver in BaseLayout.
   } else {
     // Reduced-motion fallback: cover starts with clip-path: inset(0 100% 0 0);
     // open it immediately so the image is visible.
