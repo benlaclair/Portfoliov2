@@ -9,7 +9,7 @@ import { TOOLS } from '../data/tools';
 >
   <div style="padding: 140px 40px 80px; max-width: 1440px; margin-inline: auto">
 
-    <div style="border-bottom: 1px solid var(--color-line); padding-bottom: 60px; margin-bottom: 0">
+    <div style="padding-bottom: 60px; margin-bottom: 40px">
       <div class="section-num" style="margin-bottom: 40px">— Built things &middot; 2025–2026</div>
       <div
         class="tools-head"
@@ -27,6 +27,7 @@ import { TOOLS } from '../data/tools';
       </div>
     </div>
 
+    <div class="tools-stack" style="display: flex; flex-direction: column; gap: 24px">
     {TOOLS.map((tool, i) => {
       const num = String(i + 1).padStart(2, '0');
       const statusLabel = tool.status === 'live' ? 'Live' : tool.status === 'beta' ? 'Beta' : 'Coming soon';
@@ -34,7 +35,7 @@ import { TOOLS } from '../data/tools';
         <article
           class="tool-row"
           data-tool
-          style="display: grid; grid-template-columns: 80px 1fr 1fr 40px; gap: 60px; padding: 60px 0; border-top: 1px solid var(--color-line); align-items: start"
+          style="display: grid; grid-template-columns: 80px 1fr 1fr 40px; gap: 60px; padding: 48px 56px; background: var(--color-paper); border-radius: 18px; box-shadow: 0 1px 0 rgba(22, 21, 18, 0.04), 0 24px 60px -32px rgba(22, 21, 18, 0.10); align-items: start"
         >
           <div
             style="font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.12em; color: var(--color-ink-2); padding-top: 8px"
@@ -94,6 +95,7 @@ import { TOOLS } from '../data/tools';
         </article>
       );
     })}
+    </div>
 
   </div>
 </BaseLayout>
@@ -101,7 +103,7 @@ import { TOOLS } from '../data/tools';
 <style>
   @media (max-width: 900px) {
     .tools-head { grid-template-columns: 1fr !important; gap: 24px !important; }
-    .tool-row { grid-template-columns: 60px 1fr !important; gap: 24px !important; }
+    .tool-row { grid-template-columns: 60px 1fr !important; gap: 24px !important; padding: 32px 28px !important; }
     .tool-row > :nth-child(3), .tool-row > :nth-child(4) {
       grid-column: 1 / -1; margin-top: 16px;
     }

@@ -177,8 +177,8 @@ import Marquee from '../components/Marquee.astro';
 
   .divider { height: 1px; background: var(--color-line); margin: 0 40px; }
 
-  /* tagline — light */
-  .tagline { padding: 80px 40px; display: grid; grid-template-columns: 1fr 2fr; gap: 80px; align-items: start; }
+  /* tagline — light, mid-tone canvas (3-value rhythm) */
+  .tagline { padding: 120px 40px; background: var(--color-bg-2); display: grid; grid-template-columns: 1fr 2fr; gap: 80px; align-items: start; }
   .tagline-num { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em; color: var(--color-ink-2); text-transform: uppercase; }
   .tagline-text { font-family: var(--font-body); font-weight: 400; font-size: clamp(28px, 3.4vw, 52px); line-height: 1.15; letter-spacing: -0.025em; color: var(--color-ink); }
   .tagline-text .tag-word { display: inline-block; opacity: 0.18; transition: opacity 0.4s ease; will-change: opacity; }
@@ -188,7 +188,19 @@ import Marquee from '../components/Marquee.astro';
   .timeline-stage { height: 280vh; position: relative; }
   .timeline-stage.is-static { height: auto; }
   .timeline-stage.is-static .timeline-pin { height: auto; min-height: 60vh; }
-  .timeline-pin { height: 100vh; display: grid; grid-template-rows: auto 1fr auto; gap: 40px; align-items: stretch; padding-block: 40px; }
+  .timeline-pin {
+    height: 100vh;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    gap: 40px;
+    align-items: stretch;
+    padding: 48px clamp(28px, 4vw, 64px);
+    background: var(--color-paper);
+    border-radius: 22px;
+    box-shadow:
+      0 1px 0 rgba(22, 21, 18, 0.04),
+      0 30px 80px -36px rgba(22, 21, 18, 0.14);
+  }
   .timeline-top { display: flex; justify-content: space-between; align-items: baseline; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em; color: var(--color-ink-2); text-transform: uppercase; }
   .timeline-mid { display: grid; place-items: center; position: relative; }
   .timeline-num { font-family: var(--font-display); font-weight: 500; font-style: normal; font-size: clamp(160px, 30vw, 460px); line-height: 0.85; letter-spacing: -0.04em; color: var(--color-ink); position: relative; }
