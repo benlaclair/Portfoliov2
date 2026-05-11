@@ -149,9 +149,7 @@ const featured: Project[] = PROJECTS.slice(0, 3);
     border-radius: 24px;
     background: var(--color-paper);
     border: 1px solid var(--color-line-soft);
-    box-shadow:
-      0 1px 0 rgba(22, 21, 18, 0.04),
-      0 30px 70px -28px rgba(22, 21, 18, 0.16);
+    box-shadow: var(--shadow-card);
     will-change: transform, box-shadow;
     transform-origin: center center;
     transition: box-shadow 0.55s var(--ease-out);
@@ -164,24 +162,17 @@ const featured: Project[] = PROJECTS.slice(0, 3);
   .hwork-panel[data-index="1"] .hwork-panel-inner {
     background: var(--color-dark-bg-alt);
     border: 2px solid var(--color-accent);
-    box-shadow:
-      inset 0 1px 0 rgba(244, 239, 228, 0.05),
-      0 30px 70px -28px rgba(0, 0, 0, 0.55);
+    box-shadow: var(--shadow-card-dark);
   }
 
   /* Active card lifts off the table — stronger shadow signals depth */
   .hwork-panel-inner.is-active {
-    box-shadow:
-      0 1px 0 rgba(22, 21, 18, 0.06),
-      0 50px 110px -30px rgba(22, 21, 18, 0.24);
+    box-shadow: var(--shadow-card-active);
   }
   /* Active dark card: accent-tinted glow propagates the orange edge
      into ambient light cast on the room. */
   .hwork-panel[data-index="1"] .hwork-panel-inner.is-active {
-    box-shadow:
-      inset 0 1px 0 rgba(244, 239, 228, 0.07),
-      0 50px 110px -30px rgba(0, 0, 0, 0.7),
-      0 40px 80px -20px rgba(255, 92, 26, 0.18);
+    box-shadow: var(--shadow-card-dark-active);
   }
   .hwork-meta-num {
     font-family: var(--font-mono);
