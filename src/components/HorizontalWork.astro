@@ -7,77 +7,68 @@ const featured: Project[] = PROJECTS.slice(0, 3);
 ---
 
 <section class="hwork" id="hwork">
-  <!-- Section header (above the pinned region) -->
   <div class="wrap hwork-header">
-    <div class="hwork-header-left">
-      <h2 class="hwork-h2">
-        Three projects.<br/>
-        <span class="accent">Three problems</span><br/>
-        worth solving.
-      </h2>
-    </div>
+    <h2 class="hwork-h2">
+      Three projects.<br/>
+      <span class="accent">Three problems</span><br/>
+      worth solving.
+    </h2>
   </div>
 
-  <!-- Pinned horizontal scroll stage (desktop only) -->
-  <div class="hwork-stage" id="hwork-stage">
-    <div class="hwork-track" id="hwork-track">
-      {featured.map((p, i) => {
-        const num = String(i + 1).padStart(2, '0');
-        return (
-          <article class="hwork-panel" data-panel data-index={i}>
-            <a href={`/work/${p.slug}`} data-cursor="read" class="hwork-panel-inner">
-              <div class="hwork-meta">
-                <div class="hwork-meta-num" data-reveal>{num} / 03</div>
-                <div class="hwork-meta-cat" data-reveal>{p.category} &middot; {p.year}</div>
-                <h3 class="hwork-title" data-title>
-                  <span class="line"><span>{p.shortTitle}</span></span>
-                </h3>
-                <p class="hwork-desc" data-reveal>{p.description}</p>
-                <span class="hwork-link" data-reveal>
-                  Read case
-                  <span class="arrow">→</span>
-                </span>
+  <div class="hwork-stack">
+    {featured.map((p, i) => {
+      const num = String(i + 1).padStart(2, '0');
+      const isDark = i === 1;
+      return (
+        <article
+          class="hwork-panel"
+          data-panel
+          data-index={i}
+          data-section-mode={isDark ? 'dark' : undefined}
+        >
+          <a href={`/work/${p.slug}`} data-cursor="read" class="hwork-panel-inner">
+            <div class="hwork-meta">
+              <div class="hwork-meta-num">{num} / 03</div>
+              <div class="hwork-meta-cat">{p.category} &middot; {p.year}</div>
+              <h3 class="hwork-title" data-title>
+                <span class="line"><span>{p.shortTitle}</span></span>
+              </h3>
+              <p class="hwork-desc">{p.description}</p>
+              <span class="hwork-link">
+                Read case
+                <span class="arrow">→</span>
+              </span>
+            </div>
+            <div class="hwork-visual" data-visual>
+              <div class="hwork-visual-inner" data-inner>
+                {p.coverImage && p.coverWidth && p.coverHeight ? (
+                  <Image
+                    src={p.coverImage}
+                    alt={p.shortTitle}
+                    width={p.coverWidth}
+                    height={p.coverHeight}
+                    widths={[600, 1200, 1800]}
+                    sizes="(max-width: 900px) 100vw, 50vw"
+                    format="webp"
+                    loading="lazy"
+                  />
+                ) : (
+                  <div
+                    class="hwork-fallback"
+                    style={`background: linear-gradient(135deg, ${p.coverColor}25, ${p.coverColor}08)`}
+                  >
+                    <span style={`color: ${p.coverColor}; font-family: var(--font-display);`}>
+                      {p.shortTitle}
+                    </span>
+                  </div>
+                )}
               </div>
-              <div class="hwork-visual" data-visual>
-                <div class="hwork-visual-inner" data-inner>
-                  {p.coverImage && p.coverWidth && p.coverHeight ? (
-                    <Image
-                      src={p.coverImage}
-                      alt={p.shortTitle}
-                      width={p.coverWidth}
-                      height={p.coverHeight}
-                      widths={[600, 1200, 1800]}
-                      sizes="(max-width: 900px) 100vw, 50vw"
-                      format="webp"
-                      loading="lazy"
-                    />
-                  ) : (
-                    <div
-                      class="hwork-fallback"
-                      style={`background: linear-gradient(135deg, ${p.coverColor}25, ${p.coverColor}08)`}
-                    >
-                      <span style={`color: ${p.coverColor}; font-family: var(--font-display);`}>
-                        {p.shortTitle}
-                      </span>
-                    </div>
-                  )}
-                </div>
-                <div class="hwork-visual-label">{p.category} · {p.year}</div>
-              </div>
-            </a>
-          </article>
-        );
-      })}
-    </div>
-
-    <!-- Side rail wayfinding -->
-    <div class="hwork-rail" id="hwork-rail">
-      {featured.map((_, i) => (
-        <span class="rail-tick" data-rail-tick data-index={i}>
-          {String(i + 1).padStart(2, '0')}
-        </span>
-      ))}
-    </div>
+              <div class="hwork-visual-label">{p.category} &middot; {p.year}</div>
+            </div>
+          </a>
+        </article>
+      );
+    })}
   </div>
 </section>
 
@@ -94,30 +85,20 @@ const featured: Project[] = PROJECTS.slice(0, 3);
     letter-spacing: -0.04em;
   }
 
-  /* Stage — desktop horizontal pinned scroll */
-  .hwork-stage {
-    position: relative;
-    overflow: hidden;
-    width: 100%;
-  }
-  .hwork-track {
+  /* Stack — vertical three-room rhythm: Light · Dark · Mid-tone */
+  .hwork-stack {
     display: flex;
-    flex-wrap: nowrap;
-    width: max-content;
-    will-change: transform;
+    flex-direction: column;
+    gap: 80px;
+    padding: 0 40px 120px;
   }
   .hwork-panel {
-    width: 100vw;
-    height: 100vh;
-    flex-shrink: 0;
-    padding: 80px 40px;
+    position: relative;
+    border-radius: 24px;
+    overflow: hidden;
   }
-  /* Three-room rhythm — Light · Dark · Mid-tone */
   .hwork-panel[data-index="0"] { background: var(--color-bg); }
-  .hwork-panel[data-index="1"] {
-    background: var(--color-dark-bg);
-    color: var(--color-dark-ink);
-  }
+  .hwork-panel[data-index="1"] { background: var(--color-dark-bg); color: var(--color-dark-ink); }
   .hwork-panel[data-index="2"] { background: var(--color-bg-2); }
 
   /* Dark middle panel text overrides */
@@ -126,41 +107,37 @@ const featured: Project[] = PROJECTS.slice(0, 3);
   .hwork-panel[data-index="1"] .hwork-title,
   .hwork-panel[data-index="1"] .hwork-link { color: var(--color-dark-ink); }
   .hwork-panel[data-index="1"] .hwork-visual-label { color: rgba(244, 239, 228, 0.55); }
+
   .hwork-panel-inner {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 80px;
-    height: 100%;
     align-items: center;
     padding: clamp(40px, 5vw, 64px);
     border-radius: 24px;
     background: var(--color-paper);
     border: 1px solid var(--color-line-soft);
     box-shadow: var(--shadow-card);
-    will-change: transform, box-shadow;
+    will-change: transform, box-shadow, opacity;
     transform-origin: center center;
-    transition: box-shadow 0.55s var(--ease-out);
+    transition: box-shadow 0.55s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
-  /* Dark room: card uses dark-bg-alt so cursor (cream) stays readable
-     on the card surface. 2px accent stroke defines the edge against
-     the near-identical #0d0c0a room and signals this card as the
-     dramatic anchor of the three-room rhythm. */
+  /* Dark room: 2px accent stroke defines the edge against the near-identical
+     #0d0c0a room and signals this card as the dramatic anchor. */
   .hwork-panel[data-index="1"] .hwork-panel-inner {
     background: var(--color-dark-bg-alt);
     border: 2px solid var(--color-accent);
     box-shadow: var(--shadow-card-dark);
   }
 
-  /* Active card lifts off the table — stronger shadow signals depth */
   .hwork-panel-inner.is-active {
     box-shadow: var(--shadow-card-active);
   }
-  /* Active dark card: accent-tinted glow propagates the orange edge
-     into ambient light cast on the room. */
   .hwork-panel[data-index="1"] .hwork-panel-inner.is-active {
     box-shadow: var(--shadow-card-dark-active);
   }
+
   .hwork-meta-num {
     font-family: var(--font-mono);
     font-size: 11px;
@@ -246,185 +223,125 @@ const featured: Project[] = PROJECTS.slice(0, 3);
     z-index: 2;
   }
 
-  /* Side rail */
-  .hwork-rail {
-    position: absolute;
-    right: 32px;
-    top: 50%;
-    transform: translateY(-50%);
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    z-index: 5;
-    pointer-events: none;
-  }
-  .rail-tick {
-    font-family: var(--font-mono);
-    font-size: 10px;
-    letter-spacing: 0.14em;
-    color: var(--color-muted);
-    text-transform: uppercase;
-    transition: color 0.4s ease, transform 0.4s ease;
-  }
-  .rail-tick.active {
-    color: var(--color-accent);
-    transform: translateX(-4px);
-  }
-
   @media (max-width: 900px) {
-    .hwork-header { grid-template-columns: 1fr; gap: 32px; padding-block: 80px 40px; }
-    .hwork-stage { overflow: visible; }
-    .hwork-track {
-      display: flex;
-      flex-direction: column;
-      width: 100%;
-      transform: none !important;
-    }
-    .hwork-panel {
-      width: 100%;
-      height: auto;
-      padding: 40px 24px 80px;
-    }
+    .hwork-header { padding-block: 80px 40px; }
+    .hwork-stack { gap: 48px; padding: 0 24px 80px; }
     .hwork-panel-inner {
       grid-template-columns: 1fr;
       gap: 32px;
     }
-    .hwork-rail { display: none; }
-    .hwork-visual { clip-path: none !important; transform: none !important; }
   }
 </style>
 
 <script>
   import { gsap, ScrollTrigger, ease, reduceMotion } from '../lib/motion';
 
-  const isMobile = window.matchMedia('(max-width: 900px)').matches;
-
-  const stage = document.getElementById('hwork-stage');
-  const track = document.getElementById('hwork-track') as HTMLElement;
   const panels = gsap.utils.toArray<HTMLElement>('[data-panel]');
-  const ticks = gsap.utils.toArray<HTMLElement>('[data-rail-tick]');
+  const cards = panels.map((p) => p.querySelector<HTMLElement>('.hwork-panel-inner'));
 
-  if (stage && track && panels.length && !isMobile && !reduceMotion.current) {
-    const total = panels.length;
-    const distance = (total - 1) * window.innerWidth;
-    const cards = panels.map((p) => p.querySelector<HTMLElement>('.hwork-panel-inner'));
-
-    // Pin + horizontal scroll. onUpdate scales each card based on its distance
-    // from active center — active card sits at scale 1, neighbors recede to
-    // 0.62 with downward drift. Inactive cards physically receded from the
-    // table; active card occupies the foreground.
-    gsap.to(track, {
-      x: -distance,
-      ease: 'none',
-      scrollTrigger: {
-        trigger: stage,
-        pin: true,
-        scrub: 0.6,
-        end: () => `+=${distance}`,
-        invalidateOnRefresh: true,
-        onUpdate: (self) => {
-          const progress = self.progress * (total - 1);
-          cards.forEach((card, i) => {
-            if (!card) return;
-            const dist = Math.abs(progress - i);
-            const scale = Math.max(0.62, 1 - dist * 0.38);
-            const yPercent = -dist * 22;
-            gsap.set(card, { scale, yPercent });
-          });
-        },
-      },
-    });
-
-    // Active panel detection — set rail tick + reveal title/visual
+  if (panels.length) {
     panels.forEach((panel, i) => {
-      const titleSpan = panel.querySelector<HTMLElement>('[data-title] .line > span');
+      const card = cards[i];
       const visual = panel.querySelector<HTMLElement>('[data-visual]');
       const inner = panel.querySelector<HTMLElement>('[data-inner]');
+      const titleSpan = panel.querySelector<HTMLElement>('[data-title] .line > span');
+
+      if (reduceMotion.current) {
+        // Static fallback — all cards full, no motion
+        if (titleSpan) gsap.set(titleSpan, { y: 0 });
+        if (visual) visual.classList.add('in');
+        if (card) card.classList.add('is-active');
+        return;
+      }
+
       if (titleSpan) gsap.set(titleSpan, { y: '110%' });
 
-      ScrollTrigger.create({
-        trigger: stage,
-        start: () => `top+=${i * (distance / (total - 1 || 1))} top`,
-        end: () => `top+=${(i + 1) * (distance / (total - 1 || 1))} top`,
-        onToggle: (self) => {
-          ticks.forEach((t, ti) => t.classList.toggle('active', ti === i && self.isActive));
-          cards.forEach((c, ci) => c?.classList.toggle('is-active', ci === i && self.isActive));
-          if (self.isActive) {
-            if (titleSpan) gsap.to(titleSpan, { y: '0%', duration: 0.9, ease: ease.expo });
-            if (visual) visual.classList.add('in');
-            // Three-room rhythm: middle panel (i=1) is dark — flip body mode
-            // so the cursor inverts; sibling panels restore light.
-            document.body.dataset.mode = i === 1 ? 'dark' : 'light';
-          }
+      // Card enter: scale + y + opacity as it rises into focus
+      gsap.fromTo(card, {
+        scale: 0.92,
+        yPercent: 12,
+        opacity: 0.6,
+      }, {
+        scale: 1,
+        yPercent: 0,
+        opacity: 1,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: panel,
+          start: 'top 85%',
+          end: 'center 55%',
+          scrub: 0.8,
         },
       });
 
-      // Inner image parallax across panel scroll
-      if (inner) {
-        gsap.fromTo(
-          inner,
-          { yPercent: -8 },
-          {
-            yPercent: 8,
-            ease: 'none',
-            scrollTrigger: {
-              trigger: panel,
-              start: 'top top',
-              end: 'bottom top',
-              scrub: true,
-            },
-          }
-        );
-      }
-    });
+      // Card exit: scale back as it recedes from focus
+      gsap.fromTo(card, {
+        scale: 1,
+        yPercent: 0,
+        opacity: 1,
+      }, {
+        scale: 0.96,
+        yPercent: -8,
+        opacity: 0.7,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: panel,
+          start: 'center 45%',
+          end: 'bottom 15%',
+          scrub: 0.8,
+        },
+      });
 
-    // Initial: first panel active
-    ticks[0]?.classList.add('active');
-    cards[0]?.classList.add('is-active');
-    const firstTitle = panels[0]?.querySelector<HTMLElement>('[data-title] .line > span');
-    if (firstTitle) gsap.to(firstTitle, { y: '0%', duration: 0.9, ease: ease.expo, delay: 0.3 });
-    const firstVisual = panels[0]?.querySelector<HTMLElement>('[data-visual]');
-    if (firstVisual) gsap.delayedCall(0.4, () => firstVisual.classList.add('in'));
-  } else if (panels.length) {
-    // Mobile / reduced motion fallback: panels render fully visible. Make sure
-    // the line-reveal title and clip-path visual aren't left in their hidden
-    // states (the desktop path animates them in; we have to stage them here).
-    panels.forEach((panel) => {
-      const titleSpan = panel.querySelector<HTMLElement>('[data-title] .line > span');
-      const visual = panel.querySelector<HTMLElement>('[data-visual]');
-      const card = panel.querySelector<HTMLElement>('.hwork-panel-inner');
-      if (titleSpan) gsap.set(titleSpan, { y: 0 });
-      if (visual) visual.classList.add('in');
-      // Stacked layout has no active/inactive — every card gets the full
-      // shadow since each is its own focal moment when scrolled to.
-      if (card) card.classList.add('is-active');
-      // Skip gsap.from on reduced motion — it would leave panels hidden until
-      // ScrollTrigger fires. On mobile, keep a soft entrance.
-      if (!reduceMotion.current) {
-        gsap.from(panel, {
-          opacity: 0,
-          y: 30,
-          duration: 0.8,
-          ease: ease.expo,
-          scrollTrigger: { trigger: panel, start: 'top 85%' },
+      // One-shot reveal of clip-path + title line when card enters focal range
+      ScrollTrigger.create({
+        trigger: panel,
+        start: 'top 70%',
+        once: true,
+        onEnter: () => {
+          if (visual) visual.classList.add('in');
+          if (titleSpan) gsap.to(titleSpan, { y: '0%', duration: 0.9, ease: ease.expo });
+        },
+      });
+
+      // Inner image parallax across the card's viewport lifetime
+      if (inner) {
+        gsap.fromTo(inner, { yPercent: -8 }, {
+          yPercent: 8,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: panel,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: true,
+          },
         });
       }
     });
 
-    // Stacked-layout mode flip — the middle panel is dark, so track its
-    // viewport position so the body-mode (and therefore the cursor) inverts
-    // while it's on screen.
-    const darkPanel = panels[1];
-    if (darkPanel) {
-      ScrollTrigger.create({
-        trigger: darkPanel,
-        start: 'top 60px',
-        end: 'bottom 60px',
-        onEnter: () => { document.body.dataset.mode = 'dark'; },
-        onLeave: () => { document.body.dataset.mode = 'light'; },
-        onEnterBack: () => { document.body.dataset.mode = 'dark'; },
-        onLeaveBack: () => { document.body.dataset.mode = 'light'; },
-      });
+    // Active-card detection via IntersectionObserver — most-visible panel wins.
+    // .is-active just toggles the elevated shadow; body[data-mode] is handled
+    // by BaseLayout's data-section-mode ScrollTrigger on the dark middle panel.
+    if (!reduceMotion.current) {
+      const visibility = new Map<Element, number>();
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((e) => visibility.set(e.target, e.intersectionRatio));
+          let best: Element | null = null;
+          let bestRatio = 0;
+          visibility.forEach((r, el) => {
+            if (r > bestRatio) {
+              bestRatio = r;
+              best = el;
+            }
+          });
+          cards.forEach((c, ci) => {
+            const isActive = panels[ci] === best && bestRatio > 0.25;
+            c?.classList.toggle('is-active', isActive);
+          });
+        },
+        { threshold: Array.from({ length: 11 }, (_, i) => i / 10) },
+      );
+      panels.forEach((p) => observer.observe(p));
     }
   }
 </script>
