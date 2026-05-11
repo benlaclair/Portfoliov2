@@ -145,6 +145,39 @@ const featured: Project[] = PROJECTS.slice(0, 3);
     gap: 80px;
     height: 100%;
     align-items: center;
+    padding: clamp(40px, 5vw, 64px);
+    border-radius: 24px;
+    background: var(--color-paper);
+    border: 1px solid var(--color-line-soft);
+    box-shadow:
+      0 1px 0 rgba(22, 21, 18, 0.04),
+      0 30px 70px -28px rgba(22, 21, 18, 0.16);
+    will-change: transform, box-shadow;
+    transform-origin: center center;
+    transition: box-shadow 0.55s var(--ease-out);
+  }
+
+  /* Dark room: card uses dark-bg-alt so cursor (cream) stays readable
+     on the card surface. Subtle elevation off the #0d0c0a room defined
+     by border + shadow rather than tone delta. */
+  .hwork-panel[data-index="1"] .hwork-panel-inner {
+    background: var(--color-dark-bg-alt);
+    border-color: var(--color-dark-line);
+    box-shadow:
+      inset 0 1px 0 rgba(244, 239, 228, 0.05),
+      0 30px 70px -28px rgba(0, 0, 0, 0.55);
+  }
+
+  /* Active card lifts off the table — stronger shadow signals depth */
+  .hwork-panel-inner.is-active {
+    box-shadow:
+      0 1px 0 rgba(22, 21, 18, 0.06),
+      0 50px 110px -30px rgba(22, 21, 18, 0.24);
+  }
+  .hwork-panel[data-index="1"] .hwork-panel-inner.is-active {
+    box-shadow:
+      inset 0 1px 0 rgba(244, 239, 228, 0.07),
+      0 50px 110px -30px rgba(0, 0, 0, 0.7);
   }
   .hwork-meta-num {
     font-family: var(--font-mono);
@@ -295,11 +328,12 @@ const featured: Project[] = PROJECTS.slice(0, 3);
   if (stage && track && panels.length && !isMobile && !reduceMotion) {
     const total = panels.length;
     const distance = (total - 1) * window.innerWidth;
-    const visuals = panels.map((p) => p.querySelector<HTMLElement>('[data-visual]'));
+    const cards = panels.map((p) => p.querySelector<HTMLElement>('.hwork-panel-inner'));
 
-    // Pin + horizontal scroll. onUpdate scales each panel's visual based on its
-    // distance from active center — active panel sits at scale 1, neighbors
-    // recede toward 0.72 with a slight upward lift, creating depth on transition.
+    // Pin + horizontal scroll. onUpdate scales each card based on its distance
+    // from active center — active card sits at scale 1, neighbors recede to
+    // 0.62 with downward drift. Inactive cards physically receded from the
+    // table; active card occupies the foreground.
     gsap.to(track, {
       x: -distance,
       ease: 'none',
@@ -311,12 +345,12 @@ const featured: Project[] = PROJECTS.slice(0, 3);
         invalidateOnRefresh: true,
         onUpdate: (self) => {
           const progress = self.progress * (total - 1);
-          visuals.forEach((vis, i) => {
-            if (!vis) return;
+          cards.forEach((card, i) => {
+            if (!card) return;
             const dist = Math.abs(progress - i);
-            const scale = Math.max(0.72, 1 - dist * 0.28);
-            const yPercent = -dist * 14;
-            gsap.set(vis, { scale, yPercent });
+            const scale = Math.max(0.62, 1 - dist * 0.38);
+            const yPercent = -dist * 22;
+            gsap.set(card, { scale, yPercent });
           });
         },
       },
@@ -335,6 +369,7 @@ const featured: Project[] = PROJECTS.slice(0, 3);
         end: () => `top+=${(i + 1) * (distance / (total - 1 || 1))} top`,
         onToggle: (self) => {
           ticks.forEach((t, ti) => t.classList.toggle('active', ti === i && self.isActive));
+          cards.forEach((c, ci) => c?.classList.toggle('is-active', ci === i && self.isActive));
           if (self.isActive) {
             if (titleSpan) gsap.to(titleSpan, { y: '0%', duration: 0.9, ease: 'expo.out' });
             if (visual) visual.classList.add('in');
@@ -366,6 +401,7 @@ const featured: Project[] = PROJECTS.slice(0, 3);
 
     // Initial: first panel active
     ticks[0]?.classList.add('active');
+    cards[0]?.classList.add('is-active');
     const firstTitle = panels[0]?.querySelector<HTMLElement>('[data-title] .line > span');
     if (firstTitle) gsap.to(firstTitle, { y: '0%', duration: 0.9, ease: 'expo.out', delay: 0.3 });
     const firstVisual = panels[0]?.querySelector<HTMLElement>('[data-visual]');
@@ -377,8 +413,12 @@ const featured: Project[] = PROJECTS.slice(0, 3);
     panels.forEach((panel) => {
       const titleSpan = panel.querySelector<HTMLElement>('[data-title] .line > span');
       const visual = panel.querySelector<HTMLElement>('[data-visual]');
+      const card = panel.querySelector<HTMLElement>('.hwork-panel-inner');
       if (titleSpan) gsap.set(titleSpan, { y: 0 });
       if (visual) visual.classList.add('in');
+      // Stacked layout has no active/inactive — every card gets the full
+      // shadow since each is its own focal moment when scrolled to.
+      if (card) card.classList.add('is-active');
       // Skip gsap.from on reduced motion — it would leave panels hidden until
       // ScrollTrigger fires. On mobile, keep a soft entrance.
       if (!reduceMotion) {
