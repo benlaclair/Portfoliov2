@@ -16,9 +16,7 @@ const { items } = Astro.props;
           <p
             style="font-family: var(--font-display); font-weight: 500; font-size: clamp(40px, 5vw, 72px); line-height: 1; letter-spacing: -0.04em; color: var(--color-ink); margin-bottom: 12px"
           >{s.value}</p>
-          <p
-            style="font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-ink-2)"
-          >{s.label}</p>
+          <p class="text-eyebrow">{s.label}</p>
         </div>
       ))}
     </Grid>

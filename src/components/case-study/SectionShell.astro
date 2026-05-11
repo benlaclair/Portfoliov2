@@ -8,7 +8,7 @@ const { label } = Astro.props;
 ---
 <div style="padding: 0 40px 100px; max-width: 1440px; margin-inline: auto">
   {label && (
-    <div style="font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-ink-2); margin-bottom: 32px">{label}</div>
+    <div class="text-eyebrow" style="letter-spacing: 0.14em; margin-bottom: 32px">{label}</div>
   )}
   <slot />
 </div>

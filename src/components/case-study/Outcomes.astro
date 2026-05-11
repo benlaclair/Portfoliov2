@@ -14,7 +14,7 @@ const { label, items } = Astro.props;
     <Grid columns={3}>
       {items.map((o) => (
         <div class="cs-outcome">
-          <p style="font-family: var(--font-mono); font-size: 11px; color: var(--color-accent); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 16px">{o.label}</p>
+          <p class="text-eyebrow-accent" style="margin-bottom: 16px">{o.label}</p>
           <p style="font-family: var(--font-display); font-weight: 500; font-size: 22px; line-height: 1.25; letter-spacing: -0.02em; color: var(--color-ink)">{o.value}</p>
         </div>
       ))}

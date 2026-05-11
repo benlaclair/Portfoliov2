@@ -16,7 +16,7 @@ const { label, items } = Astro.props;
         <div class="cs-decision" data-reveal>
           <div>
             <p style="font-family: var(--font-mono); font-size: 11px; color: var(--color-ink-2); margin-bottom: 6px">{d.number}</p>
-            <p style="font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-accent)">{d.label}</p>
+            <p class="text-eyebrow-accent">{d.label}</p>
           </div>
           <div>
             <h3 style="font-family: var(--font-display); font-weight: 500; font-size: clamp(24px, 3vw, 40px); letter-spacing: -0.03em; line-height: 1.1; margin-bottom: 16px">{d.title}</h3>
@@ -24,11 +24,11 @@ const { label, items } = Astro.props;
             {d.before && d.after && (
               <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--color-line); margin-top: 20px">
                 <div style="background: var(--color-paper); padding: 20px">
-                  <p style="font-family: var(--font-mono); font-size: 10px; color: var(--color-muted); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 10px">Before</p>
+                  <p class="text-meta" style="letter-spacing: 0.12em; margin-bottom: 10px">Before</p>
                   <p style="font-size: 14px; color: var(--color-ink-2)">{d.before}</p>
                 </div>
                 <div style="background: var(--color-paper); padding: 20px; border-left: 2px solid var(--color-accent)">
-                  <p style="font-family: var(--font-mono); font-size: 10px; color: var(--color-accent); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 10px">After</p>
+                  <p class="text-eyebrow-accent" style="font-size: 10px; letter-spacing: 0.12em; margin-bottom: 10px">After</p>
                   <p style="font-size: 14px; color: var(--color-ink)">{d.after}</p>
                 </div>
               </div>

@@ -23,7 +23,7 @@ const titleLetterSpacing = hasEyebrow ? '-0.025em' : '-0.03em';
       {items.map((item) => (
         <div class="cs-card">
           {item.eyebrow && (
-            <p style="font-family: var(--font-mono); font-size: 11px; color: var(--color-accent); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 16px">{item.eyebrow}</p>
+            <p class="text-eyebrow-accent" style="margin-bottom: 16px">{item.eyebrow}</p>
           )}
           <h3 style={`font-family: var(--font-display); font-weight: 500; font-size: ${titleFontSize}; letter-spacing: ${titleLetterSpacing}; line-height: 1.1; margin-bottom: 12px`}>{item.title}</h3>
           <p style="font-size: 14px; line-height: 1.6; color: var(--color-ink-2)">{item.description}</p>
