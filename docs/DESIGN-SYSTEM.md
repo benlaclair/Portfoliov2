@@ -152,13 +152,13 @@ The homepage alternates dark and light sections to create chromatic rhythm. Main
 |---|---|---|---|
 | 1 | Loader | dark | `--color-dark-bg`, SVG B-mark stroke-painted in |
 | 2 | Hero | dark + halos | `is-dark has-halos`, orange + cool-blue radials |
-| 3 | Tagline | light | Quiet beat after the hero anchor |
+| 3 | Tagline | light + warmth | `atmo-warmth-tl` softens the hand-off from dark vbreak |
 | 4 | Vbreak | dark | Continuous strip, parallax background |
 | 5 | HorizontalWork | light | Editorial focus, panels readable |
 | 6 | Marquee | light | Re-typography |
 | 7 | Timeline | light | Year numerals in Clash Display |
 | 8 | CTA | dark + halos | Closing chromatic anchor |
-| 9 | Footer | dark | Continuous with CTA — single dark closing block |
+| 9 | Footer | dark + grain | `atmo-grain-dark` adds film grain to the closing block |
 
 Pattern: **D · D · L · D · L · L · L · D · D**. Hero and CTA/Footer are the two anchors; Vbreak is the mid-page beat between them.
 
@@ -173,6 +173,22 @@ Pattern: **D · D · L · D · L · L · L · D · D**. Hero and CTA/Footer are 
 - `is-dark` flips background + text colors via the global rule in `global.css`.
 - `has-halos` adds two radial gradient halos (orange top-right, cool-blue bottom-left) via `::before/::after`. Optional — only the hero and CTA use it.
 - `data-section-mode="dark"` hooks into the `BaseLayout.astro` ScrollTrigger that flips `body[data-mode]`. This is what swaps the cursor color from ink to dark-ink. **Always pair `is-dark` with this attribute** if the section is full-bleed and the user can pause inside it.
+
+### Atmospheric utilities
+
+Four named, finite utilities for sections that want softness or texture without rolling a per-section snowflake.
+
+| Utility | Slot | Effect |
+|---|---|---|
+| `atmo-warmth-tl` | `::before` | Soft accent radial anchored top-left (light sections) |
+| `atmo-warmth-br` | `::before` | Soft accent radial anchored bottom-right (variation for rhythm) |
+| `atmo-grain-light` | `::after` | Subtle paper grain via SVG turbulence, `mix-blend-mode: multiply` |
+| `atmo-grain-dark` | `::after` | Subtle film grain via SVG turbulence, `mix-blend-mode: overlay` |
+
+Composition rules:
+- Warmth utilities own `::before`; grain utilities own `::after`. You can stack one warmth + one grain on the same section.
+- **Do not combine with `has-halos`** — halos already claim both pseudos, so atmo classes will be overwritten or overwrite the halos depending on order.
+- Pick at most one variant from each slot. The audit guidance is "not per-section snowflakes" — these are intentional, repeatable choices.
 
 The `.is-dark` rule in `global.css`:
 

@@ -137,6 +137,50 @@
   background: radial-gradient(70% 60% at 6% 90%, rgba(80, 130, 220, 0.10), transparent 70%);
 }
 
+/* Atmospheric utilities — finite, named alternatives to per-section radial snowflakes.
+   Slot discipline: atmo-warmth-* uses ::before (z-index: -1, behind content); atmo-grain-*
+   uses ::after (z-index: 1, mix-blend over content). One warmth + one grain can stack on
+   the same section. None of these compose with .has-halos (which claims both pseudos). */
+.atmo-warmth-tl,
+.atmo-warmth-br,
+.atmo-grain-light,
+.atmo-grain-dark {
+  position: relative;
+  isolation: isolate;
+}
+.atmo-warmth-tl::before,
+.atmo-warmth-br::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+}
+.atmo-warmth-tl::before {
+  background: radial-gradient(55% 65% at 4% 0%, rgba(255, 92, 26, 0.08), transparent 70%);
+}
+.atmo-warmth-br::before {
+  background: radial-gradient(55% 65% at 100% 100%, rgba(255, 92, 26, 0.07), transparent 70%);
+}
+.atmo-grain-light::after,
+.atmo-grain-dark::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+}
+.atmo-grain-light::after {
+  opacity: 0.05;
+  mix-blend-mode: multiply;
+}
+.atmo-grain-dark::after {
+  opacity: 0.07;
+  mix-blend-mode: overlay;
+}
+
 @utility font-display {
   font-family: var(--font-display);
 }
