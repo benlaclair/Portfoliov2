@@ -203,6 +203,10 @@ DevTools → Rendering → Emulate `prefers-reduced-motion: reduce`. The loader 
 
 ## What's next
 
+**🚧 In progress (2026-05):** Major homepage rebuild underway — see [docs/REBUILD-2026-05.md](docs/REBUILD-2026-05.md) for the live phase tracker. Hero rebuild, indigo accent swap, vertical work cards, infinite-loop graphic-design gallery, copy audit. Resume in fresh chats by reading the tracker doc and checking `git log --oneline | grep "Phase"`.
+
+---
+
 Phase 6 (section contrast) and Phase 7 (architectural migration) both shipped to `main`. The site has a 3-value rhythm (cream / mid-tone / dark), card-on-canvas pattern across Timeline / Tools / horizontal Work, a mode-aware navbar at 60px height with animated accent underline, and the horizontal Work panels render as three-room cards with the dark middle card outlined in 2px accent stroke. Phase 7 extracted `src/lib/motion.ts`, added `@theme` shadow + typography utility tokens, migrated covers to `<Image />`, replaced 4 pages' worth of hand-rolled scroll reveals with `[data-reveal]`, and consolidated 6 case-study renderers behind `<RowList />` + `<Grid />` primitives.
 
 ### Open items (smaller, surgical)
