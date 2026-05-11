@@ -3,8 +3,8 @@
 In-progress build. Hero rebuild, indigo accent, vertical work cards, infinite-loop gallery, copy audit.
 
 > **Last touched:** 2026-05-11
-> **Next up:** Phase G — final QA + tracker close-out
-> **Resume how:** `git pull origin main && git log --oneline | grep "Phase"` then pick up at the first unchecked phase below.
+> **Status:** ✅ All phases shipped. Tracker archived for reference.
+> **Resume how:** N/A — rebuild complete. See HANDOFF.md "What's next" for the post-rebuild backlog.
 
 This doc is the resumption beacon for working across multiple chat sessions / machines. A fresh chat reads this first, then [HANDOFF.md](../HANDOFF.md) for general orientation.
 
@@ -71,13 +71,14 @@ This doc is the resumption beacon for working across multiple chat sessions / ma
   - Keep page hero block above the gallery for landing identity
   - **What landed:** Per-group masonry replaced with single full-page gallery in a 200vh container (150vh at ≤900px). All per-group headers + lightbox markup + keyboard nav gone — file slimmed 158 → 73 lines. Browse rhythm uses HeroGallery's `fullPage` speeds (90/65/110/75s) for a calmer pace than the homepage hero.
 
-- [ ] **Phase G — Final QA + tracker close-out**
-  - Visual scan every page after indigo swap
-  - Reduced-motion validation
-  - Mobile breakpoints (≤900px, ≤600px)
-  - `npm run check` + `npm run build` clean
-  - Update HANDOFF.md "What's next" back to the pre-rebuild backlog
-  - Add Phase 8 entry to [project_portfolio_v2 memory](file:///C:/Users/blaclair/.claude/projects/C--Users-blaclair/memory/project_portfolio_v2.md)
+- [x] **Phase G — Final QA + tracker close-out**
+  - Visual scan every page after indigo swap — **deferred to user (no browser in this session)**
+  - Reduced-motion validation — **deferred to user**
+  - Mobile breakpoints (≤900px, ≤600px) — **deferred to user**
+  - `npm run check` + `npm run build` clean ✓
+  - Update HANDOFF.md "What's next" back to the pre-rebuild backlog ✓
+  - Add Phase 8 entry to [project_portfolio_v2 memory](file:///C:/Users/blaclair/.claude/projects/C--Users-blaclair/memory/project_portfolio_v2.md) ✓
+  - **What landed:** Final type-check + build both green across all 40 Astro files. Stale content reference in [src/data/caseStudies/portfolio.ts](../src/data/caseStudies/portfolio.ts) updated — old chapter sequence (HorizontalWork + Marquee) corrected to the new rhythm (VerticalWork, no Marquee); "orange" → "indigo" in the portfolio case study copy. **User TODO for QA:** `npm run dev` and walk through home → tagline curtain transition → vertical work cards → graphic-design page; emulate reduced motion + mobile breakpoints. Watch for: indigo harmony on dark/light canvases, gallery seamless loop (no visible snap at the doubled-list boundary), curtain rise feels intentional, vertical-work focal one-at-a-time. **Perf note still open:** 86 lazy images in HeroGallery — if LCP regresses, gate decoding behind the phrase-exit moment.
 
 ---
 
