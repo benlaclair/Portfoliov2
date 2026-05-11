@@ -1,4 +1,5 @@
 ---
+import { Image } from 'astro:assets';
 import type { Project } from '../data/projects';
 import { PROJECTS } from '../data/projects';
 
@@ -43,8 +44,17 @@ const featured: Project[] = PROJECTS.slice(0, 3);
               </div>
               <div class="hwork-visual" data-visual>
                 <div class="hwork-visual-inner" data-inner>
-                  {p.coverImage ? (
-                    <img src={p.coverImage} alt={p.shortTitle} loading="lazy" />
+                  {p.coverImage && p.coverWidth && p.coverHeight ? (
+                    <Image
+                      src={p.coverImage}
+                      alt={p.shortTitle}
+                      width={p.coverWidth}
+                      height={p.coverHeight}
+                      widths={[600, 1200, 1800]}
+                      sizes="(max-width: 900px) 100vw, 50vw"
+                      format="webp"
+                      loading="lazy"
+                    />
                   ) : (
                     <div
                       class="hwork-fallback"
