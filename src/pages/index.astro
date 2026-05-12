@@ -283,6 +283,11 @@ import HeroGallery from '../components/HeroGallery.astro';
     // hide it now so the timeline can fade it in after the wipe.
     gsap.set('#site-nav', { opacity: 0 });
     gsap.set('#hero-cta', { y: 20 });
+    // The curtain CSS has transform:translateY(100%) which GSAP parses as a pixel
+    // y-value. If not cleared, fromTo({ yPercent: 100 }) stacks on top of that
+    // pixel value and the curtain stays off-screen. Explicitly set y:0,yPercent:100
+    // here so GSAP owns the transform with the correct values before animation.
+    gsap.set('#hero-curtain', { y: 0, yPercent: 100 });
 
     const intro = gsap.timeline({ defaults: { ease: ease.expo } });
     const pct = { v: 0 };
