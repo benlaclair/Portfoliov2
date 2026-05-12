@@ -302,15 +302,15 @@ import HeroGallery from '../components/HeroGallery.astro';
       // Hero phrase word-reveal (global .word > span CSS hides at translateY 115%; tween to 0).
       .fromTo('#hero-phrase-text .word > span',
         { yPercent: 115, y: 0 },
-        { yPercent: 0, y: 0, stagger: 0.04, duration: 1.1, ease: 'expo.out' },
+        { yPercent: 0, y: 0, stagger: 0.04, duration: 1.0, ease: 'expo.out' },
         '-=0.4'
       )
-      // Dwell — let the phrase sit and read
-      .to({}, { duration: 3.5 })
+      // Brief dwell — long enough to read in one beat, short enough not to outstay
+      .to({}, { duration: 1.4 })
       // Phrase exits upward as gallery + CTA fade in
-      .to('#hero-phrase', { yPercent: -15, opacity: 0, duration: 0.8, ease: 'expo.in' })
-      .to('#hero-gallery', { opacity: 1, duration: 1.0, ease: ease.out }, '-=0.6')
-      .to('#hero-cta', { opacity: 1, y: 0, duration: 0.7, ease: ease.out }, '-=0.4');
+      .to('#hero-phrase', { yPercent: -15, opacity: 0, duration: 0.7, ease: 'expo.in' })
+      .to('#hero-gallery', { opacity: 1, duration: 0.9, ease: ease.out }, '-=0.55')
+      .to('#hero-cta', { opacity: 1, y: 0, duration: 0.6, ease: ease.out }, '-=0.35');
   } else {
     // Reduced motion: skip loader, show gallery + CTA immediately, hide phrase.
     const loader = document.getElementById('loader');
@@ -321,20 +321,24 @@ import HeroGallery from '../components/HeroGallery.astro';
   }
 
   // ============ HERO → TAGLINE CURTAIN WIPE ============
-  // Curtain rises from below as the user scrolls past the hero, briefly covers
-  // the viewport at the dark/light boundary, then continues upward revealing
-  // the tagline. Scrub-bound so the user controls the pace.
+  // One-shot: as soon as the user starts scrolling past the hero, a dark
+  // panel rises from below, briefly covers the viewport, then exits upward —
+  // revealing the tagline beneath. Total runtime ~1.3s. Scrub was rejected
+  // because a scrub-bound curtain stalled at full cover whenever the user
+  // paused mid-scroll, and the rise was invisible until ~30% scroll.
   if (!reduceMotion.current) {
-    const wipe = gsap.timeline({
-      scrollTrigger: {
-        trigger: '#hero',
-        start: 'bottom bottom',
-        end: 'bottom top',
-        scrub: 0.6,
+    ScrollTrigger.create({
+      trigger: '#hero',
+      start: 'bottom 85%', // fires after ~15vh of scroll past hero's start
+      once: true,
+      onEnter: () => {
+        const tl = gsap.timeline();
+        tl.set('#hero-curtain', { yPercent: 100, display: 'block' });
+        tl.to('#hero-curtain', { yPercent: 0, duration: 0.55, ease: 'expo.inOut' });
+        tl.to('#hero-curtain', { yPercent: -100, duration: 0.7, ease: 'expo.inOut' }, '+=0.05');
+        tl.set('#hero-curtain', { display: 'none' });
       },
     });
-    wipe.fromTo('#hero-curtain', { yPercent: 100 }, { yPercent: 0, duration: 0.5, ease: 'none' });
-    wipe.to('#hero-curtain', { yPercent: -100, duration: 0.5, ease: 'none' });
   }
 
   // ============ VBREAK PARALLAX ============
