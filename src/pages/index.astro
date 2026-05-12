@@ -320,24 +320,35 @@ import HeroGallery from '../components/HeroGallery.astro';
     gsap.set('#hero-gallery, #hero-cta', { opacity: 1 });
   }
 
-  // ============ HERO → TAGLINE CURTAIN WIPE ============
-  // One-shot: as soon as the user starts scrolling past the hero, a dark
-  // panel rises from below, briefly covers the viewport, then exits upward —
-  // revealing the tagline beneath. Total runtime ~1.3s. Scrub was rejected
-  // because a scrub-bound curtain stalled at full cover whenever the user
-  // paused mid-scroll, and the rise was invisible until ~30% scroll.
+  // ============ HERO → TAGLINE CURTAIN WIPE (PINNED) ============
+  // Scroll-jacked overlay: pin the hero so the page doesn't actually scroll
+  // down while the curtain wipe plays. Scroll INPUT drives the curtain via
+  // scrub. pinSpacing: false means the pin doesn't inflate document height —
+  // after the 100vh pin range, the tagline is immediately at viewport top
+  // (no leftover hero to scroll past).
+  //
+  // Without scrub + pin, the curtain either stalled at full cover (one-shot
+  // on a long scroll) or required a full 100vh of "earned" scroll past an
+  // unpinned hero before the tagline appeared. This is the choreography
+  // the spec actually called for: "the screen doesn't go down, the wipe
+  // comes up."
   if (!reduceMotion.current) {
+    const wipe = gsap.timeline()
+      .fromTo('#hero-curtain',
+        { yPercent: 100 },
+        { yPercent: 0, duration: 0.5, ease: 'none' })
+      .to('#hero-curtain',
+        { yPercent: -100, duration: 0.5, ease: 'none' });
+
     ScrollTrigger.create({
       trigger: '#hero',
-      start: 'bottom 85%', // fires after ~15vh of scroll past hero's start
-      once: true,
-      onEnter: () => {
-        const tl = gsap.timeline();
-        tl.set('#hero-curtain', { yPercent: 100, display: 'block' });
-        tl.to('#hero-curtain', { yPercent: 0, duration: 0.55, ease: 'expo.inOut' });
-        tl.to('#hero-curtain', { yPercent: -100, duration: 0.7, ease: 'expo.inOut' }, '+=0.05');
-        tl.set('#hero-curtain', { display: 'none' });
-      },
+      start: 'top top',
+      end: '+=100%',
+      pin: true,
+      pinSpacing: false,
+      scrub: 0.4,
+      anticipatePin: 1,
+      animation: wipe,
     });
   }
 
