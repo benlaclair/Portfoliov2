@@ -24,9 +24,8 @@ import { gsap, ScrollTrigger, ease, reduceMotion, revealLines } from '../lib/mot
 | File | Motion it owns |
 | --- | --- |
 | `BaseLayout.astro` | Lenis init, custom cursor, magnetic links, page curtain, `body[data-mode]` ScrollTrigger, `[data-reveal]` IntersectionObserver |
-| `index.astro` | Loader → hero intro timeline, hero word-reveal, hero scrub-out, vbreak parallax, tagline word-scrub, timeline pin, CTA line-reveal |
-| `HorizontalWork.astro` | Pinned horizontal scroll, shrink-on-focus + Y-drift on whole `.hwork-panel-inner` cards, `is-active` shadow upgrade, side-rail, clip-path entrance, inner-image parallax, body-mode flip when middle (dark) card is active |
-| `Marquee.astro` | Looping ticker, hover-slow |
+| `index.astro` | Loader → hero intro timeline, hero word-reveal, **hero scroll gate + curtain wipe**, hero scrub-out, vbreak parallax, tagline word-scrub, timeline pin, CTA line-reveal |
+| `HorizontalWork.astro` | Vertical sticky-pin cards, per-card enter/exit scrub (scale/y/opacity/clip-path), inner-image parallax, body-mode flip via `data-section-mode="dark"` on the middle panel |
 | `Footer.astro` | Mark scale-in entrance |
 | `Navbar.astro` | Mobile menu link stagger (on open), scroll-substrate fade-in past hero |
 | `ProjectCard.astro` | Inner-image parallax scrub only (reveals migrated to `[data-reveal]`) |
@@ -162,6 +161,48 @@ Total runtime ~3 seconds. Reduced-motion path skips everything and shows the her
 ---
 
 ## Section-level motion
+
+### Hero scroll gate + curtain wipe (`index.astro`)
+
+After the gallery and CTA fade in (end of the intro timeline), a scroll gate activates. The page **cannot scroll** while the gate is live — the first downward gesture triggers the curtain wipe.
+
+**How it works** (`intro.add()` callback at the end of the intro chain):
+
+```ts
+// CSS lock — does not touch Lenis or GSAP, so HeroGallery's repeat:-1 tweens keep running
+document.documentElement.style.overflow = 'hidden';
+
+// Wheel + touch listeners (bubble phase, passive: false so e.preventDefault() works)
+window.addEventListener('wheel', onWheel, { passive: false });
+window.addEventListener('touchstart', onTouchStart, { passive: true });
+window.addEventListener('touchmove', onTouchMove, { passive: false });
+```
+
+When a downward scroll intent is detected:
+
+```ts
+gsap.timeline({ onComplete: () => gsap.set('#hero-curtain', { display: 'none' }) })
+  .fromTo('#hero-curtain', { yPercent: 100 }, { yPercent: 0, duration: 0.4, ease: 'expo.out' })
+  // Curtain covers screen — safe to jump scroll position
+  .add(() => {
+    document.documentElement.style.overflow = '';
+    window.scrollTo(0, taglineTop);
+    lenis.scrollTo(taglineTop, { immediate: true }); // sync Lenis AFTER window.scrollTo
+  })
+  .to('#hero-curtain', { yPercent: -100, duration: 0.5, ease: 'expo.in' });
+```
+
+**Critical gotchas — read before touching this:**
+
+1. **GSAP transform ownership.** Before the intro timeline, call `gsap.set('#hero-curtain', { y: 0, yPercent: 100 })`. The CSS `transform: translateY(100%)` is parsed by GSAP into a pixel `y` value (≈screen height). If GSAP hasn't explicitly zeroed `y`, a `fromTo({ yPercent: 100 })` stacks on top of that pixel offset and the curtain stays permanently below the viewport. The `y: 0, yPercent: 100` set at init time gives GSAP ownership so `y` is always 0 during the animation.
+
+2. **Don't use `lenis.stop()` for the gate.** `lenis.stop()` calls `this.animate.stop()` internally which can disrupt HeroGallery's GSAP `repeat: -1` tweens. Use `overflow: hidden` on `<html>` instead — it locks scroll at the CSS level without touching Lenis or GSAP state.
+
+3. **Lenis sync order matters.** In the mid-curtain callback, call `window.scrollTo(0, taglineTop)` FIRST, then `lenis.scrollTo(taglineTop, { immediate: true })`. Lenis's `scrollTo({ immediate })` reads `window.scrollY` to reset its internal state — if called before the native scroll jump, it resets to the old position.
+
+4. **`#hero-curtain` is outside `.hero`.** The hero section has `overflow: hidden`; placing the curtain inside it clips it. It must be a sibling of `.hero` in the markup.
+
+**Reduced-motion path:** The gate is inside the `if (!reduceMotion.current)` block — reduced-motion users scroll normally from page load.
 
 ### Hero scrub-out (`index.astro`)
 
