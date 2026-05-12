@@ -313,49 +313,48 @@ import HeroGallery from '../components/HeroGallery.astro';
       .to('#hero-cta', { opacity: 1, y: 0, duration: 0.6, ease: ease.out }, '-=0.35');
 
     // ============ HERO SCROLL GATE + CURTAIN WIPE ============
-    // After gallery + CTA appear: lenis.stop() prevents Lenis from processing
-    // wheel events (its onVirtualScroll calls event.preventDefault() when
-    // isStopped=true). Our bubble-phase listener detects intent and fires the
-    // curtain. The page jumps to the tagline under cover; lenis.start() +
-    // scrollTo({ immediate }) syncs Lenis state from the new window.scrollY
-    // once the curtain has fully exited.
+    // CSS overflow lock prevents scroll without touching Lenis or GSAP state,
+    // so HeroGallery's repeat:-1 tweens keep running uninterrupted.
+    // First downward scroll intent fires the curtain: it rises, position jumps
+    // to tagline under cover (overflow re-enabled + window.scrollTo + Lenis sync),
+    // then the curtain exits revealing the tagline. Normal scroll resumes.
     intro.add(() => {
       const lenis = (window as any).__lenis;
       const taglineEl = document.querySelector<HTMLElement>('.tagline');
-      if (lenis) lenis.stop();
+
+      document.documentElement.style.overflow = 'hidden';
+
       let curtainFired = false;
+
+      const cleanup = () => {
+        window.removeEventListener('wheel', onWheel);
+        window.removeEventListener('touchstart', onTouchStart);
+        window.removeEventListener('touchmove', onTouchMove);
+      };
 
       const fireCurtain = () => {
         const taglineTop = taglineEl?.offsetTop ?? window.innerHeight;
-        gsap.timeline({
-          onComplete: () => {
-            // Hide curtain, then re-enable Lenis from the new scroll position.
-            // lenis.start() calls reset() which reads window.scrollY = taglineTop.
-            gsap.set('#hero-curtain', { display: 'none' });
-            if (lenis) {
-              lenis.start();
-              lenis.scrollTo(taglineTop, { immediate: true });
-            }
-          },
-        })
+        gsap.timeline({ onComplete: () => gsap.set('#hero-curtain', { display: 'none' }) })
           .fromTo('#hero-curtain',
             { yPercent: 100 },
             { yPercent: 0, duration: 0.4, ease: 'expo.out' })
-          // Jump scroll while curtain covers the page
-          .add(() => { window.scrollTo(0, taglineTop); })
+          // Curtain fully covers screen — safe to jump scroll position
+          .add(() => {
+            document.documentElement.style.overflow = '';
+            window.scrollTo(0, taglineTop);
+            // Sync Lenis internal state to new position (must come after window.scrollTo)
+            if (lenis) lenis.scrollTo(taglineTop, { immediate: true });
+          })
           .to('#hero-curtain', { yPercent: -100, duration: 0.5, ease: 'expo.in' });
       };
 
-      // Bubble-phase, non-passive: our preventDefault() layers on top of
-      // Lenis's own preventDefault() (called when isStopped=true).
       const onWheel = (e: WheelEvent) => {
         e.preventDefault();
         if (curtainFired || e.deltaY <= 0) return;
         curtainFired = true;
-        window.removeEventListener('wheel', onWheel);
+        cleanup();
         fireCurtain();
       };
-      window.addEventListener('wheel', onWheel, { passive: false });
 
       let touchStartY = 0;
       const onTouchStart = (e: TouchEvent) => { touchStartY = e.touches[0].clientY; };
@@ -363,10 +362,11 @@ import HeroGallery from '../components/HeroGallery.astro';
         e.preventDefault();
         if (curtainFired || touchStartY - e.touches[0].clientY <= 20) return;
         curtainFired = true;
-        window.removeEventListener('touchstart', onTouchStart);
-        window.removeEventListener('touchmove', onTouchMove);
+        cleanup();
         fireCurtain();
       };
+
+      window.addEventListener('wheel', onWheel, { passive: false });
       window.addEventListener('touchstart', onTouchStart, { passive: true });
       window.addEventListener('touchmove', onTouchMove, { passive: false });
     });
