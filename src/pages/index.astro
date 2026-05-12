@@ -311,6 +311,66 @@ import HeroGallery from '../components/HeroGallery.astro';
       .to('#hero-phrase', { yPercent: -15, opacity: 0, duration: 0.7, ease: 'expo.in' })
       .to('#hero-gallery', { opacity: 1, duration: 0.9, ease: ease.out }, '-=0.55')
       .to('#hero-cta', { opacity: 1, y: 0, duration: 0.6, ease: ease.out }, '-=0.35');
+
+    // ============ HERO SCROLL GATE + CURTAIN WIPE ============
+    // After the gallery + CTA appear, lock scroll. The first downward scroll
+    // gesture triggers the curtain wipe; the page jumps to the tagline under cover.
+    intro.add(() => {
+      const lenis = (window as any).__lenis;
+      const taglineEl = document.querySelector<HTMLElement>('.tagline');
+      if (lenis) lenis.stop();
+      let curtainFired = false;
+      let gateActive = true;
+
+      const triggerCurtain = () => {
+        const taglineTop = taglineEl?.offsetTop ?? window.innerHeight;
+        gsap.timeline({
+          onComplete: () => {
+            gateActive = false;
+            gsap.set('#hero-curtain', { display: 'none' });
+          },
+        })
+          .fromTo('#hero-curtain',
+            { yPercent: 100 },
+            { yPercent: 0, duration: 0.4, ease: 'expo.out' })
+          .add(() => {
+            window.scrollTo(0, taglineTop);
+            if (lenis) {
+              lenis.start();
+              lenis.scrollTo(taglineTop, { immediate: true });
+            }
+          })
+          .to('#hero-curtain', { yPercent: -100, duration: 0.5, ease: 'expo.in' });
+      };
+
+      // Capture-phase wheel listener fires before Lenis; stopImmediatePropagation
+      // prevents Lenis from accumulating targetScroll while the gate is active.
+      window.addEventListener('wheel', (e: WheelEvent) => {
+        if (!gateActive) return;
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        if (!curtainFired && e.deltaY > 0) {
+          curtainFired = true;
+          triggerCurtain();
+        }
+      }, { capture: true, passive: false });
+
+      let touchStartY = 0;
+      window.addEventListener('touchstart', (e: TouchEvent) => {
+        if (!gateActive) return;
+        touchStartY = e.touches[0].clientY;
+      }, { capture: true, passive: true });
+
+      window.addEventListener('touchmove', (e: TouchEvent) => {
+        if (!gateActive) return;
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        if (!curtainFired && touchStartY - e.touches[0].clientY > 20) {
+          curtainFired = true;
+          triggerCurtain();
+        }
+      }, { capture: true, passive: false });
+    });
   } else {
     // Reduced motion: skip loader, show gallery + CTA immediately, hide phrase.
     const loader = document.getElementById('loader');
@@ -318,28 +378,6 @@ import HeroGallery from '../components/HeroGallery.astro';
     gsap.set('#site-nav', { opacity: 1 });
     gsap.set('#hero-phrase', { opacity: 0 });
     gsap.set('#hero-gallery, #hero-cta', { opacity: 1 });
-  }
-
-  // ============ HERO → TAGLINE CURTAIN WIPE (ONE-SHOT) ============
-  // Fixed overlay that self-completes — rise, cover, exit — in ~0.9s once
-  // the user has scrolled ~60vh past the fold. No scrub: the full rise-and-exit
-  // plays automatically so the user isn't stranded on a black screen waiting
-  // to discover they need to keep scrolling.
-  if (!reduceMotion.current) {
-    ScrollTrigger.create({
-      trigger: '#hero',
-      start: 'bottom 40%',
-      once: true,
-      onEnter: () => {
-        gsap.timeline()
-          .fromTo('#hero-curtain',
-            { yPercent: 100 },
-            { yPercent: 0, duration: 0.45, ease: 'expo.inOut' })
-          .to('#hero-curtain',
-            { yPercent: -100, duration: 0.45, ease: 'expo.inOut' })
-          .set('#hero-curtain', { display: 'none' });
-      },
-    });
   }
 
   // ============ VBREAK PARALLAX ============
