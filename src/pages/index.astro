@@ -313,63 +313,62 @@ import HeroGallery from '../components/HeroGallery.astro';
       .to('#hero-cta', { opacity: 1, y: 0, duration: 0.6, ease: ease.out }, '-=0.35');
 
     // ============ HERO SCROLL GATE + CURTAIN WIPE ============
-    // After the gallery + CTA appear, lock scroll. The first downward scroll
-    // gesture triggers the curtain wipe; the page jumps to the tagline under cover.
+    // After gallery + CTA appear: lenis.stop() prevents Lenis from processing
+    // wheel events (its onVirtualScroll calls event.preventDefault() when
+    // isStopped=true). Our bubble-phase listener detects intent and fires the
+    // curtain. The page jumps to the tagline under cover; lenis.start() +
+    // scrollTo({ immediate }) syncs Lenis state from the new window.scrollY
+    // once the curtain has fully exited.
     intro.add(() => {
       const lenis = (window as any).__lenis;
       const taglineEl = document.querySelector<HTMLElement>('.tagline');
       if (lenis) lenis.stop();
       let curtainFired = false;
-      let gateActive = true;
 
-      const triggerCurtain = () => {
+      const fireCurtain = () => {
         const taglineTop = taglineEl?.offsetTop ?? window.innerHeight;
         gsap.timeline({
           onComplete: () => {
-            gateActive = false;
+            // Hide curtain, then re-enable Lenis from the new scroll position.
+            // lenis.start() calls reset() which reads window.scrollY = taglineTop.
             gsap.set('#hero-curtain', { display: 'none' });
+            if (lenis) {
+              lenis.start();
+              lenis.scrollTo(taglineTop, { immediate: true });
+            }
           },
         })
           .fromTo('#hero-curtain',
             { yPercent: 100 },
             { yPercent: 0, duration: 0.4, ease: 'expo.out' })
-          .add(() => {
-            window.scrollTo(0, taglineTop);
-            if (lenis) {
-              lenis.start();
-              lenis.scrollTo(taglineTop, { immediate: true });
-            }
-          })
+          // Jump scroll while curtain covers the page
+          .add(() => { window.scrollTo(0, taglineTop); })
           .to('#hero-curtain', { yPercent: -100, duration: 0.5, ease: 'expo.in' });
       };
 
-      // Capture-phase wheel listener fires before Lenis; stopImmediatePropagation
-      // prevents Lenis from accumulating targetScroll while the gate is active.
-      window.addEventListener('wheel', (e: WheelEvent) => {
-        if (!gateActive) return;
+      // Bubble-phase, non-passive: our preventDefault() layers on top of
+      // Lenis's own preventDefault() (called when isStopped=true).
+      const onWheel = (e: WheelEvent) => {
         e.preventDefault();
-        e.stopImmediatePropagation();
-        if (!curtainFired && e.deltaY > 0) {
-          curtainFired = true;
-          triggerCurtain();
-        }
-      }, { capture: true, passive: false });
+        if (curtainFired || e.deltaY <= 0) return;
+        curtainFired = true;
+        window.removeEventListener('wheel', onWheel);
+        fireCurtain();
+      };
+      window.addEventListener('wheel', onWheel, { passive: false });
 
       let touchStartY = 0;
-      window.addEventListener('touchstart', (e: TouchEvent) => {
-        if (!gateActive) return;
-        touchStartY = e.touches[0].clientY;
-      }, { capture: true, passive: true });
-
-      window.addEventListener('touchmove', (e: TouchEvent) => {
-        if (!gateActive) return;
+      const onTouchStart = (e: TouchEvent) => { touchStartY = e.touches[0].clientY; };
+      const onTouchMove = (e: TouchEvent) => {
         e.preventDefault();
-        e.stopImmediatePropagation();
-        if (!curtainFired && touchStartY - e.touches[0].clientY > 20) {
-          curtainFired = true;
-          triggerCurtain();
-        }
-      }, { capture: true, passive: false });
+        if (curtainFired || touchStartY - e.touches[0].clientY <= 20) return;
+        curtainFired = true;
+        window.removeEventListener('touchstart', onTouchStart);
+        window.removeEventListener('touchmove', onTouchMove);
+        fireCurtain();
+      };
+      window.addEventListener('touchstart', onTouchStart, { passive: true });
+      window.addEventListener('touchmove', onTouchMove, { passive: false });
     });
   } else {
     // Reduced motion: skip loader, show gallery + CTA immediately, hide phrase.
