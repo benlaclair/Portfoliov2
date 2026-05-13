@@ -54,7 +54,7 @@ const colMeta = [
     grid-template-columns: repeat(4, 1fr);
     column-gap: 32px;
     row-gap: 16px;
-    padding: 15%;
+    padding: 0 16px;
   }
   .hg-col {
     display: flex;
@@ -83,10 +83,10 @@ const colMeta = [
     background: rgba(244, 239, 228, 0.18);
     pointer-events: none;
   }
-  /* Positions match gap centres: padding 15% → content 70%, cols repeat(4,1fr) */
-  .hg-div[data-div="1"] { left: 32.5%; }
+  /* Positions match gap centres: no padding → repeat(4,1fr) gaps land at 25/50/75% */
+  .hg-div[data-div="1"] { left: 25%; }
   .hg-div[data-div="2"] { left: 50%; }
-  .hg-div[data-div="3"] { left: 67.5%; }
+  .hg-div[data-div="3"] { left: 75%; }
   @media (max-width: 900px) {
     .hg-root { grid-template-columns: repeat(2, 1fr); }
     .hg-col:nth-child(n+3) { display: none; }

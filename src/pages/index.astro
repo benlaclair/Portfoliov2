@@ -147,9 +147,13 @@ import HeroGallery from '../components/HeroGallery.astro';
   }
   .hero-gallery {
     position: absolute;
-    inset: 0;
+    inset: 6vh 5vw;
     z-index: 1;
     opacity: 0;
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid rgba(244, 239, 228, 0.10);
+    box-shadow: 0 0 100px rgba(0, 0, 0, 0.5);
   }
   .hero-gallery-scrim {
     position: absolute;
