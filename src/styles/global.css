@@ -76,20 +76,6 @@
     overflow-x: hidden;
   }
 
-  /* Global noise grain — fixed overlay, sits above most content but below loader/cursor */
-  body::after {
-    content: '';
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: 9997;
-    opacity: 0.045;
-    mix-blend-mode: overlay;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-    background-size: 256px 256px;
-    background-repeat: repeat;
-  }
-
   ::selection {
     background-color: var(--color-accent);
     color: var(--color-panel);
@@ -397,77 +383,6 @@
   animation: pulse 1.6s ease-out infinite;
 }
 
-/* Custom cursor — solid opaque dot + lower-opacity ring that scales on hover */
-@media (hover: hover) and (pointer: fine) {
-  body:not(.no-cursor) { cursor: none; }
-  body:not(.no-cursor) a,
-  body:not(.no-cursor) button,
-  body:not(.no-cursor) [role="button"] { cursor: none; }
-}
-
-.cursor-dot {
-  position: fixed;
-  top: 0; left: 0;
-  width: 10px; height: 10px;
-  background: var(--color-ink);
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 9999;
-  transform: translate3d(-50%, -50%, 0) scale(1);
-  will-change: transform;
-  transition: background 0.3s ease;
-}
-
-.cursor-ring {
-  position: fixed;
-  top: 0; left: 0;
-  width: 44px; height: 44px;
-  background: var(--color-ink);
-  opacity: 0.12;
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 9998;
-  transform: translate3d(-50%, -50%, 0) scale(1);
-  will-change: transform, opacity;
-  transition: background 0.3s ease;
-}
-
-/* Cursor label — appears next to ring on [data-cursor] hover */
-.cursor-label {
-  position: fixed;
-  /* Offset from cursor center so the label sits to the bottom-right of the ring */
-  top: 14px;
-  left: 22px;
-  pointer-events: none;
-  z-index: 9999;
-  font-family: var(--font-mono);
-  font-size: 10px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--color-bg);
-  background: var(--color-ink);
-  padding: 6px 10px;
-  border-radius: 999px;
-  white-space: nowrap;
-  opacity: 0;
-  transition: background 0.3s ease, color 0.3s ease;
-  will-change: transform, opacity;
-}
-
-body[data-mode="dark"] .cursor-dot {
-  background: var(--color-dark-ink);
-}
-body[data-mode="dark"] .cursor-ring {
-  background: var(--color-dark-ink);
-}
-body[data-mode="dark"] .cursor-label {
-  background: var(--color-dark-ink);
-  color: var(--color-dark-bg);
-}
-
-@media (hover: none), (pointer: coarse) {
-  .cursor-dot, .cursor-ring, .cursor-label { display: none; }
-}
 
 /* Page transition curtain */
 .page-curtain {
@@ -518,9 +433,6 @@ body[data-mode="dark"] .cursor-label {
   .tag-word { opacity: 1; }
   [data-reveal] { opacity: 1; transform: none; transition: none; }
   [data-reveal-clip] { clip-path: none; transition: none; }
-  .cursor-dot, .cursor-ring, .cursor-label { display: none; }
-  body { cursor: auto !important; }
-  body::after { display: none; }
   .vbreak-bg { transform: none !important; }
   .ind::before { animation: none; }
 }
