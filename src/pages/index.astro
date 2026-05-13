@@ -113,7 +113,7 @@ import HeroGallery from '../components/HeroGallery.astro';
     <div class="wrap">
       <div class="process-header">
         <p class="text-eyebrow-accent" data-reveal>Process</p>
-        <h2 class="process-title" data-reveal-clip>
+        <h2 class="process-title" data-process-title>
           Fewer surprises,<br>better work.
         </h2>
         <p class="process-sub" data-reveal>
@@ -246,6 +246,8 @@ import HeroGallery from '../components/HeroGallery.astro';
     transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   }
   .hero-cta:hover .hero-cta-arrow { transform: translateX(4px); }
+  /* Override .is-dark a specificity (0,1,1) — this selector is (0,2,0) */
+  .hero .hero-cta { color: var(--color-dark-ink); }
 
   /* Curtain that wipes bottom→top across the hero-to-tagline scroll boundary.
      Sits as a fixed overlay so it animates against the viewport, not document flow.
@@ -313,6 +315,7 @@ import HeroGallery from '../components/HeroGallery.astro';
     line-height: 0.96;
     letter-spacing: -0.04em;
     color: var(--color-ink);
+    clip-path: inset(0 0 100% 0);
   }
   .process-sub {
     font-size: clamp(14px, 1.4vw, 18px);
@@ -367,6 +370,9 @@ import HeroGallery from '../components/HeroGallery.astro';
   @media (max-width: 600px) {
     .process-grid { grid-template-columns: 1fr !important; }
     .process { padding: 60px 24px !important; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .process-title { clip-path: none; }
   }
 
   /* cta — dark chapter */
@@ -612,6 +618,25 @@ import HeroGallery from '../components/HeroGallery.astro';
     document.getElementById('timeline-stage')?.classList.add('is-static');
     setTimeline(tlData.length - 1);
     if (tlFill) tlFill.style.width = '100%';
+  }
+
+  // ============ PROCESS TITLE ============
+  // data-reveal-clip via IO can't detect zero-visual-area elements (clip-path hides them from IO).
+  // Use ScrollTrigger instead — it uses layout position, not visual area.
+  {
+    const el = document.querySelector<HTMLElement>('[data-process-title]');
+    if (el) {
+      if (reduceMotion.current) {
+        el.style.clipPath = 'none';
+      } else {
+        gsap.to(el, {
+          clipPath: 'inset(0 0 0% 0)',
+          duration: 0.9,
+          ease: ease.expo,
+          scrollTrigger: { trigger: el, start: 'top 85%', once: true },
+        });
+      }
+    }
   }
 
   // ============ CTA ============
