@@ -147,7 +147,7 @@ const isActive = (href: string) =>
     color: var(--color-ink-2);
     padding: 6px 0;
     letter-spacing: -0.005em;
-    transition: color 0.25s ease, font-weight 0.25s ease;
+    transition: color 0.25s ease;
   }
   .nav-link::after {
     content: '';
@@ -161,7 +161,7 @@ const isActive = (href: string) =>
     transform-origin: left center;
     transition: transform 0.45s var(--ease-out), background-color 0.3s ease, height 0.3s ease;
   }
-  .nav-link:hover { color: var(--color-ink); font-weight: 700; }
+  .nav-link:hover { color: var(--color-ink); }
   .nav-link:hover::after { transform: scaleX(1); }
   .nav-link.is-active { color: var(--color-ink); }
   .nav-link.is-active::after {

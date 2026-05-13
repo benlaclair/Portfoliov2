@@ -594,7 +594,7 @@ import HeroGallery from '../components/HeroGallery.astro';
   // the timeline-stage still scrolls naturally and the entries swap in via the
   // onUpdate progress mapping.
   const isMobile = window.matchMedia('(max-width: 900px)').matches;
-  if (!reduceMotion && !isMobile) {
+  if (!reduceMotion.current && !isMobile) {
     ScrollTrigger.create({
       trigger: '#timeline-stage',
       start: 'top top',
