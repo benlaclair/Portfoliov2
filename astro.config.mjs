@@ -1,8 +1,6 @@
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import vercel from '@astrojs/vercel';
-import tailwindcss from '@tailwindcss/vite';
-
 export default defineConfig({
   site: 'https://benlaclair.com',
   output: 'static',
@@ -11,6 +9,5 @@ export default defineConfig({
     imageService: true,
   }),
   integrations: [sitemap()],
-  vite: { plugins: [tailwindcss()] },
   prefetch: { prefetchAll: true, defaultStrategy: 'viewport' },
 });
