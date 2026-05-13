@@ -119,6 +119,14 @@ const num = '/' + String(index + 1).padStart(2, '0');
           scrollTrigger: { trigger: visual, start: 'top bottom', end: 'bottom top', scrub: 0.8 },
         }
       );
+
+      // Scale the inner image on hover — safe because ScrollTrigger controls yPercent, not scale
+      p.addEventListener('mouseenter', () => {
+        gsap.to(inner, { scale: 1.06, duration: 0.7, ease: 'power3.out', overwrite: 'auto' });
+      });
+      p.addEventListener('mouseleave', () => {
+        gsap.to(inner, { scale: 1, duration: 0.9, ease: 'power3.out', overwrite: 'auto' });
+      });
     });
   }
 </script>

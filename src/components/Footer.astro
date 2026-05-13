@@ -1,79 +1,142 @@
 ---
 const year = new Date().getFullYear();
 ---
-<footer class="footer-mark-section is-dark atmo-grain-dark" data-section-mode="dark">
-  <div class="wrap" style="padding-top: 80px; padding-bottom: 40px; border-top: 1px solid var(--color-dark-line)">
-    <div
-      style="display: flex; justify-content: space-between; align-items: flex-end; gap: 60px; flex-wrap: wrap"
-    >
-      <!-- SVG B-mark + wordmark -->
-      <div class="footer-mark" style="transform-origin: left bottom">
-        <svg
-          viewBox="0 0 96 96"
-          aria-hidden="true"
-          style="width: clamp(64px, 8vw, 96px); height: clamp(64px, 8vw, 96px); color: var(--color-dark-ink); display: block; margin-bottom: 16px"
-        >
-          <path d="M20 68V22h24c10 0 16 5 16 12.5 0 4.8-2.5 8.3-6.8 10.2C59 46.4 63 50.7 63 57c0 8-6.4 11-17.2 11H20Z" fill="currentColor" />
-          <path d="M32 41h10c3.5 0 5.4-1.5 5.4-4.2 0-2.6-2-4-5.6-4H32v8.2Z" fill="var(--color-dark-bg)" />
-          <path d="M32 58h12.5c3.8 0 5.8-1.7 5.8-4.7 0-2.8-2.1-4.5-6.1-4.5H32V58Z" fill="var(--color-dark-bg)" />
-          <circle cx="70" cy="25" r="7" fill="var(--color-accent)" />
-        </svg>
-        <div
-          style="font-family: var(--font-display); font-weight: 600; font-size: clamp(32px, 5vw, 56px); line-height: 0.95; letter-spacing: -0.03em; color: var(--color-dark-ink)"
-        >
-          Ben LaClair
-        </div>
-      </div>
+<footer class="is-dark" data-section-mode="dark">
 
-      <div
-        class="footer-info text-eyebrow"
-        style="display: grid; grid-template-columns: repeat(2, auto); gap: 32px 60px; letter-spacing: 0.08em"
+  <!-- Closing statement -->
+  <div class="footer-cta">
+    <div class="wrap" style="padding-top: clamp(80px, 12vh, 160px); padding-bottom: clamp(60px, 8vh, 100px)">
+      <p class="footer-eyebrow" data-reveal>Available for new work</p>
+
+      <h2 class="footer-headline" aria-label="Let's make something worth making.">
+        <div class="clip-wrap"><span>Let's make</span></div>
+        <div class="clip-wrap"><span>something</span></div>
+        <div class="clip-wrap footer-accent-line"><span>worth making.</span></div>
+      </h2>
+
+      <a
+        href="mailto:hello@benlaclair.com"
+        class="footer-email"
+        data-cursor="email"
+        data-reveal
       >
-        <div data-reveal>
-          <div style="color: var(--color-dark-muted); margin-bottom: 8px">Index</div>
-          <div style="color: var(--color-dark-ink)">{year}</div>
-        </div>
-        <div data-reveal>
-          <div style="color: var(--color-dark-muted); margin-bottom: 8px">Elsewhere</div>
-          <a
-            href="https://www.linkedin.com/in/benlaclair"
-            target="_blank"
-            rel="noopener noreferrer"
-            data-cursor="open"
-            style="color: var(--color-dark-ink); border-bottom: 1px solid currentColor; padding-bottom: 1px"
-          >LinkedIn ↗</a>
-        </div>
-        <div data-reveal>
-          <div style="color: var(--color-dark-muted); margin-bottom: 8px">Reach</div>
-          <a
-            href="mailto:hello@benlaclair.com"
-            data-cursor="email"
-            style="color: var(--color-dark-ink); border-bottom: 1px solid currentColor; padding-bottom: 1px"
-          >hello@benlaclair.com</a>
-        </div>
-      </div>
-    </div>
-
-    <div
-      style="margin-top: 80px; padding-top: 24px; border-top: 1px solid var(--color-dark-line); display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-dark-muted)"
-    >
-      <span>&copy; {year} Ben LaClair</span>
+        hello@benlaclair.com
+        <span class="footer-email-arrow" aria-hidden="true">↗</span>
+      </a>
     </div>
   </div>
+
+  <!-- Bottom nav row -->
+  <div class="footer-bottom">
+    <div
+      class="wrap"
+      style="padding-top: 24px; padding-bottom: 32px; border-top: 1px solid var(--color-dark-line); display: flex; justify-content: space-between; align-items: center; gap: 24px; flex-wrap: wrap"
+    >
+      <nav class="footer-nav" aria-label="Footer navigation">
+        <a href="/work">Work</a>
+        <a href="/tools">Tools</a>
+        <a href="/about">About</a>
+        <a href="/contact">Contact</a>
+        <a href="https://www.linkedin.com/in/benlaclair" target="_blank" rel="noopener noreferrer" data-cursor="open">
+          LinkedIn ↗
+        </a>
+      </nav>
+      <span class="footer-copy">&copy; {year} Ben LaClair</span>
+    </div>
+  </div>
+
 </footer>
+
+<style>
+  .footer-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    margin-bottom: clamp(32px, 4vw, 56px);
+  }
+
+  .footer-headline {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: clamp(64px, 11vw, 180px);
+    line-height: 0.92;
+    letter-spacing: -0.045em;
+    color: var(--color-dark-ink);
+    margin-bottom: clamp(40px, 5vw, 72px);
+  }
+
+  /* Last line uses the accent colour */
+  .footer-accent-line > span {
+    color: var(--color-accent);
+  }
+
+  .footer-email {
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: clamp(20px, 3vw, 42px);
+    letter-spacing: -0.025em;
+    color: var(--color-dark-ink-2);
+    border-bottom: 1px solid var(--color-dark-line);
+    padding-bottom: 4px;
+    transition: color 0.3s ease, border-color 0.3s ease;
+  }
+  .footer-email:hover {
+    color: var(--color-dark-ink);
+    border-color: var(--color-dark-ink);
+  }
+  .footer-email-arrow {
+    display: inline-block;
+    transition: transform 0.5s cubic-bezier(.7, 0, .2, 1);
+  }
+  .footer-email:hover .footer-email-arrow {
+    transform: translate(5px, -5px);
+  }
+
+  .footer-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 32px;
+  }
+  .footer-nav a {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-dark-muted);
+    transition: color 0.25s ease;
+  }
+  .footer-nav a:hover { color: var(--color-dark-ink); }
+
+  .footer-copy {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-dark-muted);
+  }
+</style>
 
 <script>
   import { gsap, ease, reduceMotion } from '../lib/motion';
 
-  const mark = document.querySelector<HTMLElement>('.footer-mark');
-  if (mark && !reduceMotion.current) {
-    gsap.from(mark, {
-      y: 60,
-      scale: 0.96,
-      opacity: 0,
-      duration: 1.1,
-      ease: ease.expo,
-      scrollTrigger: { trigger: mark, start: 'top 92%' },
-    });
+  const headline = document.querySelector<HTMLElement>('.footer-headline');
+  if (headline && !reduceMotion.current) {
+    const spans = headline.querySelectorAll<HTMLElement>('.clip-wrap > span');
+    gsap.fromTo(
+      spans,
+      { yPercent: 110 },
+      {
+        yPercent: 0,
+        duration: 1.1,
+        ease: ease.expo,
+        stagger: 0.08,
+        scrollTrigger: { trigger: headline, start: 'top 88%' },
+      }
+    );
   }
 </script>

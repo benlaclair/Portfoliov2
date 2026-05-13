@@ -109,6 +109,43 @@ import HeroGallery from '../components/HeroGallery.astro';
     </div>
   </section>
 
+  <!-- ============ PROCESS (light) ============ -->
+  <section class="process atmo-warmth-br">
+    <div class="wrap">
+      <div class="process-header">
+        <p class="text-eyebrow-accent" data-reveal>Process</p>
+        <h2 class="process-title" data-reveal>
+          Fewer surprises,<br>better work.
+        </h2>
+        <p class="process-sub" data-reveal>
+          Four phases. Every project, every time — so you always know what's happening and why.
+        </p>
+      </div>
+      <div class="process-grid">
+        <div class="process-step" data-reveal>
+          <span class="process-num">01</span>
+          <h3 class="process-step-title">Absorb</h3>
+          <p class="process-step-body">Stakeholder interviews, user research, competitive audit. Learning enough to design with conviction — not just familiarity.</p>
+        </div>
+        <div class="process-step" data-reveal>
+          <span class="process-num">02</span>
+          <h3 class="process-step-title">Reduce</h3>
+          <p class="process-step-body">Distilling the problem to its sharpest possible version. Architecture, flows, and design principles before a single pixel moves.</p>
+        </div>
+        <div class="process-step" data-reveal>
+          <span class="process-num">03</span>
+          <h3 class="process-step-title">Make</h3>
+          <p class="process-step-body">Screens, systems, motion. Every detail earns its place. No placeholder copy, no "we'll fix it in dev."</p>
+        </div>
+        <div class="process-step" data-reveal>
+          <span class="process-num">04</span>
+          <h3 class="process-step-title">Align</h3>
+          <p class="process-step-body">Handoff with rationale, not just specs. Staying available through build so the intent survives implementation.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- ============ CTA (dark + radial halos) ============ -->
   <section class="cta is-dark has-halos" id="cta" data-section-mode="dark">
     <h2 class="cta-title" id="cta-title">
@@ -259,6 +296,79 @@ import HeroGallery from '../components/HeroGallery.astro';
   .timeline-ticks { display: flex; justify-content: space-between; margin-top: 12px; font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.1em; color: var(--color-muted); }
   .timeline-ticks span { transition: color 0.5s ease; }
   .timeline-ticks span.active { color: var(--color-accent); }
+
+  /* process — light chapter */
+  .process { padding: clamp(80px, 12vh, 160px) 40px; }
+  .process-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px 80px;
+    align-items: start;
+    margin-bottom: clamp(60px, 8vw, 100px);
+  }
+  .process-header .text-eyebrow-accent { grid-column: 1 / -1; }
+  .process-title {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: clamp(40px, 5.5vw, 88px);
+    line-height: 0.96;
+    letter-spacing: -0.04em;
+    color: var(--color-ink);
+  }
+  .process-sub {
+    font-size: clamp(14px, 1.4vw, 18px);
+    line-height: 1.6;
+    color: var(--color-muted);
+    max-width: 360px;
+    padding-top: 0.5em;
+    align-self: end;
+  }
+  .process-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--color-line);
+    border: 1px solid var(--color-line);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .process-step {
+    background: var(--color-bg);
+    padding: clamp(28px, 3vw, 48px) clamp(24px, 2.5vw, 40px);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    transition: background 0.3s ease;
+  }
+  .process-step:hover { background: var(--color-panel); }
+  .process-num {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    color: var(--color-accent);
+  }
+  .process-step-title {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: clamp(24px, 2.4vw, 36px);
+    letter-spacing: -0.03em;
+    line-height: 1;
+    color: var(--color-ink);
+  }
+  .process-step-body {
+    font-size: 14px;
+    line-height: 1.65;
+    color: var(--color-muted);
+    margin-top: auto;
+  }
+  @media (max-width: 900px) {
+    .process-header { grid-template-columns: 1fr !important; }
+    .process-grid { grid-template-columns: repeat(2, 1fr) !important; }
+  }
+  @media (max-width: 600px) {
+    .process-grid { grid-template-columns: 1fr !important; }
+    .process { padding: 60px 24px !important; }
+  }
 
   /* cta — dark chapter */
   .cta { padding: 200px 40px 120px; }
