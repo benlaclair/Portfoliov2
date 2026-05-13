@@ -46,6 +46,21 @@ const year = new Date().getFullYear();
 </footer>
 
 <style>
+  /* Continuation of the CTA section's bottom-left accent glow.
+     Keeps the transition seamless since both sections share the same dark bg. */
+  footer {
+    position: relative;
+    isolation: isolate;
+  }
+  footer::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: -1;
+    background: radial-gradient(65% 55% at 5% 0%, rgba(91, 108, 171, 0.10), transparent 65%);
+  }
+
   .footer-eyebrow {
     font-family: var(--font-mono);
     font-size: 11px;

@@ -134,7 +134,7 @@
   background: radial-gradient(60% 60% at 88% 12%, var(--color-accent-soft), transparent 70%);
 }
 .has-halos::after {
-  background: radial-gradient(70% 60% at 6% 90%, rgba(220, 170, 110, 0.10), transparent 70%);
+  background: radial-gradient(70% 60% at 6% 90%, rgba(91, 108, 171, 0.12), transparent 70%);
 }
 
 /* Atmospheric utilities — finite, named alternatives to per-section radial snowflakes.
