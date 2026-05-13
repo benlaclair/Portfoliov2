@@ -14,10 +14,10 @@ const columns: { src: string; alt: string }[][] = Array.from({ length: COLS }, (
 allImages.forEach((img, i) => columns[i % COLS].push(img));
 
 const colMeta = [
-  { speed: fullPage ? 90 : 60, dir: 'up' },
-  { speed: fullPage ? 65 : 45, dir: 'down' },
-  { speed: fullPage ? 110 : 75, dir: 'up' },
-  { speed: fullPage ? 75 : 50, dir: 'down' },
+  { speed: fullPage ? 135 : 90, dir: 'up' },
+  { speed: fullPage ? 100 : 70, dir: 'down' },
+  { speed: fullPage ? 165 : 110, dir: 'up' },
+  { speed: fullPage ? 115 : 75, dir: 'down' },
 ];
 ---
 
@@ -48,7 +48,8 @@ const colMeta = [
     overflow: hidden;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 16px;
+    column-gap: 32px;
+    row-gap: 16px;
     padding: 0 16px;
   }
   .hg-col {
@@ -56,6 +57,9 @@ const colMeta = [
     flex-direction: column;
     gap: 16px;
     will-change: transform;
+  }
+  .hg-col:not(:last-child) {
+    border-right: 1px solid rgba(244, 239, 228, 0.12);
   }
   .hg-set {
     display: flex;
@@ -72,10 +76,12 @@ const colMeta = [
   @media (max-width: 900px) {
     .hg-root { grid-template-columns: repeat(2, 1fr); }
     .hg-col:nth-child(n+3) { display: none; }
+    .hg-col:nth-child(2) { border-right: none; }
   }
   @media (max-width: 600px) {
     .hg-root { grid-template-columns: 1fr; }
     .hg-col:nth-child(n+2) { display: none; }
+    .hg-col:nth-child(1) { border-right: none; }
   }
 </style>
 
