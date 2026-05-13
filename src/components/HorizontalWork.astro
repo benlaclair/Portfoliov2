@@ -194,6 +194,7 @@ const featured: Project[] = PROJECTS.slice(0, 3);
     clip-path: inset(0 100% 0 0);
     transform-origin: center center;
     will-change: transform, clip-path;
+    transition: clip-path 1s cubic-bezier(0.16, 1, 0.3, 1);
   }
   .hwork-visual.in { clip-path: inset(0 0 0 0); }
   .hwork-visual-inner {
