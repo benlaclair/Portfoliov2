@@ -381,6 +381,8 @@ import HeroGallery from '../components/HeroGallery.astro';
   .cta-title .accent { color: var(--color-accent); }
   .cta-row { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: end; margin-top: 80px; }
   .cta-link { display: inline-flex; align-items: center; gap: 18px; font-size: 22px; font-weight: 500; font-family: var(--font-body); letter-spacing: -0.01em; padding: 18px 0; border-bottom: 1px solid var(--color-dark-ink); color: var(--color-dark-ink); }
+  /* Override .is-dark a specificity (0,1,1) — same fix pattern as .hero .hero-cta */
+  .cta .cta-link { color: var(--color-dark-ink); }
   .cta-arrow { width: 44px; height: 44px; border-radius: 50%; background: var(--color-dark-ink); color: var(--color-dark-bg); display: grid; place-items: center; transition: transform 0.6s cubic-bezier(.7,0,.2,1), background 0.4s ease; flex-shrink: 0; }
   .cta-link:hover .cta-arrow { transform: rotate(-45deg); background: var(--color-accent); }
   .cta-side { font-size: 14px; line-height: 1.6; color: var(--color-dark-ink-2); max-width: 360px; padding-bottom: 24px; font-family: var(--font-body); }

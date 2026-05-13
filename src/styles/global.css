@@ -162,24 +162,10 @@
 .atmo-warmth-br::before {
   background: radial-gradient(55% 65% at 100% 100%, rgba(220, 170, 110, 0.09), transparent 70%);
 }
-.atmo-grain-light::after,
-.atmo-grain-dark::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 1;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  background-size: 200px 200px;
-}
-.atmo-grain-light::after {
-  opacity: 0.05;
-  mix-blend-mode: multiply;
-}
-.atmo-grain-dark::after {
-  opacity: 0.07;
-  mix-blend-mode: overlay;
-}
+/* atmo-grain-* classes are intentionally left without a ::after rule.
+   CSS background-image sandboxes SVG filters (feTurbulence never executes).
+   Per-section grain is handled by the global inline SVG in BaseLayout.
+   These classes reserve the slot naming so ::after is available if needed. */
 
 @utility font-display {
   font-family: var(--font-display);

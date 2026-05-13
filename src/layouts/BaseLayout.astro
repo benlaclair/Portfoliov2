@@ -192,8 +192,8 @@ const jsonLd = {
         });
       });
 
-      // ============ [data-reveal] + [data-reveal-clip] IntersectionObserver cascade ============
-      const revealEls = document.querySelectorAll('[data-reveal], [data-reveal-clip]');
+      // ============ [data-reveal] IntersectionObserver cascade ============
+      const revealEls = document.querySelectorAll('[data-reveal]');
       if (revealEls.length) {
         const io = new IntersectionObserver((entries) => {
           entries.forEach((e) => {
