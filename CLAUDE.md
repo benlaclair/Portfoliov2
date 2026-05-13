@@ -1,6 +1,6 @@
 # benlaclair.com v2 — Claude session bootstrap
 
-Personal portfolio for Ben LaClair (UX/UI + Graphic Designer). Astro 5 + GSAP 3.13 + Tailwind v4, deployed to Vercel.
+Personal portfolio for Ben LaClair (UX/UI + Graphic Designer). Astro 6 + GSAP 3.13 + Tailwind v4, deployed to Vercel.
 
 **Read [HANDOFF.md](HANDOFF.md) first.** It is the master orientation and links to:
 - [docs/DESIGN-SYSTEM.md](docs/DESIGN-SYSTEM.md) — color tokens, typography, chapter rhythm, logo variants
