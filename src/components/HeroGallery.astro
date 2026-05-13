@@ -38,6 +38,10 @@ const colMeta = [
       ))}
     </div>
   ))}
+  {/* Static dividers — absolutely positioned so they don't animate with the columns */}
+  <div class="hg-div" data-div="1" aria-hidden="true" />
+  <div class="hg-div" data-div="2" aria-hidden="true" />
+  <div class="hg-div" data-div="3" aria-hidden="true" />
 </div>
 
 <style>
@@ -50,16 +54,13 @@ const colMeta = [
     grid-template-columns: repeat(4, 1fr);
     column-gap: 32px;
     row-gap: 16px;
-    padding: 0 16px;
+    padding: 15%;
   }
   .hg-col {
     display: flex;
     flex-direction: column;
     gap: 16px;
     will-change: transform;
-  }
-  .hg-col:not(:last-child) {
-    border-right: 1px solid rgba(244, 239, 228, 0.12);
   }
   .hg-set {
     display: flex;
@@ -73,15 +74,28 @@ const colMeta = [
     border-radius: 6px;
     background: rgba(244, 239, 228, 0.04);
   }
+  /* Dividers are absolutely positioned so they stay fixed while columns animate */
+  .hg-div {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: rgba(244, 239, 228, 0.18);
+    pointer-events: none;
+  }
+  /* Positions match gap centres: padding 15% → content 70%, cols repeat(4,1fr) */
+  .hg-div[data-div="1"] { left: 32.5%; }
+  .hg-div[data-div="2"] { left: 50%; }
+  .hg-div[data-div="3"] { left: 67.5%; }
   @media (max-width: 900px) {
     .hg-root { grid-template-columns: repeat(2, 1fr); }
     .hg-col:nth-child(n+3) { display: none; }
-    .hg-col:nth-child(2) { border-right: none; }
+    .hg-div[data-div="1"], .hg-div[data-div="3"] { display: none; }
   }
   @media (max-width: 600px) {
     .hg-root { grid-template-columns: 1fr; }
     .hg-col:nth-child(n+2) { display: none; }
-    .hg-col:nth-child(1) { border-right: none; }
+    .hg-div { display: none; }
   }
 </style>
 
