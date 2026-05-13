@@ -33,9 +33,3 @@ Thumbs.db
 
 # Vercel
 .vercel
-
-# Binary assets (copy from v1 repo — not tracked here)
-public/graphics/
-public/images/
-public/videos/
-public/resume.pdf
