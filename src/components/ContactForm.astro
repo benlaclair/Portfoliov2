@@ -6,7 +6,7 @@ const fieldStyle = "width: 100%; background: var(--color-paper); border: 1px sol
   <form data-contact-form style="display: flex; flex-direction: column; gap: 14px;">
     <input type="text" name="_gotcha" style="display: none;" tabindex="-1" autocomplete="off" />
 
-    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+    <div class="cf-name-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
       <input type="text" name="name" placeholder="Your name" required class="cf-field" style={fieldStyle} />
       <input type="email" name="email" placeholder="your@email.com" required class="cf-field" style={fieldStyle} />
     </div>
@@ -24,9 +24,7 @@ const fieldStyle = "width: 100%; background: var(--color-paper); border: 1px sol
       <button
         type="submit"
         class="cf-submit"
-        data-cursor="send"
-        data-magnetic="0.3"
-        style="display: inline-flex; align-items: center; gap: 12px; color: var(--color-paper); font-size: 14px; font-weight: 500; padding: 14px 28px; border: none; border-radius: 0; cursor: none;"
+        style="display: inline-flex; align-items: center; gap: 12px; color: var(--color-paper); font-size: 14px; font-weight: 500; padding: 14px 28px; border: none; border-radius: 0; cursor: pointer;"
       >
         <span data-submit-text>Send message</span>
         <span>→</span>
@@ -36,7 +34,7 @@ const fieldStyle = "width: 100%; background: var(--color-paper); border: 1px sol
         <button
           type="button"
           data-contact-retry
-          style="text-decoration: underline; background: transparent; border: none; color: inherit; cursor: none;"
+          style="text-decoration: underline; background: transparent; border: none; color: inherit; cursor: pointer;"
         >
           Try again
         </button>
@@ -57,7 +55,7 @@ const fieldStyle = "width: 100%; background: var(--color-paper); border: 1px sol
     <button
       type="button"
       data-contact-reset
-      style="font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-ink-2); border: none; background: transparent; cursor: none; border-bottom: 1px solid var(--color-line); padding-bottom: 4px;"
+      style="font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-ink-2); border: none; background: transparent; cursor: pointer; border-bottom: 1px solid var(--color-line); padding-bottom: 4px;"
     >
       Send another →
     </button>
@@ -77,6 +75,9 @@ const fieldStyle = "width: 100%; background: var(--color-paper); border: 1px sol
   }
   .cf-submit:disabled {
     opacity: 0.5;
+  }
+  @media (max-width: 600px) {
+    .cf-name-row { grid-template-columns: 1fr !important; }
   }
 </style>
 
