@@ -2,6 +2,28 @@
 const year = new Date().getFullYear();
 ---
 <footer class="is-dark" data-section-mode="dark">
+  <div class="wrap" style="padding-top: 80px; padding-bottom: 40px; border-top: 1px solid var(--color-dark-line)">
+    <div
+      style="display: flex; justify-content: space-between; align-items: flex-end; gap: 60px; flex-wrap: wrap"
+    >
+      <!-- SVG B-mark + wordmark -->
+      <div class="footer-mark" style="transform-origin: left bottom">
+        <svg
+          viewBox="0 0 96 96"
+          aria-hidden="true"
+          style="width: clamp(64px, 8vw, 96px); height: clamp(64px, 8vw, 96px); color: var(--color-dark-ink); display: block; margin-bottom: 16px"
+        >
+          <path d="M20 68V22h24c10 0 16 5 16 12.5 0 4.8-2.5 8.3-6.8 10.2C59 46.4 63 50.7 63 57c0 8-6.4 11-17.2 11H20Z" fill="currentColor" />
+          <path d="M32 41h10c3.5 0 5.4-1.5 5.4-4.2 0-2.6-2-4-5.6-4H32v8.2Z" fill="var(--color-dark-bg)" />
+          <path d="M32 58h12.5c3.8 0 5.8-1.7 5.8-4.7 0-2.8-2.1-4.5-6.1-4.5H32V58Z" fill="var(--color-dark-bg)" />
+          <circle cx="70" cy="25" r="7" fill="var(--color-accent)" />
+        </svg>
+        <div
+          style="font-family: var(--font-display); font-weight: 600; font-size: clamp(32px, 5vw, 56px); line-height: 0.95; letter-spacing: -0.03em; color: var(--color-dark-ink)"
+        >
+          Ben LaClair
+        </div>
+      </div>
 
   <!-- Closing statement -->
   <div class="footer-cta">
