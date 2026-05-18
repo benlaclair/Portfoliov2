@@ -14,7 +14,7 @@ const { items } = Astro.props;
       {items.map((s) => (
         <div class="cs-stat" data-reveal>
           <p
-            style="font-family: var(--font-display); font-weight: 500; font-size: clamp(40px, 5vw, 72px); line-height: 1; letter-spacing: -0.04em; color: var(--color-ink); margin-bottom: 12px"
+            style="font-family: var(--font-display); font-weight: 500; font-size: clamp(40px, 5vw, 72px); line-height: 1; letter-spacing: -0.02em; color: var(--color-ink); margin-bottom: 12px"
           >{s.value}</p>
           <p class="text-eyebrow">{s.label}</p>
         </div>
