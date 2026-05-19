@@ -16,7 +16,7 @@ Personal portfolio for Ben LaClair (UX/UI + Graphic Designer). Static Astro site
 - **Branch model**: single-branch — `main` is where work happens.
 - **Deploy**: `main` push → <https://portfoliov2-jet-six.vercel.app> (auto-deploys via Vercel). Separate Vercel project from the v1 site at benlaclair.com — anything done here does not touch the live portfolio.
 
-The current visual language is the result of seven phases:
+The current visual language is the result of nine phases:
 
 1. **Phase 1** — Astro/GSAP/Tailwind scaffold, Plus Jakarta Sans, dark `#080B0F` bg
 2. **Phase 2** — Warm parchment editorial system (Inter Tight + Instrument Serif italic), full motion layer (Lenis, custom cursor, magnetic links, page curtain, loader, horizontal pin, timeline pin)
@@ -25,6 +25,8 @@ The current visual language is the result of seven phases:
 5. **Phase 5** — Case-study architecture refactor: slug-keyed registry in `src/data/caseStudies/`, rendering pieces extracted to `src/components/case-study/*`, no more if/else ladder in `work/[slug].astro`
 6. **Phase 6** — Section-contrast pass: 3-value rhythm (cream / mid-tone / dark), card-on-canvas pattern (Timeline, Tools, horizontal Work panels), navbar mode-aware substrate + animated underline + 60px height, three-room horizontal panels with accent-stroked dark middle card
 7. **Phase 7** — Architectural migration: `src/lib/motion.ts` singleton, `@theme` shadow + typography utility tokens, `<Image />` for project covers, `[data-reveal]` replacing hand-rolled scroll reveals, `<RowList />` + `<Grid />` primitives consolidating case-study renderers, inline-style sweep
+8. **Phase 8** — Full homepage rebuild: HeroGallery infinite-loop gallery, scroll-gate curtain wipe, vertical sticky-pin Work cards, indigo accent `#5b6cab`, graphic-design page rebuilt
+9. **Phase 9** — ScrollStage sticky-bg architecture + Three.js ring carousel: replaced BackgroundTransition + Hero with scroll-driven `ScrollStage` (five bg layers, character scramble headlines), Three.js WebGL `HeroCarousel` (8-card ring, `uFront` shader, auto-rotate), `overflow-x: clip` fix for sticky, `three` added to deps
 
 Phase 3 is a **visual/animation layer over Phase 2's content layout** — page structure (section order, copy, components) was intentionally unchanged; only paint, type, and motion were swapped. Phases 4–5 are correctness/architecture refinements. Phase 6 is visual rhythm. Phase 7 is pure architecture — zero visual change.
 
@@ -64,6 +66,15 @@ src/
                           rhythm with dark middle card
     HeroGallery.astro     Phase 8 — 4-column infinite-loop gallery used by
                           the homepage hero AND /work/graphic-design
+    ScrollStage.astro     Phase 9 — scroll-driven headline sections with
+                          StickyBackground crossfade + scramble entrance
+    StickyBackground.astro Phase 9 — sticky bg layer stack (hero/tagline/
+                          intent/work/contact), purely presentational
+    HeroCarousel.astro    Phase 9 — Three.js WebGL 3D ring carousel,
+                          8 graphic-design images, uFront shader, auto-rotate
+    HeroRings.astro       Phase 9 — decorative concentric SVG rings in hero
+    HeroBackground.astro  Phase 9 — atmospheric gradient layer in hero
+    HeroCard.astro        Phase 9 — card component used by HeroCarousel
     ProjectCard.astro     Vertical project row used on /work
     ContactForm.astro     Form → /api/contact → Formspree
     case-study/           Phase 5 — modular case-study renderers
@@ -104,6 +115,8 @@ src/
       index.ts              Registry of slug → CaseStudy
       vlier.ts, veo.ts, portfolio.ts
   lib/
+    scramble.ts           Phase 9 — per-character scramble-then-settle text
+                          entrance. scramble(el, text, opts) → { cancel() }
     motion.ts             Phase 7 — gsap + ScrollTrigger singleton,
                           ease tokens, reactive reduceMotion, revealLines()
                           helper. All scripts import from here.
@@ -216,9 +229,22 @@ DevTools → Rendering → Emulate `prefers-reduced-motion: reduce`. The loader 
 
 ## What's next
 
+**Phase 9 (ScrollStage + Three.js ring carousel) shipped 2026-05-19.** Replaced BackgroundTransition + Hero with a `ScrollStage` component: three headline sections scroll over a `StickyBackground` (`position: sticky; margin-bottom: -100svh`) with five bg layers that crossfade via IntersectionObserver. Each headline scrambles in character-by-character (via `src/lib/scramble.ts`) when it crosses the viewport midpoint. The hero bg layer hosts a Three.js WebGL `HeroCarousel` — 8 graphic-design images arranged on a 3D ring (`THREE.Group`), auto-rotating on Y axis, with a `uFront` GLSL uniform driving brightness and gloss per card based on camera-facing angle. **The carousel camera and ring tilt are still being tuned** — ring X rotation and camera Z distance are the main levers. `global.css` `overflow-x: hidden → clip` was required to prevent the sticky bg from being killed by an implicit scroll container. `three` + `@types/three` added as dependencies.
+
 Phase 8 (the 2026-05 homepage rebuild) shipped: minimal hero phrase that auto-transitions to a 4-column infinite-loop gallery + CTA, **scroll-gate curtain wipe** at the hero→tagline boundary (scroll is locked while gallery shows; first downward gesture fires a dark curtain that rises, covers the page while position jumps to the tagline, then exits upward revealing it), vertical sticky-pin Work cards (was horizontal), graphic-design page rebuilt with the same gallery, accent swapped from orange `#ff5c1a` to muted indigo `#5b6cab`, decorative copy and the Marquee section removed. Full tracker preserved in [docs/REBUILD-2026-05.md](docs/REBUILD-2026-05.md) for reference. Scroll gate fully documented in [docs/ANIMATIONS.md](docs/ANIMATIONS.md).
 
 Phase 6 (section contrast) and Phase 7 (architectural migration) both shipped to `main`. The site has a 3-value rhythm (cream / mid-tone / dark), card-on-canvas pattern across Timeline / Tools / horizontal Work, a mode-aware navbar at 60px height with animated accent underline, and the horizontal Work panels render as three-room cards with the dark middle card outlined in 2px accent stroke. Phase 7 extracted `src/lib/motion.ts`, added `@theme` shadow + typography utility tokens, migrated covers to `<Image />`, replaced 4 pages' worth of hand-rolled scroll reveals with `[data-reveal]`, and consolidated 6 case-study renderers behind `<RowList />` + `<Grid />` primitives.
+
+### Open items from Phase 9
+
+- **HeroCarousel ring tilt** — the 3D ring camera/tilt is not final. Key levers in `src/components/HeroCarousel.astro`:
+  - `ring.rotation.x` (currently `15deg`) — how much the ring tilts toward you; higher = more bowl-view, lower = more edge-on
+  - `ring.rotation.z` (currently `-5deg`) — slight lean
+  - `camera.position.z` (currently `22`) — pull back to see more of the ring, push in to fill the frame
+  - `camera.fov` (currently `42`) — wider = more cards visible, narrower = more telephoto compression
+  - `RADIUS` (currently `6.6`) — ring size; increase to spread cards further apart
+  - `N` (currently `8`) — card count; decrease for more breathing room between cards
+- **HeroCarousel `uFront` dot product** — the per-card brightness calc in the animate loop uses world-space normals; if ring X tilt changes significantly, the dot product may need updating to account for the new normal directions.
 
 ### Open items (smaller, surgical)
 
