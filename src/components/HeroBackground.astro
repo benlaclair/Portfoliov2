@@ -1,0 +1,208 @@
+---
+const IMAGES = [
+  '/graphics/esports/imgi_15_PHrjrzpkWThxU8dW (1).webp',
+  '/graphics/esports/imgi_10_gJBUR647GglMTFGM (1).webp',
+  '/graphics/esports/imgi_16_G9CLN3VWJickbSGt (1).webp',
+  '/graphics/esports/imgi_17_WGJ6ZbI8G5KHWS5c (1).webp',
+  '/graphics/esports/imgi_14_CTsyF0vo0vwU35F9 (1).webp',
+  '/graphics/esports/imgi_13_ESaPzKFVcES9oRRZ (1).webp',
+  '/graphics/esports/imgi_5_AQOWqiuvdcFGurVR (1).webp',
+  '/graphics/esports/imgi_4_i6RzbqDKFFaeRmv0 (1).webp',
+  '/graphics/Client Work/imgi_2_H8cArORNC3m5Ptx4.webp',
+  '/graphics/Client Work/imgi_7_BTr1FxMZARNjTfEw.webp',
+  '/graphics/Client Work/imgi_24_KEjqq1f5txLT7ScT.webp',
+  '/graphics/Client Work/imgi_19_2zlaAMTa5Qx6ewgo.webp',
+];
+---
+
+<canvas id="hero-bg-canvas" aria-hidden="true"></canvas>
+
+<style is:global>
+  #hero-bg-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    pointer-events: none;
+    mask-image: radial-gradient(ellipse 100% 85% at 50% 50%, black 15%, rgba(0,0,0,0.6) 50%, transparent 78%);
+    -webkit-mask-image: radial-gradient(ellipse 100% 85% at 50% 50%, black 15%, rgba(0,0,0,0.6) 50%, transparent 78%);
+  }
+</style>
+
+<script is:inline define:vars={{ IMAGES }}>
+(function () {
+  const canvas = document.getElementById('hero-bg-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return;
+
+  // ── Config ────────────────────────────────────────────────────────────────
+  const CARD_W  = 380;      // card width in world units
+  const CARD_H  = 240;      // card height in world units
+  const RADIUS  = 950;      // ring radius — how far cards are from center
+  const FOV     = 800;      // perspective focal length — higher = flatter
+  const SPEED   = 0.000014; // rad/ms — ~7.4 min per full rotation
+  const DIM     = 0.42;     // dark overlay opacity (dims each card)
+  const STRIPS  = 40;       // vertical strips for perspective-correct mapping
+
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function resize() {
+    canvas.width  = canvas.offsetWidth  * devicePixelRatio;
+    canvas.height = canvas.offsetHeight * devicePixelRatio;
+  }
+  resize();
+  window.addEventListener('resize', resize, { passive: true });
+
+  const imgs = IMAGES.map(src => {
+    const img = new Image();
+    img.src = src;
+    return img;
+  });
+
+  // ── Perspective project one 3D point → 2D ────────────────────────────────
+  function proj(x3, y3, z3, cx, cy) {
+    const d = FOV + z3;
+    if (d < 1) return null;
+    const s = FOV / d;
+    return [cx + x3 * s, cy + y3 * s, s];
+  }
+
+  // ── Draw one card as a perspective-correct textured quad ─────────────────
+  // tl/tr/br/bl are [x, y, scale] from proj()
+  // Splits the quad into STRIPS vertical columns, each mapped with ctx.transform
+  function drawCard(img, tl, tr, br, bl, alpha) {
+    if (!img.complete || !img.naturalWidth) return;
+
+    const iw = img.naturalWidth;
+    const ih = img.naturalHeight;
+
+    ctx.save();
+    ctx.globalAlpha = alpha;
+
+    for (let i = 0; i < STRIPS; i++) {
+      const t0 = i / STRIPS;
+      const t1 = (i + 1) / STRIPS;
+
+      // Interpolate left and right edges at t0 and t1 (vertical lerp)
+      const lx0 = tl[0] + (bl[0] - tl[0]) * t0,  ly0 = tl[1] + (bl[1] - tl[1]) * t0;
+      const rx0 = tr[0] + (br[0] - tr[0]) * t0,  ry0 = tr[1] + (br[1] - tr[1]) * t0;
+      const lx1 = tl[0] + (bl[0] - tl[0]) * t1,  ly1 = tl[1] + (bl[1] - tl[1]) * t1;
+      const rx1 = tr[0] + (br[0] - tr[0]) * t1,  ry1 = tr[1] + (br[1] - tr[1]) * t1;
+
+      // Source image strip
+      const sy = ih * t0;
+      const sh = ih / STRIPS;
+
+      // Screen strip dimensions
+      const sw0 = rx0 - lx0; // width at top of strip
+      const sw1 = rx1 - lx1; // width at bottom of strip
+      const sh_screen = ly1 - ly0; // pixel height of strip
+
+      if (sh_screen < 0.5 || (Math.abs(sw0) < 0.5 && Math.abs(sw1) < 0.5)) continue;
+
+      ctx.save();
+
+      // Clip to this strip's quad
+      ctx.beginPath();
+      ctx.moveTo(lx0, ly0);
+      ctx.lineTo(rx0, ry0);
+      ctx.lineTo(rx1, ry1);
+      ctx.lineTo(lx1, ly1);
+      ctx.closePath();
+      ctx.clip();
+
+      // Transform: map image strip [0,0,iw,sh] → screen quad
+      // a=scaleX, b=skewY(top-edge slant), c=skewX(taper), d=scaleY, e=tx, f=ty
+      const scaleX = sw0 / iw;
+      const scaleY = sh_screen / sh;
+      const skewX  = (lx1 - lx0) / sh; // left-edge drift per source-Y unit
+      const skewY  = (ry0 - ly0) / iw;           // vertical slant of top edge
+
+      ctx.transform(
+        scaleX, skewY,
+        skewX,  scaleY,
+        lx0,    ly0 - sy * scaleY
+      );
+
+      ctx.drawImage(img, 0, sy, iw, sh + 1, 0, 0, iw, sh + 1);
+      ctx.restore();
+    }
+
+    // Dim overlay
+    ctx.globalAlpha = alpha * DIM;
+    ctx.fillStyle = '#0a1230';
+    ctx.beginPath();
+    ctx.moveTo(tl[0], tl[1]);
+    ctx.lineTo(tr[0], tr[1]);
+    ctx.lineTo(br[0], br[1]);
+    ctx.lineTo(bl[0], bl[1]);
+    ctx.closePath();
+    ctx.fill();
+
+    ctx.restore();
+  }
+
+  // ── Render loop ───────────────────────────────────────────────────────────
+  let angle = 0;
+  let last  = null;
+  let raf   = null;
+  const N   = imgs.length;
+
+  function frame(ts) {
+    if (!last) last = ts;
+    const dt = Math.min(ts - last, 50);
+    last = ts;
+    if (!reduced) angle -= SPEED * dt;
+
+    const W = canvas.width, H = canvas.height;
+    const cx = W / 2, cy = H / 2;
+
+    ctx.clearRect(0, 0, W, H);
+
+    // Build + sort cards back-to-front
+    const cards = imgs.map((img, i) => {
+      const a   = (i / N) * Math.PI * 2 + angle;
+      const x3  = Math.sin(a) * RADIUS;
+      const z3  = Math.cos(a) * RADIUS + RADIUS;
+      return { img, a, x3, z3 };
+    }).sort((a, b) => b.z3 - a.z3); // furthest first
+
+    cards.forEach(({ img, a, x3, z3 }) => {
+      if (z3 > RADIUS * 1.9) return; // cull true back-of-ring
+
+      // Card tangent direction: perpendicular to radial in XZ plane
+      const cosA = Math.cos(a);
+      const sinA = Math.sin(a);
+      const hw = CARD_W / 2;
+      const hh = CARD_H / 2;
+
+      // 4 corners: local X = tangent (cosA, 0, -sinA), local Y = up (0,1,0)
+      const corners = [
+        proj(x3 + cosA * -hw, -hh, z3 + sinA *  hw, cx, cy), // TL
+        proj(x3 + cosA *  hw, -hh, z3 + sinA * -hw, cx, cy), // TR
+        proj(x3 + cosA *  hw,  hh, z3 + sinA * -hw, cx, cy), // BR
+        proj(x3 + cosA * -hw,  hh, z3 + sinA *  hw, cx, cy), // BL
+      ];
+
+      if (corners.some(c => !c)) return;
+
+      const depthT = z3 / (RADIUS * 2); // 0=front 1=back
+      const alpha  = Math.max(0.05, 1 - depthT * 1.2);
+
+      drawCard(img, corners[0], corners[1], corners[2], corners[3], alpha);
+    });
+
+    raf = requestAnimationFrame(frame);
+  }
+
+  function start() { if (!raf) raf = requestAnimationFrame(frame); }
+  imgs[0].complete ? start() : imgs[0].addEventListener('load', start);
+
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) { cancelAnimationFrame(raf); raf = null; last = null; }
+    else start();
+  });
+})();
+</script>

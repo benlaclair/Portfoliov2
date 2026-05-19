@@ -1,0 +1,173 @@
+---
+/**
+ * ScrollStage — scroll-driven text replacement with character scramble.
+ *
+ * Architecture:
+ * - StickyBackground glues to the viewport via position: sticky
+ * - .stage-foreground stacks headline sections (min-height: 100svh each) in
+ *   normal document flow above the sticky bg (z-index: 1)
+ * - IntersectionObserver #1 (threshold array): most-visible section drives bg
+ *   crossfade by toggling .is-active on the matching [data-bg-layer]
+ * - IntersectionObserver #2 (rootMargin "-50% 0px -50% 0px"): fires scramble()
+ *   once when a headline section's midpoint crosses the viewport center
+ *
+ * No ScrollTrigger, no scroll-jacking, no translateY driven by scroll progress.
+ */
+
+import StickyBackground from './StickyBackground.astro';
+
+export interface HeadlineDef {
+  id: string;
+  text: string;
+  /** must match a data-bg-layer in StickyBackground */
+  bg: string;
+}
+
+export interface Props {
+  headlines: HeadlineDef[];
+}
+
+const { headlines } = Astro.props;
+---
+
+<div class="scroll-stage" id="scroll-stage">
+
+  <StickyBackground initialLayer={headlines[0]?.bg ?? 'hero'} />
+
+  <div class="stage-foreground">
+    {headlines.map((h) => (
+      <section
+        class="headline-section"
+        id={h.id}
+        data-bg-id={h.bg}
+        data-section-mode="dark"
+      >
+        <p class="stage-headline" data-headline-text={h.text} aria-label={h.text}></p>
+      </section>
+    ))}
+  </div>
+
+</div>
+
+<style is:global>
+  .scroll-stage {
+    position: relative;
+  }
+
+  .stage-foreground {
+    position: relative;
+    z-index: 1;
+  }
+
+  .headline-section {
+    min-height: 100svh;
+    display: grid;
+    place-items: center;
+    padding: clamp(40px, 8vw, 120px) clamp(24px, 6vw, 80px);
+  }
+
+  .stage-headline {
+    margin: 0;
+    font-family: 'TWK Lausanne', 'Söhne', 'Inter', system-ui, sans-serif;
+    font-weight: 600;
+    font-size: clamp(36px, 5vw, 88px);
+    line-height: 1.0;
+    letter-spacing: -0.03em;
+    color: #FFFDE2;
+    text-align: center;
+    max-width: 18ch;
+  }
+
+  /* scramble-char spans injected by scramble() */
+  .scramble-char {
+    display: inline;
+    transition: color 200ms ease;
+  }
+  .scramble-char.is-scrambling {
+    color: rgba(255, 253, 226, 0.35);
+  }
+  .scramble-char.is-settled {
+    color: #FFFDE2;
+  }
+
+  @media (max-width: 600px) {
+    .stage-headline { font-size: clamp(32px, 9vw, 52px); max-width: 22ch; }
+  }
+</style>
+
+<script>
+  import { scramble } from '../lib/scramble';
+
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // ── Background crossfade ─────────────────────────────────────────────────
+  const bgLayers = document.querySelectorAll<HTMLElement>('[data-bg-layer]');
+  const bgSections = document.querySelectorAll<HTMLElement>('[data-bg-id]');
+
+  if (bgLayers.length && bgSections.length) {
+    const ratios = new Map<string, number>();
+    bgSections.forEach((s) => ratios.set(s.dataset.bgId!, 0));
+
+    const bgIo = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          const id = (e.target as HTMLElement).dataset.bgId;
+          if (id) ratios.set(id, e.intersectionRatio);
+        });
+        let best = '';
+        let max = 0;
+        ratios.forEach((r, id) => {
+          if (r > max) { max = r; best = id; }
+        });
+        if (best) {
+          bgLayers.forEach((l) => {
+            l.classList.toggle('is-active', l.dataset.bgLayer === best);
+          });
+        }
+      },
+      { threshold: Array.from({ length: 11 }, (_, i) => i / 10) },
+    );
+
+    bgSections.forEach((s) => bgIo.observe(s));
+  }
+
+  // ── Scramble entrance ────────────────────────────────────────────────────
+  const headlineEls = document.querySelectorAll<HTMLElement>('[data-headline-text]');
+  const fired = new Set<HTMLElement>();
+
+  // Pre-fill each headline with its final text so layout is stable before
+  // the scramble fires, then reset to empty so the first render is blank.
+  headlineEls.forEach((el) => {
+    if (el.dataset.introDone) return; // first headline handled by index.astro intro
+    const text = el.dataset.headlineText ?? '';
+    if (reduced) {
+      el.textContent = text;
+    } else {
+      el.textContent = '';
+    }
+  });
+
+  if (!reduced) {
+    const scrambleIo = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          const el = e.target as HTMLElement;
+          if (e.isIntersecting && !fired.has(el) && !el.dataset.introDone) {
+            fired.add(el);
+            const text = el.dataset.headlineText ?? '';
+            scramble(el, text);
+          }
+        });
+      },
+      { rootMargin: '-50% 0px -50% 0px' },
+    );
+
+    // Delay attaching the observer until after the loader has exited (~2.6s),
+    // so sections already in the viewport on load don't trigger immediately.
+    // The first scramble should fire when the user scrolls the headline into
+    // the center band, not on page load.
+    setTimeout(() => {
+      headlineEls.forEach((el) => scrambleIo.observe(el));
+    }, 3300);
+  }
+</script>

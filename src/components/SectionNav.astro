@@ -1,0 +1,109 @@
+---
+/**
+ * SectionNav — fixed left rail. Hidden until #scroll-stage is out of view.
+ *
+ * Active section driven by IntersectionObserver on post-stage sections
+ * (#work, #process, #contact). The rail fades in once the ScrollStage
+ * sentinel exits the bottom of the viewport.
+ */
+---
+
+<nav class="section-nav" id="section-nav" aria-label="Sections">
+  <ol class="section-nav-list">
+    <li class="section-nav-item" data-nav-for="work">
+      <a href="#work"><span class="num">01</span><span class="label">Work</span></a>
+    </li>
+    <li class="section-nav-item" data-nav-for="process">
+      <a href="#process"><span class="num">02</span><span class="label">Process</span></a>
+    </li>
+    <li class="section-nav-item" data-nav-for="contact">
+      <a href="#contact"><span class="num">03</span><span class="label">Contact</span></a>
+    </li>
+  </ol>
+</nav>
+
+<style is:global>
+  .section-nav {
+    position: fixed;
+    top: 50%;
+    left: clamp(20px, 3vw, 36px);
+    transform: translateY(-50%);
+    z-index: 50;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 300ms ease;
+  }
+  .section-nav.is-visible {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .section-nav-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .section-nav-item a {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: #FFFDE2;
+    opacity: 0.3;
+    transition: opacity 300ms ease;
+  }
+  .section-nav-item.is-active a { opacity: 1; }
+  .section-nav-item a:hover { opacity: 0.9; }
+  .section-nav-item .num { opacity: 0.65; }
+
+  @media (max-width: 700px) {
+    .section-nav { display: none; }
+  }
+</style>
+
+<script>
+  const nav = document.getElementById('section-nav');
+  const stage = document.getElementById('scroll-stage');
+  const items = document.querySelectorAll<HTMLElement>('.section-nav-item');
+
+  // Post-stage sections the nav tracks
+  const targets = document.querySelectorAll<HTMLElement>('#work, #process, #contact');
+
+  // Show the rail only after the scroll stage has fully left the viewport
+  if (nav && stage) {
+    const stageIo = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        nav.classList.toggle('is-visible', !e.isIntersecting);
+      });
+    }, { threshold: 0.05 });
+    stageIo.observe(stage);
+  }
+
+  // Active section: most-visible post-stage section wins
+  if (items.length && targets.length) {
+    const ratios = new Map<string, number>();
+    targets.forEach((t) => ratios.set(t.id, 0));
+
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        ratios.set(e.target.id, e.intersectionRatio);
+      });
+      let best = '';
+      let max = 0;
+      ratios.forEach((r, id) => {
+        if (r > max) { max = r; best = id; }
+      });
+      items.forEach((it) => {
+        it.classList.toggle('is-active', it.dataset.navFor === best);
+      });
+    }, { threshold: Array.from({ length: 11 }, (_, i) => i / 10) });
+
+    targets.forEach((t) => io.observe(t));
+  }
+</script>

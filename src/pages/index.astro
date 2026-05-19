@@ -1,120 +1,31 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import HorizontalWork from '../components/HorizontalWork.astro';
-import HeroGallery from '../components/HeroGallery.astro';
+import ScrollStage from '../components/ScrollStage.astro';
+import SectionNav from '../components/SectionNav.astro';
 ---
 
 <BaseLayout initialMode="dark">
 
   <!-- ============ LOADER (dark) ============ -->
   <div class="loader" id="loader">
-    <div class="loader-top">
-      <span>Index — 2026</span>
-      <span id="loader-pct">000</span>
-    </div>
-    <div class="loader-mid">
-      <div class="loader-svg">
-        <svg
-          class="loader-b"
-          viewBox="0 0 96 96"
-          aria-hidden="true"
-          style="stroke: var(--color-dark-ink); fill: none; stroke-linecap: round; stroke-linejoin: round;"
-        >
-          <path class="loader-path" d="M20 68V22h24c10 0 16 5 16 12.5 0 4.8-2.5 8.3-6.8 10.2C59 46.4 63 50.7 63 57c0 8-6.4 11-17.2 11H20Z" stroke-width="3"/>
-          <path class="loader-path" d="M32 41h10c3.5 0 5.4-1.5 5.4-4.2 0-2.6-2-4-5.6-4H32v8.2Z" stroke-width="3"/>
-          <path class="loader-path" d="M32 58h12.5c3.8 0 5.8-1.7 5.8-4.7 0-2.8-2.1-4.5-6.1-4.5H32V58Z" stroke-width="3"/>
-          <circle cx="70" cy="25" r="7" fill="var(--color-accent)" stroke="none"/>
-        </svg>
-      </div>
-    </div>
-    <div class="loader-foot">
-      <div class="loader-bar"><i id="loader-bar-fill"></i></div>
-      <div class="loader-bot">
-        <span>Loading portfolio</span>
-        <span>Astro &middot; GSAP</span>
-      </div>
+    <p class="loader-greeting" id="loader-greeting">
+      <span class="word"><span>Hi,</span></span>
+      <span class="word"><span>I'm</span></span>
+      <span class="word"><span>Ben.</span></span>
+    </p>
+    <div class="loader-bar-wrap">
+      <div class="loader-bar" id="loader-bar"></div>
     </div>
   </div>
 
-  <!-- ============ HERO — 3-screen scroll sequence ============ -->
-  <!-- 300vh runway; ScrollTrigger pins .hero-stage so each panel fills the viewport -->
-  <div class="hero-runway" id="hero-runway" data-section-mode="dark">
-    <div class="hero-stage" id="hero-stage">
+  <SectionNav />
 
-      <!-- Hidden SVG noise filter shared by all glow layers -->
-      <svg width="0" height="0" aria-hidden="true" style="position:absolute">
-        <defs>
-          <filter id="hero-noise">
-            <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch" result="noise"/>
-            <feColorMatrix type="saturate" values="0" in="noise" result="grey"/>
-            <feBlend in="SourceGraphic" in2="grey" mode="overlay" result="blend"/>
-            <feComposite in="blend" in2="SourceGraphic" operator="in"/>
-          </filter>
-        </defs>
-      </svg>
-
-      <!-- Screen 1: Logo only -->
-      <div class="hero-panel" id="hero-s1" data-screen="1" aria-hidden="true">
-        <div class="hero-glow" aria-hidden="true"></div>
-        <div class="hero-s1-logo">
-          <svg viewBox="0 0 96 96" aria-label="Ben LaClair" role="img" style="fill:none;stroke:var(--color-dark-ink);stroke-linecap:round;stroke-linejoin:round;">
-            <path d="M20 68V22h24c10 0 16 5 16 12.5 0 4.8-2.5 8.3-6.8 10.2C59 46.4 63 50.7 63 57c0 8-6.4 11-17.2 11H20Z" stroke-width="2.5"/>
-            <path d="M32 41h10c3.5 0 5.4-1.5 5.4-4.2 0-2.6-2-4-5.6-4H32v8.2Z" stroke-width="2.5"/>
-            <path d="M32 58h12.5c3.8 0 5.8-1.7 5.8-4.7 0-2.8-2.1-4.5-6.1-4.5H32V58Z" stroke-width="2.5"/>
-            <circle cx="70" cy="25" r="7" fill="var(--color-accent)" stroke="none"/>
-          </svg>
-        </div>
-        <div class="hero-scroll-indicator" aria-hidden="true">
-          <span class="hero-scroll-dot"></span>
-          <span class="hero-scroll-line"></span>
-        </div>
-      </div>
-
-      <!-- Screen 2: Hi, I'm Ben. -->
-      <div class="hero-panel" id="hero-s2" data-screen="2">
-        <div class="hero-glow" aria-hidden="true"></div>
-        <div class="hero-s2-content">
-          <p class="hero-s2-eyebrow">UX/UI &amp; Graphic Designer</p>
-          <h1 class="hero-s2-name">
-            <span class="word"><span>Hi,</span></span>
-            <span class="word"><span>I'm</span></span>
-            <span class="word"><span>Ben.</span></span>
-          </h1>
-        </div>
-        <div class="hero-scroll-indicator" aria-hidden="true">
-          <span class="hero-scroll-dot"></span>
-          <span class="hero-scroll-line"></span>
-        </div>
-      </div>
-
-      <!-- Screen 3: Tagline + gallery + CTA -->
-      <div class="hero-panel is-dark" id="hero-s3" data-screen="3" data-section-mode="dark">
-        <div class="hero-gallery" id="hero-gallery">
-          <HeroGallery />
-          <div class="hero-gallery-scrim" aria-hidden="true"></div>
-        </div>
-        <div class="hero-phrase" id="hero-phrase">
-          <h2 class="hero-phrase-text" id="hero-phrase-text">
-            <span class="word"><span>Type</span></span> <span class="word"><span>that</span></span> <span class="word"><span>reads.</span></span>
-            <br/>
-            <span class="word"><span>Motion</span></span> <span class="word"><span>that</span></span> <span class="word"><span>means</span></span> <span class="word"><span>something.</span></span>
-          </h2>
-        </div>
-        <a href="/work/graphic-design" class="hero-cta" id="hero-cta" data-magnetic="0.3">
-          <span>View design work</span>
-          <span class="hero-cta-arrow">→</span>
-        </a>
-      </div>
-
-    </div><!-- /.hero-stage -->
-  </div><!-- /.hero-runway -->
-
-  <!-- ============ TAGLINE (light) ============ -->
-  <section class="tagline atmo-warmth-tl">
-    <p class="tagline-text" id="tagline-text">
-      UX/UI designer and graphic designer. <span class="accent">Making complicated things feel obvious.</span>
-    </p>
-  </section>
+  <ScrollStage headlines={[
+    { id: 'intro',   text: 'A designer who makes complicated things feel obvious.', bg: 'hero' },
+    { id: 'craft',   text: 'Type that reads. Motion that means something.',         bg: 'tagline' },
+    { id: 'intent',  text: 'Three problems worth solving.',                         bg: 'intent' },
+  ]} />
 
   <!-- ============ VISUAL BREAK (dark parallax strip) ============ -->
   <section class="vbreak is-dark" data-section-mode="dark" aria-hidden="true">
@@ -122,7 +33,9 @@ import HeroGallery from '../components/HeroGallery.astro';
   </section>
 
   <!-- ============ SELECTED WORK (horizontal pinned, light) ============ -->
-  <HorizontalWork />
+  <div id="work">
+    <HorizontalWork />
+  </div>
 
   <!-- ============ TIMELINE (light) ============ -->
   <section class="timeline" id="timeline">
@@ -150,7 +63,7 @@ import HeroGallery from '../components/HeroGallery.astro';
   </section>
 
   <!-- ============ PROCESS (light) ============ -->
-  <section class="process atmo-warmth-br">
+  <section class="process atmo-warmth-br" id="process">
     <div class="wrap">
       <div class="process-header">
         <p class="text-eyebrow-accent" data-reveal>Process</p>
@@ -229,7 +142,7 @@ import HeroGallery from '../components/HeroGallery.astro';
   </section>
 
   <!-- ============ CTA (dark + radial halos) ============ -->
-  <section class="cta is-dark has-halos" id="cta" data-section-mode="dark">
+  <section class="cta is-dark has-halos" id="contact" data-section-mode="dark">
     <h2 class="cta-title" id="cta-title">
       <span class="line"><span>Have something</span></span>
       <span class="line"><span><span class="accent">worth making?</span></span></span>
@@ -246,209 +159,15 @@ import HeroGallery from '../components/HeroGallery.astro';
 </BaseLayout>
 
 <style is:global>
-  /* loader — dark bg */
-  .loader { position: fixed; inset: 0; background: var(--color-dark-bg); z-index: 10000; display: flex; flex-direction: column; justify-content: space-between; padding: 40px; }
-  .loader-top, .loader-bot { display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-dark-ink-2); }
-  .loader-mid { flex: 1; display: grid; place-items: center; }
-  .loader-svg { display: grid; place-items: center; }
-  .loader-b { width: clamp(80px, 14vw, 160px); height: clamp(80px, 14vw, 160px); }
-  .loader-path { stroke-dasharray: 240; stroke-dashoffset: 240; }
-  .loader-foot { display: flex; flex-direction: column; gap: 20px; }
-  .loader-bar { height: 1px; background: rgba(244, 239, 228, 0.15); position: relative; overflow: hidden; }
-  .loader-bar i { position: absolute; left: 0; top: 0; bottom: 0; width: 0%; background: var(--color-dark-ink); }
-
-  /* ── Hero 3-screen scroll ── */
-  .hero-runway {
-    height: 300vh;
-    background: var(--color-dark-bg);
-  }
-  .hero-stage {
-    position: sticky;
-    top: 0;
-    height: 100vh;
-    overflow: hidden;
-  }
-  /* Each panel fills the stage, stacked absolutely */
-  .hero-panel {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: var(--color-dark-bg);
-  }
-  /* Central radial glow — the main aesthetic element from the reference */
-  .hero-glow {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    background:
-      radial-gradient(55% 65% at 50% 52%, rgba(91, 108, 171, 0.28) 0%, transparent 70%),
-      radial-gradient(35% 45% at 50% 52%, rgba(91, 108, 171, 0.18) 0%, transparent 60%);
-    filter: blur(2px);
-  }
-
-  /* Screen 1 — logo */
-  .hero-s1-logo {
-    position: relative;
-    z-index: 2;
-    width: clamp(80px, 14vw, 180px);
-    opacity: 0;
-  }
-
-  /* Screen 2 — "Hi, I'm Ben." */
-  .hero-s2-content {
-    position: relative;
-    z-index: 2;
-    text-align: center;
-  }
-  .hero-s2-eyebrow {
-    font-family: var(--font-mono);
-    font-size: clamp(10px, 1vw, 13px);
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--color-dark-muted);
-    margin-bottom: clamp(20px, 3vw, 36px);
-    opacity: 0;
-  }
-  .hero-s2-name {
-    font-family: var(--font-display);
-    font-weight: 500;
-    font-size: clamp(56px, 10vw, 160px);
-    line-height: 1.0;
-    letter-spacing: -0.03em;
-    color: var(--color-dark-ink);
-  }
-  /* Words clip for reveal */
-  .hero-s2-name .word {
-    display: inline-block;
-    overflow: hidden;
-    vertical-align: bottom;
-    margin-right: 0.18em;
-  }
-  .hero-s2-name .word > span {
-    display: inline-block;
-    transform: translateY(110%);
-    opacity: 0;
-  }
-
-  /* Screen 3 — gallery + tagline */
-  .hero-gallery {
-    position: absolute;
-    inset: 6vh 5vw;
-    z-index: 1;
-    opacity: 0;
-    border-radius: 16px;
-    overflow: hidden;
-    border: 1px solid rgba(244, 239, 228, 0.10);
-    box-shadow: 0 0 100px rgba(0, 0, 0, 0.5);
-  }
-  .hero-gallery-scrim {
-    position: absolute;
-    inset: 0;
-    z-index: 2;
-    pointer-events: none;
-  }
-  .hero-gallery-scrim::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background:
-      radial-gradient(60% 50% at 50% 60%, rgba(13, 12, 10, 0) 0%, rgba(13, 12, 10, 0.45) 100%),
-      linear-gradient(180deg, rgba(13, 12, 10, 0.3) 0%, rgba(13, 12, 10, 0.4) 50%, rgba(13, 12, 10, 0.65) 100%);
-  }
-  .hero-gallery-scrim::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: rgba(91, 108, 171, 0.38);
-    mix-blend-mode: color;
-  }
-  .hero-phrase {
-    position: absolute;
-    inset: 0;
-    z-index: 3;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 0 40px;
-    pointer-events: none;
-  }
-  .hero-phrase-text {
-    font-family: var(--font-display);
-    font-weight: 500;
-    font-size: clamp(40px, 8vw, 140px);
-    line-height: 1.0;
-    letter-spacing: -0.02em;
-    text-align: center;
-    color: var(--color-dark-ink);
-    max-width: 1200px;
-  }
-  .hero-cta {
-    position: absolute;
-    left: 50%;
-    bottom: 64px;
-    transform: translateX(-50%);
-    display: inline-flex;
-    align-items: center;
-    gap: 14px;
-    padding: 16px 26px;
-    background: var(--color-accent);
-    color: var(--color-dark-ink);
-    font-family: var(--font-mono);
-    font-size: 12px;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    border-radius: 999px;
-    text-decoration: none;
-    z-index: 4;
-    opacity: 0;
-    transition: background 0.3s ease;
-  }
-  .hero-cta:hover { background: var(--color-accent-hover); }
-  .hero-cta-arrow {
-    display: inline-block;
-    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-  .hero-cta:hover .hero-cta-arrow { transform: translateX(4px); }
-  .hero-s3 .hero-cta { color: var(--color-dark-ink); }
-
-  /* Scroll indicator — dot + extending line */
-  .hero-scroll-indicator {
-    position: absolute;
-    bottom: 36px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 5;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 6px;
-    opacity: 0;
-  }
-  .hero-scroll-dot {
-    width: 5px;
-    height: 5px;
-    border-radius: 50%;
-    background: var(--color-dark-ink-2);
-  }
-  .hero-scroll-line {
-    width: 1px;
-    height: 0px;
-    background: var(--color-dark-ink-2);
-    transition: height 0.6s ease;
-  }
-  .hero-scroll-indicator.is-visible .hero-scroll-line {
-    height: 32px;
-  }
+  /* loader */
+  .loader { position: fixed; inset: 0; background: #0a1230; z-index: 10000; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 32px; }
+  .loader-greeting { margin: 0; font-family: var(--font-display); font-weight: 500; font-size: clamp(32px, 5vw, 72px); letter-spacing: -0.02em; line-height: 1; color: var(--color-dark-ink); }
+  .loader-greeting .word { display: inline-block; overflow: hidden; vertical-align: bottom; margin-right: 0.22em; }
+  .loader-greeting .word > span { display: inline-block; transform: translateY(110%); }
+  .loader-bar-wrap { width: clamp(160px, 30vw, 320px); height: 1px; background: rgba(244, 239, 228, 0.12); }
+  .loader-bar { height: 1px; width: 0%; background: var(--color-dark-ink); }
 
   .divider { height: 1px; background: var(--color-line); margin: 0 40px; }
-
-  /* tagline — light, mid-tone canvas (3-value rhythm) */
-  .tagline { padding: 120px 40px; background: var(--color-bg-2); }
-  .tagline-text { font-family: var(--font-body); font-weight: 400; font-size: clamp(28px, 3.4vw, 52px); line-height: 1.15; letter-spacing: -0.025em; color: var(--color-ink); max-width: 1200px; }
-  .tagline-text .tag-word { display: inline-block; opacity: 0.18; transition: opacity 0.4s ease; will-change: opacity; }
 
   /* timeline */
   .timeline { padding: 200px 40px 200px; position: relative; }
@@ -497,7 +216,6 @@ import HeroGallery from '../components/HeroGallery.astro';
     letter-spacing: -0.02em;
     color: var(--color-ink);
   }
-  /* Each word clips upward — GSAP drives the reveal */
   .process-word {
     display: inline-block;
     overflow: hidden;
@@ -517,7 +235,6 @@ import HeroGallery from '../components/HeroGallery.astro';
     padding-top: 0.5em;
     align-self: end;
   }
-  /* Connector sits above the grid, full-width */
   .process-grid-wrap { position: relative; }
   .process-connector {
     height: 32px;
@@ -550,7 +267,6 @@ import HeroGallery from '../components/HeroGallery.astro';
     gap: 20px;
     transition: background 0.3s ease;
     cursor: pointer;
-    /* Cards start hidden for GSAP entrance */
     opacity: 0;
     transform: translateY(24px);
   }
@@ -575,7 +291,6 @@ import HeroGallery from '../components/HeroGallery.astro';
     color: var(--color-muted);
     flex: 1;
   }
-  /* Expand hint button */
   .process-expand-hint {
     display: inline-flex;
     align-items: center;
@@ -598,7 +313,6 @@ import HeroGallery from '../components/HeroGallery.astro';
     color: var(--color-accent);
   }
   .process-expand-hint[aria-expanded="true"] span { content: '−'; }
-  /* Deliverables panel — max-height collapse */
   .process-deliverables {
     max-height: 0;
     overflow: hidden;
@@ -650,7 +364,6 @@ import HeroGallery from '../components/HeroGallery.astro';
   .cta-title .accent { color: var(--color-accent); }
   .cta-row { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: end; margin-top: 80px; }
   .cta-link { display: inline-flex; align-items: center; gap: 18px; font-size: 22px; font-weight: 500; font-family: var(--font-body); letter-spacing: -0.01em; padding: 18px 0; border-bottom: 1px solid var(--color-dark-ink); color: var(--color-dark-ink); }
-  /* Override .is-dark a specificity (0,1,1) — same fix pattern as .hero .hero-cta */
   .cta .cta-link { color: var(--color-dark-ink); }
   .cta-arrow { width: 44px; height: 44px; border-radius: 50%; background: var(--color-dark-ink); color: var(--color-dark-bg); display: grid; place-items: center; transition: transform 0.6s cubic-bezier(.7,0,.2,1), background 0.4s ease; flex-shrink: 0; }
   .cta-link:hover .cta-arrow { transform: rotate(-45deg); background: var(--color-accent); }
@@ -660,102 +373,53 @@ import HeroGallery from '../components/HeroGallery.astro';
     .cta-row { grid-template-columns: 1fr !important; gap: 32px !important; }
     .timeline-cap { grid-template-columns: 1fr !important; }
     .timeline-num { font-size: clamp(120px, 22vw, 280px) !important; }
-    .hero-cta { bottom: 40px; padding: 14px 20px; font-size: 11px; }
   }
 </style>
 
 <script>
   import { gsap, ScrollTrigger, ease, reduceMotion } from '../lib/motion';
 
-  // ============ LOADER → 3-SCREEN HERO ============
+  // ============ LOADER ============
+  // ── Split first headline into word spans for clip wipe ──────────────────
+  const firstHeadline = document.querySelector<HTMLElement>('#intro .stage-headline');
+  let wordSpans: HTMLElement[] = [];
+  if (firstHeadline) {
+    const text = firstHeadline.dataset.headlineText ?? '';
+    wordSpans = text.split(' ').map((w) => {
+      const outer = document.createElement('span');
+      outer.className = 'word';
+      const inner = document.createElement('span');
+      inner.textContent = w;
+      outer.appendChild(inner);
+      return outer;
+    });
+    // Interleave spaces between word spans
+    const nodes: Node[] = [];
+    wordSpans.forEach((ws, i) => {
+      nodes.push(ws);
+      if (i < wordSpans.length - 1) nodes.push(document.createTextNode(' '));
+    });
+    firstHeadline.replaceChildren(...nodes);
+    gsap.set(wordSpans.map(w => w.firstElementChild), { y: '110%' });
+    // Mark as already handled so scramble observer skips it
+    firstHeadline.dataset.introDone = 'true';
+  }
+
   if (!reduceMotion.current) {
-    // Hide everything the intro + scrub timeline will reveal
     gsap.set('#site-nav', { opacity: 0 });
-    gsap.set('#hero-s1 .hero-s1-logo', { opacity: 0 });
-    gsap.set('#hero-s1 .hero-scroll-indicator', { opacity: 0 });
-    gsap.set('#hero-s2 .hero-scroll-indicator', { opacity: 0 });
-    gsap.set('#hero-s2', { opacity: 0 });
-    gsap.set('#hero-s3', { opacity: 0 });
-    gsap.set('#hero-gallery', { opacity: 0 });
-    gsap.set('#hero-cta', { opacity: 0, y: 20 });
-    gsap.set('.hero-s2-eyebrow', { opacity: 0 });
-    gsap.set('.hero-s2-name .word > span', { yPercent: 110, opacity: 0 });
-    gsap.set('.hero-phrase-text .word > span', { yPercent: 110, opacity: 0 });
-
-    // ── Loader intro (time-driven, fires once) ──
-    const intro = gsap.timeline({ defaults: { ease: ease.expo } });
-    const pct = { v: 0 };
+    const intro = gsap.timeline();
     intro
-      .to(pct, {
-        v: 100, duration: 1.4, ease: 'power1.inOut',
-        onUpdate: () => {
-          const el = document.getElementById('loader-pct');
-          if (el) el.textContent = Math.floor(pct.v).toString().padStart(3, '0');
-        }
-      }, 0)
-      .to('#loader-bar-fill', { width: '100%', duration: 1.4, ease: 'power1.inOut' }, 0)
-      .to('.loader-path', { strokeDashoffset: 0, duration: 0.7, stagger: 0.06, ease: 'power3.out' }, 0)
-      .to('#loader', { yPercent: -100, duration: 1.0, ease: 'expo.inOut' }, '+=0.6')
+      .to('#loader-greeting .word > span', { y: '0%', duration: 0.7, stagger: 0.1, ease: ease.expo })
+      .to('#loader-bar', { width: '100%', duration: 1.4, ease: 'power2.inOut' }, '+=0.1')
+      .to('#loader', { opacity: 0, duration: 0.7, ease: 'power2.inOut' }, '+=0.2')
       .set('#loader', { display: 'none' })
-      .to('#site-nav', { opacity: 1, duration: 0.6, ease: ease.out }, '-=0.5')
-      .to('#hero-s1 .hero-s1-logo', { opacity: 1, duration: 0.9, ease: ease.out }, '-=0.4')
-      .to('#hero-s1 .hero-scroll-indicator', {
-        opacity: 1, duration: 0.5, ease: ease.out,
-        onComplete: () => {
-          document.querySelector<HTMLElement>('#hero-s1 .hero-scroll-indicator')?.classList.add('is-visible');
-        }
-      }, '+=0.3');
-
-    // ── Hero scrub timeline ──
-    // Single timeline scrubbed by scroll through the 300vh runway.
-    // .hero-stage is position:sticky inside, so the viewport always sees the
-    // stage as you scroll. Each "scene" is a position on this timeline.
-    const runway = document.getElementById('hero-runway');
-    if (runway) {
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: runway,
-          start: 'top top',
-          end: 'bottom bottom',
-          scrub: 1,
-        },
-      });
-
-      tl
-        // S1 dwell — hold logo + glow for a beat as user starts scrolling
-        .to({}, { duration: 1.5 })
-        // S1 → S2: logo + scroll indicator fade out
-        .to('#hero-s1 .hero-s1-logo', { opacity: 0, duration: 0.6 })
-        .to('#hero-s1 .hero-scroll-indicator', { opacity: 0, duration: 0.4 }, '<')
-        // S2 fades in with eyebrow + word reveal
-        .to('#hero-s2', { opacity: 1, duration: 0.6 }, '<+0.2')
-        .to('.hero-s2-eyebrow', { opacity: 1, duration: 0.5 }, '<')
-        .to('.hero-s2-name .word > span', {
-          yPercent: 0, opacity: 1, stagger: 0.15, duration: 0.6,
-        }, '<+0.1')
-        // S2 dwell
-        .to({}, { duration: 1.5 })
-        // S2 → S3: fade S2 out, fade S3 + gallery in
-        .to('#hero-s2', { opacity: 0, duration: 0.6 })
-        .to('#hero-s3', { opacity: 1, duration: 0.6 }, '<+0.1')
-        .to('#hero-gallery', { opacity: 1, duration: 0.8 }, '<')
-        .to('.hero-phrase-text .word > span', {
-          yPercent: 0, opacity: 1, stagger: 0.08, duration: 0.6,
-        }, '<+0.2')
-        .to('#hero-cta', { opacity: 1, y: 0, duration: 0.5 }, '<+0.4')
-        // S3 dwell
-        .to({}, { duration: 1.5 });
-    }
+      .to('#site-nav', { opacity: 1, duration: 0.6, ease: ease.out }, '-=0.2')
+      .to(wordSpans.map(w => w.firstElementChild), { y: '0%', duration: 0.8, stagger: 0.08, ease: ease.expo }, '-=0.6');
   } else {
-    // Reduced motion: skip loader, show S3 immediately
     const loader = document.getElementById('loader');
     if (loader) loader.style.display = 'none';
-    gsap.set('#site-nav', { opacity: 1 });
-    gsap.set('#hero-s1, #hero-s2', { opacity: 0 });
-    gsap.set('#hero-s3', { opacity: 1 });
-    gsap.set('#hero-gallery', { opacity: 1 });
-    gsap.set('#hero-cta', { opacity: 1, y: 0 });
-    gsap.set('.hero-phrase-text .word > span', { yPercent: 0, opacity: 1 });
+    // Reduced motion: just show the words
+    wordSpans.forEach(w => { (w.firstElementChild as HTMLElement).style.transform = 'none'; });
   }
 
   // ============ VBREAK PARALLAX ============
@@ -769,55 +433,6 @@ import HeroGallery from '../components/HeroGallery.astro';
       }
     );
   }
-
-  // ============ TAGLINE WORD SCRUB ============
-  (function setupTagline() {
-    const el = document.getElementById('tagline-text');
-    if (!el) return;
-
-    // Wrap each word in a .tag-word, descending into element nodes (e.g. .accent)
-    // so phrases like "measurably simpler" scrub per-word instead of as a unit.
-    const wrapWords = (parent: Node) => {
-      const children = Array.from(parent.childNodes);
-      children.forEach((node) => {
-        if (node.nodeType === 3) {
-          const text = node.nodeValue || '';
-          if (!text.trim()) return;
-          const frag = document.createDocumentFragment();
-          text.split(/(\s+)/).forEach((part) => {
-            if (!part) return;
-            if (/^\s+$/.test(part)) {
-              frag.appendChild(document.createTextNode(part));
-            } else {
-              const span = document.createElement('span');
-              span.className = 'tag-word';
-              span.textContent = part;
-              frag.appendChild(span);
-            }
-          });
-          (node as ChildNode).replaceWith(frag);
-        } else if (node.nodeType === 1) {
-          // Recurse into element nodes (preserves .accent and other inline styling)
-          wrapWords(node);
-        }
-      });
-    };
-    wrapWords(el);
-
-    if (reduceMotion.current) {
-      // Static fallback: ensure all words are fully visible.
-      el.querySelectorAll<HTMLElement>('.tag-word').forEach((w) => { w.style.opacity = '1'; });
-      return;
-    }
-
-    const words = el.querySelectorAll('.tag-word');
-    gsap.to(words, {
-      opacity: 1,
-      stagger: { each: 0.04 },
-      ease: 'none',
-      scrollTrigger: { trigger: el, start: 'top 80%', end: 'top 30%', scrub: 0.6 },
-    });
-  })();
 
   // ============ TIMELINE PINNED ============
   const tlData = [
@@ -850,9 +465,6 @@ import HeroGallery from '../components/HeroGallery.astro';
     tlTicks.forEach((s, i) => s.classList.toggle('active', i === idx));
   }
 
-  // Pinning is desktop-only and disabled under reduced motion; without the pin
-  // the timeline-stage still scrolls naturally and the entries swap in via the
-  // onUpdate progress mapping.
   const isMobile = window.matchMedia('(max-width: 900px)').matches;
   if (!reduceMotion.current && !isMobile) {
     ScrollTrigger.create({
@@ -867,9 +479,6 @@ import HeroGallery from '../components/HeroGallery.astro';
       },
     });
   } else {
-    // Static fallback: render the final entry so reduced-motion / mobile users
-    // see populated copy instead of the 2018 placeholder, and collapse the
-    // 280vh pin runway so the section doesn't leave a blank scroll gap.
     document.getElementById('timeline-stage')?.classList.add('is-static');
     setTimeline(tlData.length - 1);
     if (tlFill) tlFill.style.width = '100%';
@@ -883,7 +492,6 @@ import HeroGallery from '../components/HeroGallery.astro';
       const cards = section.querySelectorAll<HTMLElement>('[data-process-card]');
       const connectorLine = section.querySelector<HTMLElement>('.process-connector-line');
 
-      // 1. Word-by-word headline reveal
       gsap.to(words, {
         y: 0,
         opacity: 1,
@@ -893,7 +501,6 @@ import HeroGallery from '../components/HeroGallery.astro';
         scrollTrigger: { trigger: '[data-process-title]', start: 'top 85%', once: true },
       });
 
-      // 2. Staggered card entrance (left to right, 100ms stagger)
       gsap.to(cards, {
         y: 0,
         opacity: 1,
@@ -902,19 +509,13 @@ import HeroGallery from '../components/HeroGallery.astro';
         ease: ease.out,
         scrollTrigger: { trigger: '.process-grid', start: 'top 88%', once: true },
         onComplete() {
-          // 3. Connector line draws after last card lands
           if (connectorLine) {
-            gsap.to(connectorLine, {
-              width: '100%',
-              duration: 0.8,
-              ease: 'power2.out',
-            });
+            gsap.to(connectorLine, { width: '100%', duration: 0.8, ease: 'power2.out' });
           }
         },
       });
     }
 
-    // 4. Click-to-expand deliverables
     document.querySelectorAll<HTMLElement>('[data-process-card]').forEach((card) => {
       const btn = card.querySelector<HTMLButtonElement>('.process-expand-hint');
       const panel = card.querySelector<HTMLElement>('.process-deliverables');
@@ -924,7 +525,6 @@ import HeroGallery from '../components/HeroGallery.astro';
       btn.addEventListener('click', () => {
         const isOpen = panel.classList.contains('is-open');
 
-        // Collapse any other open panel first
         document.querySelectorAll<HTMLElement>('.process-deliverables.is-open').forEach((p) => {
           p.classList.remove('is-open');
           p.setAttribute('aria-hidden', 'true');
@@ -958,5 +558,4 @@ import HeroGallery from '../components/HeroGallery.astro';
       scrollTrigger: { trigger: '.cta-row', start: 'top 85%' },
     });
   }
-
 </script>

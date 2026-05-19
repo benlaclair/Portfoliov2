@@ -1,0 +1,205 @@
+---
+/**
+ * HeroCarousel — Three.js WebGL rotating 3D ring of graphic-design pieces.
+ * Images passed via data-attribute (define:vars breaks ES module imports).
+ */
+import { DESIGN_GROUPS } from '../data/graphicDesign';
+
+const allImages = DESIGN_GROUPS.flatMap(g => g.images);
+const N = 8;
+const stride = Math.max(1, Math.floor(allImages.length / N));
+const ringImages = Array.from({ length: N }, (_, i) => allImages[i * stride] ?? allImages[i % allImages.length]);
+const srcs = ringImages.map(img => img.src);
+---
+
+<canvas
+  id="hc-canvas"
+  aria-hidden="true"
+  data-srcs={JSON.stringify(srcs)}
+  data-count={N}
+></canvas>
+
+<style>
+  #hc-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #hc-canvas { display: none; }
+  }
+</style>
+
+<script>
+  import * as THREE from 'three';
+
+  const canvas = document.getElementById('hc-canvas') as HTMLCanvasElement;
+  if (!canvas) throw new Error('hc-canvas missing');
+
+  const srcs: string[] = JSON.parse(canvas.dataset.srcs ?? '[]');
+  const N: number = parseInt(canvas.dataset.count ?? '12', 10);
+
+  // ── Renderer ──────────────────────────────────────────────────────────────
+  function getSize() {
+    const parent = canvas.parentElement;
+    return parent
+      ? { w: parent.clientWidth || window.innerWidth, h: parent.clientHeight || window.innerHeight }
+      : { w: window.innerWidth, h: window.innerHeight };
+  }
+
+  const { w: initW, h: initH } = getSize();
+
+  const renderer = new THREE.WebGLRenderer({
+    canvas,
+    antialias: true,
+    alpha: true,
+    powerPreference: 'high-performance',
+  });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.8));
+  renderer.setSize(initW, initH);
+  renderer.outputColorSpace = THREE.SRGBColorSpace;
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 1.1;
+
+  // ── Scene / Camera ────────────────────────────────────────────────────────
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(42, initW / initH, 0.1, 200);
+  camera.position.set(0, 2, 22);
+  camera.lookAt(0, 0, 0);
+
+  // ── Lights ────────────────────────────────────────────────────────────────
+  scene.add(new THREE.AmbientLight(0xffffff, 1.4));
+  const key = new THREE.DirectionalLight(0xcce7ff, 2.8);
+  key.position.set(2, 5, 10);
+  scene.add(key);
+
+  // ── Ring group ────────────────────────────────────────────────────────────
+  const ring = new THREE.Group();
+  // X tilt makes the ring read as an ellipse — cards curve away top and bottom
+  ring.rotation.x = THREE.MathUtils.degToRad(15);
+  ring.rotation.z = THREE.MathUtils.degToRad(-5);
+  scene.add(ring);
+
+  const RADIUS = 6.6;
+  const CARD_W = 5.8;
+  const CARD_H = 3.55;
+
+  const cardGeo = new THREE.PlaneGeometry(CARD_W, CARD_H, 36, 24);
+  const loader = new THREE.TextureLoader();
+  const meshes: THREE.Mesh[] = [];
+
+  const vertexShader = /* glsl */`
+    varying vec2 vUv;
+    uniform float uTime;
+    uniform float uFront;
+    void main() {
+      vUv = uv;
+      vec3 pos = position;
+      pos.z += sin(uv.x * 3.14159) * 0.12 + sin(uv.x * 3.14159 + uTime * 0.4) * 0.035 * uFront;
+      gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
+    }
+  `;
+
+  const fragmentShader = /* glsl */`
+    varying vec2 vUv;
+    uniform sampler2D uMap;
+    uniform float uFront;
+    uniform float uLoaded;
+    void main() {
+      // placeholder dark card before texture loads
+      vec4 placeholder = vec4(0.08, 0.08, 0.14, 1.0);
+      vec4 tex = texture2D(uMap, vUv);
+      vec4 col = mix(placeholder, tex, uLoaded);
+
+      float ex = smoothstep(0.0, 0.05, vUv.x) * smoothstep(0.0, 0.05, 1.0 - vUv.x);
+      float ey = smoothstep(0.0, 0.04, vUv.y) * smoothstep(0.0, 0.04, 1.0 - vUv.y);
+      float edge = ex * ey;
+
+      float gloss = pow(max(0.0, 0.5 - abs(vUv.x - 0.5)), 3.0) * 0.2 * uFront;
+      col.rgb += gloss;
+      col.rgb *= mix(0.55, 1.0, uFront);
+      col.a *= edge;
+      gl_FragColor = col;
+    }
+  `;
+
+  srcs.forEach((src, i) => {
+    const angle = (i / N) * Math.PI * 2;
+
+    const mat = new THREE.ShaderMaterial({
+      uniforms: {
+        uMap:    { value: new THREE.Texture() },
+        uTime:   { value: 0 },
+        uFront:  { value: 0 },
+        uLoaded: { value: 0 },
+      },
+      transparent: true,
+      side: THREE.DoubleSide,
+      vertexShader,
+      fragmentShader,
+    });
+
+    const mesh = new THREE.Mesh(cardGeo, mat);
+    mesh.position.set(Math.sin(angle) * RADIUS, 0, Math.cos(angle) * RADIUS);
+    mesh.rotation.y = angle;
+    ring.add(mesh);
+    meshes.push(mesh);
+
+    loader.load(src, (tex) => {
+      tex.colorSpace = THREE.SRGBColorSpace;
+      tex.anisotropy = renderer.capabilities.getMaxAnisotropy();
+      mat.uniforms.uMap.value = tex;
+      mat.uniforms.uLoaded.value = 1;
+    });
+  });
+
+  // ── Auto-rotate ───────────────────────────────────────────────────────────
+  let ringAngle = 0;
+  let targetAngle = 0;
+  const AUTO_SPEED = 0.00035;
+  let lastTime = performance.now();
+
+  // ── Resize ────────────────────────────────────────────────────────────────
+  const ro = new ResizeObserver(() => {
+    const { w, h } = getSize();
+    renderer.setSize(w, h);
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+  });
+  ro.observe(canvas.parentElement ?? document.body);
+
+  // ── Animate ───────────────────────────────────────────────────────────────
+  const camDir = new THREE.Vector3();
+
+  function animate(now: number) {
+    const dt = Math.min(30, now - lastTime);
+    lastTime = now;
+
+    targetAngle -= AUTO_SPEED * dt;
+    ringAngle += (targetAngle - ringAngle) * (1 - Math.pow(0.0001, dt * 0.001));
+    ring.rotation.y = ringAngle;
+
+    camera.getWorldDirection(camDir);
+    meshes.forEach((mesh, i) => {
+      const angle = (i / N) * Math.PI * 2 + ringAngle;
+      const dot = Math.max(0, -camDir.x * Math.sin(angle) + -camDir.z * Math.cos(angle));
+      const mat = mesh.material as THREE.ShaderMaterial;
+      mat.uniforms.uFront.value += (dot - mat.uniforms.uFront.value) * 0.06;
+      mat.uniforms.uTime.value += dt * 0.001;
+    });
+
+    camera.position.x = Math.sin(now * 0.00014) * 0.3;
+    camera.position.y = 2 + Math.cos(now * 0.00018) * 0.15;
+    camera.lookAt(0, 0, 0);
+
+    renderer.render(scene, camera);
+    requestAnimationFrame(animate);
+  }
+
+  requestAnimationFrame(animate);
+</script>
