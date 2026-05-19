@@ -14,10 +14,10 @@ const columns: { src: string; alt: string }[][] = Array.from({ length: COLS }, (
 allImages.forEach((img, i) => columns[i % COLS].push(img));
 
 const colMeta = [
-  { speed: fullPage ? 135 : 90, dir: 'up' },
-  { speed: fullPage ? 100 : 70, dir: 'down' },
-  { speed: fullPage ? 165 : 110, dir: 'up' },
-  { speed: fullPage ? 115 : 75, dir: 'down' },
+  { speed: fullPage ? 135 : 120, dir: 'up' },
+  { speed: fullPage ? 100 : 90,  dir: 'down' },
+  { speed: fullPage ? 165 : 140, dir: 'up' },
+  { speed: fullPage ? 115 : 100, dir: 'down' },
 ];
 ---
 
