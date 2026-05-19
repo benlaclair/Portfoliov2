@@ -44,6 +44,7 @@ import HeroGallery from '../components/HeroGallery.astro';
     </div>
 
     <div class="hero-phrase" id="hero-phrase">
+      <p class="hero-intro" id="hero-intro">Hi, I'm Ben —</p>
       <h1 class="hero-phrase-text" id="hero-phrase-text">
         <span class="word"><span>Type</span></span> <span class="word"><span>that</span></span> <span class="word"><span>reads.</span></span>
         <br/>
@@ -67,17 +68,13 @@ import HeroGallery from '../components/HeroGallery.astro';
   <!-- ============ TAGLINE (light) ============ -->
   <section class="tagline atmo-warmth-tl">
     <p class="tagline-text" id="tagline-text">
-      I help teams turn complicated ideas into <span class="accent">measurably simpler</span> products — with type that reads, motion that means something, and details that hold up under scrutiny.
+      UX/UI designer and graphic designer. <span class="accent">Making complicated things feel obvious.</span>
     </p>
   </section>
 
-  <div class="divider"></div>
-
   <!-- ============ VISUAL BREAK (dark parallax strip) ============ -->
   <section class="vbreak is-dark" data-section-mode="dark" aria-hidden="true">
-    <div class="vbreak-bg" id="vbreak-bg">
-      <p class="vbreak-quote" data-reveal>Details that hold up under scrutiny.</p>
-    </div>
+    <div class="vbreak-bg" id="vbreak-bg"></div>
   </section>
 
   <!-- ============ SELECTED WORK (horizontal pinned, light) ============ -->
@@ -139,7 +136,7 @@ import HeroGallery from '../components/HeroGallery.astro';
         <div class="process-step" data-reveal>
           <span class="process-num">04</span>
           <h3 class="process-step-title">Align</h3>
-          <p class="process-step-body">Handoff with rationale, not just specs. Staying available through build so the intent survives implementation.</p>
+          <p class="process-step-body">Specs and the reasoning behind them. Still available through build — because a handoff document doesn't answer Slack messages.</p>
         </div>
       </div>
     </div>
@@ -204,10 +201,21 @@ import HeroGallery from '../components/HeroGallery.astro';
     position: absolute;
     inset: 0;
     z-index: 3;
-    display: grid;
-    place-items: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     padding: 0 40px;
     pointer-events: none;
+  }
+  .hero-intro {
+    font-family: var(--font-mono);
+    font-size: clamp(12px, 1.2vw, 16px);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-dark-ink-2);
+    margin-bottom: clamp(16px, 2vw, 28px);
+    opacity: 0;
   }
   .hero-phrase-text {
     font-family: var(--font-display);
@@ -425,11 +433,13 @@ import HeroGallery from '../components/HeroGallery.astro';
       .to('#loader', { yPercent: -100, duration: 1.0, ease: 'expo.inOut' }, '+=0.6')
       .set('#loader', { display: 'none' })
       .to('#site-nav', { opacity: 1, duration: 0.6, ease: ease.out }, '-=0.5')
+      // "Hi, I'm Ben —" fades in just before the word reveal
+      .to('#hero-intro', { opacity: 1, duration: 0.5, ease: ease.out }, '-=0.5')
       // Hero phrase word-reveal (global .word > span CSS hides at translateY 115%; tween to 0).
       .fromTo('#hero-phrase-text .word > span',
         { yPercent: 115, y: 0 },
         { yPercent: 0, y: 0, stagger: 0.04, duration: 1.0, ease: 'expo.out' },
-        '-=0.4'
+        '-=0.2'
       )
       // Brief dwell — long enough to read in one beat, short enough not to outstay
       .to({}, { duration: 1.4 })
@@ -501,6 +511,7 @@ import HeroGallery from '../components/HeroGallery.astro';
     const loader = document.getElementById('loader');
     if (loader) loader.style.display = 'none';
     gsap.set('#site-nav', { opacity: 1 });
+    gsap.set('#hero-intro', { opacity: 1 });
     gsap.set('#hero-phrase', { opacity: 0 });
     gsap.set('#hero-gallery, #hero-cta', { opacity: 1 });
   }
