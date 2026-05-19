@@ -111,32 +111,74 @@ import HeroGallery from '../components/HeroGallery.astro';
       <div class="process-header">
         <p class="text-eyebrow-accent" data-reveal>Process</p>
         <h2 class="process-title" data-process-title>
-          Fewer surprises,<br>better work.
+          <span class="process-word"><span>Fewer</span></span>
+          <span class="process-word"><span>surprises,</span></span>
+          <span class="process-word"><span>better</span></span>
+          <span class="process-word"><span>work.</span></span>
         </h2>
         <p class="process-sub" data-reveal>
           Four phases. Every project, every time — so you always know what's happening and why.
         </p>
       </div>
-      <div class="process-grid">
-        <div class="process-step" data-reveal>
-          <span class="process-num">01</span>
-          <h3 class="process-step-title">Absorb</h3>
-          <p class="process-step-body">Stakeholder interviews, user research, competitive audit. Learning enough to design with conviction — not just familiarity.</p>
-        </div>
-        <div class="process-step" data-reveal>
-          <span class="process-num">02</span>
-          <h3 class="process-step-title">Reduce</h3>
-          <p class="process-step-body">Distilling the problem to its sharpest possible version. Architecture, flows, and design principles before a single pixel moves.</p>
-        </div>
-        <div class="process-step" data-reveal>
-          <span class="process-num">03</span>
-          <h3 class="process-step-title">Make</h3>
-          <p class="process-step-body">Screens, systems, motion. Every detail earns its place. No placeholder copy, no "we'll fix it in dev."</p>
-        </div>
-        <div class="process-step" data-reveal>
-          <span class="process-num">04</span>
-          <h3 class="process-step-title">Align</h3>
-          <p class="process-step-body">Specs and the reasoning behind them. Still available through build — because a handoff document doesn't answer Slack messages.</p>
+      <div class="process-grid-wrap">
+        <div class="process-connector" aria-hidden="true"><span class="process-connector-line"></span></div>
+        <div class="process-grid">
+          <div class="process-step" data-process-card>
+            <span class="process-num">01</span>
+            <h3 class="process-step-title">Absorb</h3>
+            <p class="process-step-body">Stakeholder interviews, user research, competitive audit. Learning enough to design with conviction — not just familiarity.</p>
+            <button class="process-expand-hint" aria-expanded="false">Deliverables <span aria-hidden="true">+</span></button>
+            <div class="process-deliverables" aria-hidden="true">
+              <ul>
+                <li>Research synthesis doc</li>
+                <li>Stakeholder interview notes</li>
+                <li>Competitive audit</li>
+                <li>Defined success metrics</li>
+              </ul>
+            </div>
+          </div>
+          <div class="process-step" data-process-card>
+            <span class="process-num">02</span>
+            <h3 class="process-step-title">Reduce</h3>
+            <p class="process-step-body">Distilling the problem to its sharpest possible version. Architecture, flows, and design principles before a single pixel moves.</p>
+            <button class="process-expand-hint" aria-expanded="false">Deliverables <span aria-hidden="true">+</span></button>
+            <div class="process-deliverables" aria-hidden="true">
+              <ul>
+                <li>Problem statement</li>
+                <li>Information architecture</li>
+                <li>User flows</li>
+                <li>Design principles</li>
+              </ul>
+            </div>
+          </div>
+          <div class="process-step" data-process-card>
+            <span class="process-num">03</span>
+            <h3 class="process-step-title">Make</h3>
+            <p class="process-step-body">Screens, systems, motion. Every detail earns its place. No placeholder copy, no "we'll fix it in dev."</p>
+            <button class="process-expand-hint" aria-expanded="false">Deliverables <span aria-hidden="true">+</span></button>
+            <div class="process-deliverables" aria-hidden="true">
+              <ul>
+                <li>Wireframes + prototypes</li>
+                <li>High-fidelity screens</li>
+                <li>Design system / component library</li>
+                <li>Motion spec</li>
+              </ul>
+            </div>
+          </div>
+          <div class="process-step" data-process-card>
+            <span class="process-num">04</span>
+            <h3 class="process-step-title">Align</h3>
+            <p class="process-step-body">Specs and the reasoning behind them. Still available through build — because a handoff document doesn't answer Slack messages.</p>
+            <button class="process-expand-hint" aria-expanded="false">Deliverables <span aria-hidden="true">+</span></button>
+            <div class="process-deliverables" aria-hidden="true">
+              <ul>
+                <li>Annotated Figma handoff</li>
+                <li>Component documentation</li>
+                <li>QA review</li>
+                <li>Post-launch check-in</li>
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -337,7 +379,18 @@ import HeroGallery from '../components/HeroGallery.astro';
     line-height: 1.05;
     letter-spacing: -0.02em;
     color: var(--color-ink);
-    clip-path: inset(0 0 100% 0);
+  }
+  /* Each word clips upward — GSAP drives the reveal */
+  .process-word {
+    display: inline-block;
+    overflow: hidden;
+    vertical-align: bottom;
+    margin-right: 0.22em;
+  }
+  .process-word > span {
+    display: inline-block;
+    transform: translateY(110%);
+    opacity: 0;
   }
   .process-sub {
     font-size: clamp(14px, 1.4vw, 18px);
@@ -347,13 +400,29 @@ import HeroGallery from '../components/HeroGallery.astro';
     padding-top: 0.5em;
     align-self: end;
   }
+  /* Connector sits above the grid, full-width */
+  .process-grid-wrap { position: relative; }
+  .process-connector {
+    height: 32px;
+    display: flex;
+    align-items: center;
+    margin-bottom: -1px;
+    padding: 0 1px;
+  }
+  .process-connector-line {
+    display: block;
+    height: 1px;
+    width: 0%;
+    background: var(--color-accent);
+    opacity: 0.5;
+  }
   .process-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 1px;
     background: var(--color-line);
     border: 1px solid var(--color-line);
-    border-radius: 12px;
+    border-radius: 0 0 12px 12px;
     overflow: hidden;
   }
   .process-step {
@@ -363,6 +432,10 @@ import HeroGallery from '../components/HeroGallery.astro';
     flex-direction: column;
     gap: 20px;
     transition: background 0.3s ease;
+    cursor: pointer;
+    /* Cards start hidden for GSAP entrance */
+    opacity: 0;
+    transform: translateY(24px);
   }
   .process-step:hover { background: var(--color-panel); }
   .process-num {
@@ -383,18 +456,75 @@ import HeroGallery from '../components/HeroGallery.astro';
     font-size: 14px;
     line-height: 1.65;
     color: var(--color-muted);
-    margin-top: auto;
+    flex: 1;
+  }
+  /* Expand hint button */
+  .process-expand-hint {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.2s ease, color 0.2s ease;
+  }
+  .process-step:hover .process-expand-hint { opacity: 1; }
+  .process-expand-hint[aria-expanded="true"] {
+    opacity: 1;
+    color: var(--color-accent);
+  }
+  .process-expand-hint[aria-expanded="true"] span { content: '−'; }
+  /* Deliverables panel — max-height collapse */
+  .process-deliverables {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .process-deliverables.is-open {
+    max-height: 200px;
+  }
+  .process-deliverables ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    padding-top: 16px;
+    border-top: 1px solid var(--color-line);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .process-deliverables li {
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--color-ink-2);
+    display: flex;
+    gap: 10px;
+  }
+  .process-deliverables li::before {
+    content: '—';
+    color: var(--color-accent);
+    flex-shrink: 0;
   }
   @media (max-width: 900px) {
     .process-header { grid-template-columns: 1fr !important; }
-    .process-grid { grid-template-columns: repeat(2, 1fr) !important; }
+    .process-grid { grid-template-columns: repeat(2, 1fr) !important; border-radius: 0 0 12px 12px; }
   }
   @media (max-width: 600px) {
     .process-grid { grid-template-columns: 1fr !important; }
     .process { padding: 60px 24px !important; }
   }
   @media (prefers-reduced-motion: reduce) {
-    .process-title { clip-path: none; }
+    .process-word > span { transform: none; opacity: 1; }
+    .process-step { opacity: 1; transform: none; }
+    .process-connector-line { width: 100%; }
+    .process-deliverables { transition: none; }
   }
 
   /* cta — dark chapter */
@@ -647,23 +777,75 @@ import HeroGallery from '../components/HeroGallery.astro';
     if (tlFill) tlFill.style.width = '100%';
   }
 
-  // ============ PROCESS TITLE ============
-  // data-reveal-clip via IO can't detect zero-visual-area elements (clip-path hides them from IO).
-  // Use ScrollTrigger instead — it uses layout position, not visual area.
+  // ============ PROCESS ============
   {
-    const el = document.querySelector<HTMLElement>('[data-process-title]');
-    if (el) {
-      if (reduceMotion.current) {
-        el.style.clipPath = 'none';
-      } else {
-        gsap.to(el, {
-          clipPath: 'inset(0 0 0% 0)',
-          duration: 0.9,
-          ease: ease.expo,
-          scrollTrigger: { trigger: el, start: 'top 85%', once: true },
-        });
-      }
+    const section = document.querySelector<HTMLElement>('.process');
+    if (section && !reduceMotion.current) {
+      const words = section.querySelectorAll<HTMLElement>('.process-word > span');
+      const cards = section.querySelectorAll<HTMLElement>('[data-process-card]');
+      const connectorLine = section.querySelector<HTMLElement>('.process-connector-line');
+
+      // 1. Word-by-word headline reveal
+      gsap.to(words, {
+        y: 0,
+        opacity: 1,
+        duration: 0.7,
+        stagger: 0.1,
+        ease: ease.expo,
+        scrollTrigger: { trigger: '[data-process-title]', start: 'top 85%', once: true },
+      });
+
+      // 2. Staggered card entrance (left to right, 100ms stagger)
+      gsap.to(cards, {
+        y: 0,
+        opacity: 1,
+        duration: 0.7,
+        stagger: 0.1,
+        ease: ease.out,
+        scrollTrigger: { trigger: '.process-grid', start: 'top 88%', once: true },
+        onComplete() {
+          // 3. Connector line draws after last card lands
+          if (connectorLine) {
+            gsap.to(connectorLine, {
+              width: '100%',
+              duration: 0.8,
+              ease: 'power2.out',
+            });
+          }
+        },
+      });
     }
+
+    // 4. Click-to-expand deliverables
+    document.querySelectorAll<HTMLElement>('[data-process-card]').forEach((card) => {
+      const btn = card.querySelector<HTMLButtonElement>('.process-expand-hint');
+      const panel = card.querySelector<HTMLElement>('.process-deliverables');
+      const indicator = btn?.querySelector<HTMLElement>('span');
+      if (!btn || !panel) return;
+
+      btn.addEventListener('click', () => {
+        const isOpen = panel.classList.contains('is-open');
+
+        // Collapse any other open panel first
+        document.querySelectorAll<HTMLElement>('.process-deliverables.is-open').forEach((p) => {
+          p.classList.remove('is-open');
+          p.setAttribute('aria-hidden', 'true');
+          const b = p.previousElementSibling as HTMLButtonElement | null;
+          if (b) {
+            b.setAttribute('aria-expanded', 'false');
+            const ind = b.querySelector<HTMLElement>('span');
+            if (ind) ind.textContent = '+';
+          }
+        });
+
+        if (!isOpen) {
+          panel.classList.add('is-open');
+          panel.setAttribute('aria-hidden', 'false');
+          btn.setAttribute('aria-expanded', 'true');
+          if (indicator) indicator.textContent = '−';
+        }
+      });
+    });
   }
 
   // ============ CTA ============
