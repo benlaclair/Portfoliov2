@@ -11,8 +11,6 @@
  * and any post-stage sections that adopt the same crossfade.
  */
 
-import HeroRings from './HeroRings.astro';
-import HeroBackground from './HeroBackground.astro';
 import HeroCarousel from './HeroCarousel.astro';
 
 export interface Props {
@@ -29,8 +27,6 @@ const { initialLayer = 'hero' } = Astro.props;
 
     <div class="bg-layer" data-bg-layer="hero" class:list={[{ 'is-active': initialLayer === 'hero' }]}>
       <div class="bg-orb bg-orb--hero"></div>
-      <HeroRings />
-      <HeroBackground />
       <HeroCarousel />
     </div>
 
@@ -111,7 +107,21 @@ const { initialLayer = 'hero' } = Astro.props;
   }
 
   /* Per-section orb gradients */
-  .bg-orb--hero    { background: radial-gradient(circle at 50% 50%, #0e4a3a 0%, #0a2540 40%, #0a1230 70%, transparent 85%); }
+  /* Hero orb is upsized + brighter to read as a strong indigo glow behind
+     the carousel. The base 140px blur smears the stops into a soft halo. */
+  .bg-orb--hero {
+    width: 110vw;
+    height: 110vw;
+    max-width: 1800px;
+    max-height: 1800px;
+    background: radial-gradient(
+      circle at 50% 50%,
+      rgba(123, 138, 200, 0.85) 0%,
+      rgba(91, 108, 171, 0.55) 25%,
+      rgba(60, 75, 130, 0.30) 50%,
+      rgba(10, 18, 48, 0)     75%
+    );
+  }
   .bg-orb--tagline { background: radial-gradient(circle at 50% 50%, #ece6d6 0%, #6b6450 35%, #1a1a16 65%, transparent 80%); }
   .bg-orb--intent  { background: radial-gradient(circle at 50% 50%, #3fd9b0 0%, #1a4450 30%, #0d1a1a 60%, transparent 80%); }
   .bg-orb--work    { background: radial-gradient(circle at 50% 50%, #9b59ff 0%, #4a2270 30%, #1a0d22 60%, transparent 80%); }
