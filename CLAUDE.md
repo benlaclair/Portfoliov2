@@ -13,7 +13,15 @@ Personal portfolio for Ben LaClair (UX/UI + Graphic Designer). Astro 6 + GSAP 3.
 
 ## Current state
 
-**Phase 9** is the most recent phase (committed `fd8224b`, 2026-05-26). The homepage hero is a scroll-driven `ScrollStage` with a `StickyBackground` (five crossfading bg layers) and three scramble-entrance headlines. The hero bg layer hosts a **Three.js WebGL `HeroCarousel`** — 8 graphic-design images on a 3D ring that auto-rotates continuously. The ring tilt/camera angle is still being tuned (see HANDOFF.md "Open items from Phase 9"). Phases 6–8 also all landed: section-contrast rhythm, architecture migration, and the full homepage rebuild (HeroGallery, scroll-gate curtain, indigo accent).
+**Phase 10** is the most recent phase (2026-05-27). Major homepage rebuild:
+
+- **Hero**: single editorial headline on light parchment (`var(--color-bg)`), left-aligned, type-only. Wrapped in `.intro-stage` (200svh) with sticky-pinned `.intro-pin` (100svh). Hero text recedes via scrub-driven Z-translate + opacity + blur as user scrolls.
+- **Sweep transition**: 16 curated graphic-design images (`src/data/sweepImages.ts`) form a horizontal strip that auto-plays R→L once the hero recede completes (triggered at 50% scroll via `ScrollTrigger.create({ once: true })`). Uses GSAP `SlowMo` ease (from `gsap/EasePack`) for dramatic slow-fast-slow pacing. Depth-of-field scaling via per-image `--sweep-scale` CSS variable updated each frame. Scroll is locked during sweep (`Lenis.stop()` + wheel/touch `preventDefault`). On complete: scroll unlocks, page auto-scrolls to `#work`.
+- **Work section**: back to normal `variant="stack"` flow with per-card scrubs. Card 0's enter scrub is skipped (snapped to final state) for seamless handoff from the sweep.
+- **Deleted**: `ScrollStage.astro`, `StickyBackground.astro`, `HeroCarousel.astro`, `scramble.ts`, `three` dep, vbreak section.
+- **Added**: `src/data/sweepImages.ts`, `SlowMo` ease registration in `src/lib/motion.ts`.
+
+Phases 6–8 still in place: section-contrast rhythm, architecture migration, HeroGallery (used by graphic-design case study page).
 
 ## Hard rules
 

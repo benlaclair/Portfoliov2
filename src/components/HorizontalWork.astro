@@ -3,18 +3,17 @@ import { Image } from 'astro:assets';
 import type { Project } from '../data/projects';
 import { PROJECTS } from '../data/projects';
 
+export interface Props {
+  /** 'stack' (default) renders cards in normal flow with per-card scrub.
+      'reel' renders cards for absolute-positioned use inside a parent
+      pinned timeline (#reel in index.astro), with no internal scroll triggers. */
+  variant?: 'stack' | 'reel';
+}
+const { variant = 'stack' } = Astro.props;
 const featured: Project[] = PROJECTS.slice(0, 3);
 ---
 
-<section class="hwork" id="hwork">
-  <div class="wrap hwork-header">
-    <h2 class="hwork-h2">
-      Three projects.<br/>
-      <span class="accent">Three problems</span><br/>
-      worth solving.
-    </h2>
-  </div>
-
+<section class="hwork" id="hwork" data-variant={variant}>
   <div class="hwork-stack">
     {featured.map((p, i) => {
       const num = String(i + 1).padStart(2, '0');
@@ -74,16 +73,6 @@ const featured: Project[] = PROJECTS.slice(0, 3);
 
 <style>
   .hwork { position: relative; }
-  .hwork-header {
-    padding-block: 120px 80px;
-  }
-  .hwork-h2 {
-    font-family: var(--font-display);
-    font-weight: 500;
-    font-size: clamp(48px, 6.6vw, 100px);
-    line-height: 1.0;
-    letter-spacing: -0.02em;
-  }
 
   /* Stack — vertical three-room rhythm: Light · Dark · Mid-tone */
   .hwork-stack {
@@ -237,10 +226,24 @@ const featured: Project[] = PROJECTS.slice(0, 3);
 <script>
   import { gsap, ScrollTrigger, ease, reduceMotion } from '../lib/motion';
 
+  const root = document.querySelector<HTMLElement>('.hwork');
+  const variant = root?.dataset.variant ?? 'stack';
   const panels = gsap.utils.toArray<HTMLElement>('[data-panel]');
   const cards = panels.map((p) => p.querySelector<HTMLElement>('.hwork-panel-inner'));
 
-  if (panels.length) {
+  // Reel variant: cards are driven by the parent #reel timeline in index.astro.
+  // Set all visuals + title lines to their final state immediately so cards
+  // are fully painted whenever the reel timeline slides them on stage.
+  if (variant === 'reel') {
+    panels.forEach((panel, i) => {
+      const card = cards[i];
+      const visual = panel.querySelector<HTMLElement>('[data-visual]');
+      const titleSpan = panel.querySelector<HTMLElement>('[data-title] .line > span');
+      if (titleSpan) gsap.set(titleSpan, { y: 0 });
+      if (visual) visual.classList.add('in');
+      if (card) card.classList.add('is-active');
+    });
+  } else if (panels.length) {
     panels.forEach((panel, i) => {
       const card = cards[i];
       const visual = panel.querySelector<HTMLElement>('[data-visual]');
@@ -257,25 +260,31 @@ const featured: Project[] = PROJECTS.slice(0, 3);
 
       if (titleSpan) gsap.set(titleSpan, { y: '110%' });
 
-      // Card enter: scale + y + opacity as it rises into focus
-      gsap.fromTo(card, {
-        scale: 0.92,
-        yPercent: 12,
-        opacity: 0.6,
-      }, {
-        scale: 1,
-        yPercent: 0,
-        opacity: 1,
-        ease: 'none',
-        scrollTrigger: {
-          trigger: panel,
-          start: 'top 85%',
-          end: 'center 55%',
-          scrub: 0.8,
-        },
-      });
+      // Card enter: scale + y + opacity as it rises into focus.
+      // Card 0 is snapped to final state (driven by the intro-stage
+      // scrubbed timeline in index.astro). Cards 1+ use the normal scrub.
+      if (i === 0) {
+        gsap.set(card, { scale: 1, yPercent: 0, opacity: 1 });
+      } else {
+        gsap.fromTo(card, {
+          scale: 0.92,
+          yPercent: 12,
+          opacity: 0.6,
+        }, {
+          scale: 1,
+          yPercent: 0,
+          opacity: 1,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: panel,
+            start: 'top 85%',
+            end: 'center 55%',
+            scrub: 0.8,
+          },
+        });
+      }
 
-      // Card exit: scale back as it recedes from focus
+      // Card exit: scale back as it recedes from focus (ALL cards)
       gsap.fromTo(card, {
         scale: 1,
         yPercent: 0,

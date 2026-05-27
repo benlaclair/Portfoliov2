@@ -16,7 +16,7 @@ Personal portfolio for Ben LaClair (UX/UI + Graphic Designer). Static Astro site
 - **Branch model**: single-branch — `main` is where work happens.
 - **Deploy**: `main` push → <https://portfoliov2-jet-six.vercel.app> (auto-deploys via Vercel). Separate Vercel project from the v1 site at benlaclair.com — anything done here does not touch the live portfolio.
 
-The current visual language is the result of nine phases:
+The current visual language is the result of ten phases:
 
 1. **Phase 1** — Astro/GSAP/Tailwind scaffold, Plus Jakarta Sans, dark `#080B0F` bg
 2. **Phase 2** — Warm parchment editorial system (Inter Tight + Instrument Serif italic), full motion layer (Lenis, custom cursor, magnetic links, page curtain, loader, horizontal pin, timeline pin)
@@ -26,9 +26,10 @@ The current visual language is the result of nine phases:
 6. **Phase 6** — Section-contrast pass: 3-value rhythm (cream / mid-tone / dark), card-on-canvas pattern (Timeline, Tools, horizontal Work panels), navbar mode-aware substrate + animated underline + 60px height, three-room horizontal panels with accent-stroked dark middle card
 7. **Phase 7** — Architectural migration: `src/lib/motion.ts` singleton, `@theme` shadow + typography utility tokens, `<Image />` for project covers, `[data-reveal]` replacing hand-rolled scroll reveals, `<RowList />` + `<Grid />` primitives consolidating case-study renderers, inline-style sweep
 8. **Phase 8** — Full homepage rebuild: HeroGallery infinite-loop gallery, scroll-gate curtain wipe, vertical sticky-pin Work cards, indigo accent `#5b6cab`, graphic-design page rebuilt
-9. **Phase 9** — ScrollStage sticky-bg architecture + Three.js ring carousel: replaced BackgroundTransition + Hero with scroll-driven `ScrollStage` (five bg layers, character scramble headlines), Three.js WebGL `HeroCarousel` (8-card ring, `uFront` shader, auto-rotate), `overflow-x: clip` fix for sticky, `three` added to deps
+9. **Phase 9** — ScrollStage sticky-bg architecture + Three.js ring carousel (superseded by Phase 10)
+10. **Phase 10** — Hero + sweep transition rebuild: collapsed ScrollStage (3×100svh) to single editorial hero on light parchment. Deleted Three.js carousel, StickyBackground, ScrollStage, scramble.ts, vbreak. Added horizontal sweep transition: 16 curated design images sweep R→L with SlowMo ease + depth-of-field scaling, triggered once on scroll past hero recede. Hero recedes via scrub-driven Z-translate + blur, sweep auto-plays with scroll locked (Lenis.stop + wheel/touch preventDefault), then auto-scrolls to Work section. Card 0 enter scrub skipped for seamless handoff. Scroll resets to top on every page load.
 
-Phase 3 is a **visual/animation layer over Phase 2's content layout** — page structure (section order, copy, components) was intentionally unchanged; only paint, type, and motion were swapped. Phases 4–5 are correctness/architecture refinements. Phase 6 is visual rhythm. Phase 7 is pure architecture — zero visual change.
+Phase 3 is a **visual/animation layer over Phase 2's content layout** — page structure (section order, copy, components) was intentionally unchanged; only paint, type, and motion were swapped. Phases 4–5 are correctness/architecture refinements. Phase 6 is visual rhythm. Phase 7 is pure architecture — zero visual change. Phase 9 was superseded entirely by Phase 10.
 
 ---
 
@@ -38,7 +39,7 @@ Phase 3 is a **visual/animation layer over Phase 2's content layout** — page s
 | --- | --- |
 | Framework | Astro 5 (static, file-based routing) |
 | Styling | Tailwind v4 via `@tailwindcss/vite` + custom `@theme` tokens in `src/styles/global.css` |
-| Motion | GSAP 3.13 + ScrollTrigger; Lenis 1.1 for smooth scroll; Three.js (WebGL ring carousel) |
+| Motion | GSAP 3.13 + ScrollTrigger + SlowMo (EasePack); Lenis 1.1 for smooth scroll |
 | Type | Clash Display 500/600 + Satoshi 400/500/700 (Fontshare CDN) + JetBrains Mono 400/500 (Fontsource) |
 | JS | Vanilla TypeScript only. No React. Page- and component-local `<script>` blocks. |
 | Forms | Formspree proxy via `src/pages/api/contact.ts` |
@@ -63,18 +64,10 @@ src/
     Footer.astro          Dark chapter, large SVG B-mark + wordmark, info grid
     HorizontalWork.astro  Phase 8 — vertical sticky-pin cards (file name
                           preserved for import stability), three-room
-                          rhythm with dark middle card
+                          rhythm with dark middle card. Accepts variant
+                          prop ('stack' | 'reel'); homepage uses 'stack'.
     HeroGallery.astro     Phase 8 — 4-column infinite-loop gallery used by
-                          the homepage hero AND /work/graphic-design
-    ScrollStage.astro     Phase 9 — scroll-driven headline sections with
-                          StickyBackground crossfade + scramble entrance
-    StickyBackground.astro Phase 9 — sticky bg layer stack (hero/tagline/
-                          intent/work/contact), purely presentational
-    HeroCarousel.astro    Phase 9 — Three.js WebGL 3D ring carousel,
-                          8 graphic-design images, uFront shader, auto-rotate
-    HeroRings.astro       Phase 9 — decorative concentric SVG rings in hero
-    HeroBackground.astro  Phase 9 — atmospheric gradient layer in hero
-    HeroCard.astro        Phase 9 — card component used by HeroCarousel
+                          /work/graphic-design (no longer on homepage)
     ProjectCard.astro     Vertical project row used on /work
     ContactForm.astro     Form → /api/contact → Formspree
     case-study/           Phase 5 — modular case-study renderers
@@ -93,8 +86,9 @@ src/
       MetaOverview.astro    Meta block + overview text
       Video.astro           Embedded video w/ caption
   pages/
-    index.astro           Homepage — Loader → Hero (phrase → gallery + CTA)
-                          → Tagline → Vbreak → VerticalWork → Timeline → CTA
+    index.astro           Homepage — Loader → Hero (editorial headline,
+                          scrub-recedes) → Sweep transition (16 images
+                          R→L) → Work cards → Timeline → Process → CTA
     work/
       index.astro         All projects grid (uses ProjectCard)
       [slug].astro        Case study template; reads from caseStudies
@@ -109,15 +103,14 @@ src/
   data/
     projects.ts           Featured + all projects (4 entries)
     graphicDesign.ts      86 images grouped by client
+    sweepImages.ts        Phase 10 — 16 curated images for the sweep transition
     tools.ts              AI tools cards
     caseStudies/          Phase 5 — slug-keyed case-study registry
       types.ts              Discriminated CaseStudySection union
       index.ts              Registry of slug → CaseStudy
       vlier.ts, veo.ts, portfolio.ts
   lib/
-    scramble.ts           Phase 9 — per-character scramble-then-settle text
-                          entrance. scramble(el, text, opts) → { cancel() }
-    motion.ts             Phase 7 — gsap + ScrollTrigger singleton,
+    motion.ts             Phase 7 — gsap + ScrollTrigger + SlowMo singleton,
                           ease tokens, reactive reduceMotion, revealLines()
                           helper. All scripts import from here.
   styles/
@@ -138,9 +131,9 @@ public/
 
 ## Mental model
 
-**The homepage is a sequence of "chapters"** — each section is painted either dark or light to create rhythm. The dark chapters (Loader, Hero, Vbreak, CTA, Footer) are the chromatic anchors; light chapters (Tagline, VerticalWork, Timeline) are the editorial reading beats.
+**The homepage is a sequence of "chapters"** — the hero is light parchment, the sweep transition plays over it, then Work cards (light/dark/mid-tone rhythm), Timeline, Process, and CTA (dark) follow in normal scroll flow.
 
-**Motion is layered, not orchestrated.** Each section owns its own GSAP code. The only cross-section coordination is the loader-to-hero intro timeline (in `src/pages/index.astro`) and `body[data-mode]` tracking (in `BaseLayout.astro`).
+**Motion is layered, not orchestrated.** Each section owns its own GSAP code. The only cross-section coordination is: the loader-to-hero intro timeline (in `src/pages/index.astro`), the hero recede ScrollTrigger (scrub-driven), the sweep one-shot trigger (auto-plays, locks scroll), and `body[data-mode]` tracking (in `BaseLayout.astro`).
 
 **Text reveals come in three flavors**, used deliberately:
 

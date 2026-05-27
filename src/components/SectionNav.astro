@@ -1,9 +1,9 @@
 ---
 /**
- * SectionNav — fixed left rail. Hidden until #scroll-stage is out of view.
+ * SectionNav — fixed left rail. Hidden until the hero (#intro) is out of view.
  *
- * Active section driven by IntersectionObserver on post-stage sections
- * (#work, #process, #contact). The rail fades in once the ScrollStage
+ * Active section driven by IntersectionObserver on post-hero sections
+ * (#work, #process, #contact). The rail fades in once the hero
  * sentinel exits the bottom of the viewport.
  */
 ---
@@ -69,20 +69,20 @@
 
 <script>
   const nav = document.getElementById('section-nav');
-  const stage = document.getElementById('scroll-stage');
+  const hero = document.getElementById('intro');
   const items = document.querySelectorAll<HTMLElement>('.section-nav-item');
 
-  // Post-stage sections the nav tracks
+  // Post-hero sections the nav tracks
   const targets = document.querySelectorAll<HTMLElement>('#work, #process, #contact');
 
-  // Show the rail only after the scroll stage has fully left the viewport
-  if (nav && stage) {
-    const stageIo = new IntersectionObserver((entries) => {
+  // Show the rail only after the hero has fully left the viewport
+  if (nav && hero) {
+    const heroIo = new IntersectionObserver((entries) => {
       entries.forEach((e) => {
         nav.classList.toggle('is-visible', !e.isIntersecting);
       });
     }, { threshold: 0.05 });
-    stageIo.observe(stage);
+    heroIo.observe(hero);
   }
 
   // Active section: most-visible post-stage section wins

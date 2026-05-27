@@ -365,34 +365,6 @@
   pointer-events: none;
 }
 
-/* Visual break — dark full-bleed parallax strip between sections */
-.vbreak { overflow: hidden; }
-
-.vbreak-bg {
-  height: clamp(180px, 26vh, 340px);
-  background:
-    radial-gradient(ellipse 55% 85% at 20% 65%, rgba(91, 108, 171, 0.12) 0%, transparent 60%),
-    linear-gradient(158deg, #141210 0%, #0d0c0a 55%, #080604 100%);
-  display: grid;
-  place-items: center;
-  will-change: transform;
-  position: relative;
-}
-
-.vbreak-quote {
-  font-family: var(--font-body);
-  font-weight: 400;
-  font-size: clamp(20px, 3.8vw, 56px);
-  color: rgba(244, 239, 228, 0.48);
-  letter-spacing: -0.02em;
-  text-align: center;
-  padding: 0 40px;
-  position: relative;
-  z-index: 1;
-  line-height: 1.15;
-  max-width: 860px;
-}
-
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
@@ -403,6 +375,5 @@
   .clip-wrap > span, .line > span, .word > span { transform: none; }
   .tag-word { opacity: 1; }
   [data-reveal] { opacity: 1; transform: none; transition: none; }
-  .vbreak-bg { transform: none !important; }
   .ind::before { animation: none; }
 }
