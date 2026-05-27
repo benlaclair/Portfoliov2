@@ -13,7 +13,7 @@ Personal portfolio for Ben LaClair (UX/UI + Graphic Designer). Astro 6 + GSAP 3.
 
 ## Current state
 
-Phase 5 (case-study architecture refactor) is the most recent phase. Previous phases (1–4) have all landed: Astro/GSAP/Tailwind scaffold, warm parchment editorial system, Perplexity comp visual integration, reduced-motion + motion-correctness hardening. The case-study system is now slug-keyed via `src/data/caseStudies/` and rendered through modular components in `src/components/case-study/*` — no more if/else ladder in `work/[slug].astro`.
+**Phase 9** is the most recent phase (committed `fd8224b`, 2026-05-26). The homepage hero is a scroll-driven `ScrollStage` with a `StickyBackground` (five crossfading bg layers) and three scramble-entrance headlines. The hero bg layer hosts a **Three.js WebGL `HeroCarousel`** — 8 graphic-design images on a 3D ring that auto-rotates continuously. The ring tilt/camera angle is still being tuned (see HANDOFF.md "Open items from Phase 9"). Phases 6–8 also all landed: section-contrast rhythm, architecture migration, and the full homepage rebuild (HeroGallery, scroll-gate curtain, indigo accent).
 
 ## Hard rules
 

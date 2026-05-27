@@ -38,7 +38,7 @@ Phase 3 is a **visual/animation layer over Phase 2's content layout** — page s
 | --- | --- |
 | Framework | Astro 5 (static, file-based routing) |
 | Styling | Tailwind v4 via `@tailwindcss/vite` + custom `@theme` tokens in `src/styles/global.css` |
-| Motion | GSAP 3.13 + ScrollTrigger; Lenis 1.1 for smooth scroll |
+| Motion | GSAP 3.13 + ScrollTrigger; Lenis 1.1 for smooth scroll; Three.js (WebGL ring carousel) |
 | Type | Clash Display 500/600 + Satoshi 400/500/700 (Fontshare CDN) + JetBrains Mono 400/500 (Fontsource) |
 | JS | Vanilla TypeScript only. No React. Page- and component-local `<script>` blocks. |
 | Forms | Formspree proxy via `src/pages/api/contact.ts` |
