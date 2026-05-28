@@ -26,27 +26,17 @@ import SectionNav from '../components/SectionNav.astro';
 
   <SectionNav />
 
-  <!-- ============ INTRO STAGE (pinned hero recede + scroll-scrubbed sweep) ============ -->
-  <section class="intro-stage" id="intro-stage">
-    <div class="intro-pin">
-
-      <!-- Hero text layer (z:2, recedes via scrubbed timeline) -->
-      <div class="hero" id="intro" data-intro-hero>
-        <div class="hero-inner">
-          <p class="hero-eyebrow" data-reveal>Ben LaClair · Designer</p>
-          <h1 class="stage-headline hero-headline" data-headline-text="A designer who makes complicated things feel obvious." aria-label="A designer who makes complicated things feel obvious."></h1>
-          <a href="#work" class="hero-cue" aria-label="Jump to selected work">
-            <span>Selected work</span>
-            <span class="hero-cue-arrow" aria-hidden="true">↓</span>
-          </a>
-        </div>
-        <div class="hero-noise" aria-hidden="true"></div>
-      </div>
-
-      <!-- Sweep overlay (z:3, strip slides R→L across viewport during scroll) -->
-      <div class="sweep" id="sweep" aria-hidden="true"></div>
-
+  <!-- ============ HERO (static editorial headline) ============ -->
+  <section class="hero" id="intro">
+    <div class="hero-inner">
+      <p class="hero-eyebrow" data-reveal>Ben LaClair · Designer</p>
+      <h1 class="stage-headline hero-headline" data-headline-text="A designer who makes complicated things feel obvious." aria-label="A designer who makes complicated things feel obvious."></h1>
+      <a href="#work" class="hero-cue" aria-label="Jump to selected work" data-reveal>
+        <span>Selected work</span>
+        <span class="hero-cue-arrow" aria-hidden="true">↓</span>
+      </a>
     </div>
+    <div class="hero-noise" aria-hidden="true"></div>
   </section>
 
   <!-- ============ SELECTED WORK (normal stack variant) ============ -->
@@ -184,34 +174,14 @@ import SectionNav from '../components/SectionNav.astro';
   .loader-bar-wrap { width: clamp(160px, 30vw, 320px); height: 1px; background: rgba(244, 239, 228, 0.12); }
   .loader-bar { height: 1px; width: 0%; background: var(--color-dark-ink); }
 
-  /* INTRO STAGE — 200svh scroll context, parchment bg.
-     .intro-pin is sticky-pinned 100svh viewport holding both hero + sweep. */
-  .intro-stage {
-    position: relative;
-    background: var(--color-bg);
-    height: 200svh;
-  }
-  .intro-pin {
-    position: sticky;
-    top: 0;
-    height: 100svh;
-    width: 100%;
-    overflow: hidden;
-    perspective: 1400px;
-    perspective-origin: 50% 45%;
-  }
-
-  /* HERO — absolutely positioned layer inside the pin. z:2.
-     GSAP drives Z-translate + opacity + blur during scroll. */
+  /* HERO — static editorial section on parchment. */
   .hero {
-    position: absolute;
-    inset: 0;
-    z-index: 2;
+    position: relative;
+    min-height: 100svh;
+    background: var(--color-bg);
     padding: clamp(80px, 12vh, 140px) clamp(24px, 6vw, 80px) clamp(60px, 8vh, 100px);
     overflow: hidden;
     display: grid;
-    transform-style: preserve-3d;
-    will-change: transform, opacity, filter;
   }
   .hero-inner {
     position: relative;
@@ -234,36 +204,6 @@ import SectionNav from '../components/SectionNav.astro';
     background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='0.85'/></svg>");
     background-repeat: repeat;
     background-size: 200px 200px;
-  }
-
-  /* SWEEP — absolutely positioned inside the pin (z:3, above hero).
-     Strip slides R→L during the scrubbed timeline; --sweep-scale on each
-     .sweep-img drives the depth-of-field scale (updated per frame in JS). */
-  .sweep {
-    position: absolute;
-    inset: 0;
-    z-index: 3;
-    pointer-events: none;
-    overflow: hidden;
-    display: grid;
-    place-items: center;
-  }
-  .sweep-strip {
-    display: flex;
-    align-items: center;
-    gap: clamp(24px, 3vw, 48px);
-    will-change: transform;
-    white-space: nowrap;
-  }
-  .sweep-img {
-    height: clamp(280px, 50vh, 520px);
-    width: auto;
-    flex-shrink: 0;
-    transform: scale(var(--sweep-scale, 1));
-    transform-origin: center center;
-    border-radius: 8px;
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.22);
-    will-change: transform;
   }
 
   .hero-eyebrow {
@@ -308,14 +248,6 @@ import SectionNav from '../components/SectionNav.astro';
   .hero-cue:hover { color: var(--color-ink); border-bottom-color: rgba(22, 21, 18, 0.55); }
   .hero-cue-arrow { display: inline-block; transition: transform 0.3s cubic-bezier(.7,0,.2,1); }
   .hero-cue:hover .hero-cue-arrow { transform: translateY(3px); }
-
-  @media (prefers-reduced-motion: reduce) {
-    /* Collapse pin to static: hero is a normal 100svh section, sweep hidden */
-    .intro-stage { height: auto; }
-    .intro-pin { position: relative; height: auto; min-height: 100svh; perspective: none; }
-    .hero { position: relative; inset: auto; transform: none !important; opacity: 1 !important; filter: none !important; }
-    .sweep { display: none; }
-  }
 
   .divider { height: 1px; background: var(--color-line); margin: 0 40px; }
 
@@ -528,7 +460,6 @@ import SectionNav from '../components/SectionNav.astro';
 
 <script>
   import { gsap, ScrollTrigger, ease, reduceMotion } from '../lib/motion';
-  import { SWEEP_IMAGES } from '../data/sweepImages';
 
   // ============ LOADER ============
   // ── Split first headline into word spans for clip wipe ──────────────────
@@ -571,135 +502,6 @@ import SectionNav from '../components/SectionNav.astro';
     if (loader) loader.style.display = 'none';
     // Reduced motion: just show the words
     wordSpans.forEach(w => { (w.firstElementChild as HTMLElement).style.transform = 'none'; });
-  }
-
-  // ============ SCROLL-DRIVEN INTRO (hero recede + sweep) ============
-  // Single scrubbed timeline anchored to #intro-stage (200svh tall):
-  //   0→50%   hero recedes (z: -900, opacity 1→0, blur 0→2px)
-  //   40→100% sweep strip slides R→L across viewport (depth-of-field via --sweep-scale)
-  //   10% overlap at 40-50% so hero fade-out and sweep entry cross-fade
-  // User controls pace by scrolling; when pin releases, Work is in viewport.
-  if (!reduceMotion.current) {
-    const stageEl = document.getElementById('intro-stage');
-    const heroEl = document.querySelector<HTMLElement>('[data-intro-hero]');
-    const sweepEl = document.getElementById('sweep');
-    if (stageEl && heroEl && sweepEl) {
-      // Build the strip
-      const strip = document.createElement('div');
-      strip.className = 'sweep-strip';
-      sweepEl.appendChild(strip);
-
-      const imgs = SWEEP_IMAGES.map((entry) => {
-        const img = document.createElement('img');
-        img.src = entry.src;
-        img.alt = entry.alt;
-        img.className = 'sweep-img';
-        img.loading = 'eager';
-        img.decoding = 'async';
-        strip.appendChild(img);
-        return img;
-      });
-
-      // Depth-of-field: per-image scale based on distance from viewport center.
-      // Center → SCALE_MAX, edges → SCALE_MIN, with 1 - t^2 falloff so the
-      // center holds its larger scale longer than a linear ramp would.
-      const SCALE_MAX = 1.2;
-      const SCALE_MIN = 0.4;
-      const updateDepth = () => {
-        const cx = window.innerWidth / 2;
-        const halfVw = cx;
-        imgs.forEach((img) => {
-          const rect = img.getBoundingClientRect();
-          const imgCx = rect.left + rect.width / 2;
-          const dist = Math.abs(imgCx - cx);
-          const t = Math.min(dist / halfVw, 1);
-          const eased = 1 - t * t;
-          const scale = SCALE_MIN + (SCALE_MAX - SCALE_MIN) * eased;
-          img.style.setProperty('--sweep-scale', scale.toFixed(3));
-        });
-      };
-
-      // Initial states
-      gsap.set(heroEl, { z: 0, opacity: 1, filter: 'blur(0px)' });
-      gsap.set(strip, { x: () => window.innerWidth });
-      updateDepth();
-
-      // ─── Hero recede: scrubbed, reversible, completes by 50% of pin scroll ───
-      // .intro-stage is 200svh tall; pin scroll spans the inner 100svh.
-      // start 'top top' = top of stage hits viewport top (pin engages)
-      // end 'center top' = center of stage hits viewport top (50% of pin scroll)
-      gsap.to(heroEl, {
-        z: -900,
-        opacity: 0,
-        filter: 'blur(2px)',
-        ease: 'none',
-        scrollTrigger: {
-          trigger: stageEl,
-          start: 'top top',
-          end: 'center top',
-          scrub: 0.6,
-          invalidateOnRefresh: true,
-        },
-      });
-
-      // ─── Sweep: one-shot, auto-plays through, scroll-locked for 2.5s ───
-      // Fires when scroll passes the 50% mark of intro-stage (i.e. right
-      // after the hero recede completes). While the sweep plays, scroll is
-      // locked (Lenis stop + wheel/touch preventDefault) so the pin can't
-      // release mid-sweep. After completion, scroll unlocks and the user
-      // can continue past the pin end naturally.
-      const blockWheel = (e: Event) => e.preventDefault();
-
-      const unlockScroll = () => {
-        const lenis = (window as any).__lenis;
-        lenis?.start();
-        window.removeEventListener('wheel', blockWheel as EventListener);
-        window.removeEventListener('touchmove', blockWheel as EventListener);
-      };
-
-      const fireSweep = () => {
-        const lenis = (window as any).__lenis;
-        lenis?.stop();
-        window.addEventListener('wheel', blockWheel as EventListener, { passive: false });
-        window.addEventListener('touchmove', blockWheel as EventListener, { passive: false });
-
-        const workEl = document.getElementById('work');
-        const sweepTl = gsap.timeline({ onComplete: unlockScroll });
-
-        // Single sweep tween with SlowMo ease: dramatic slow start,
-        // fast middle burst, dramatic slow end. 4.5s total.
-        // slow(linearRatio, power, yoyo): 0.4 = 40% of duration at full
-        // speed (the fast middle), 0.8 = how aggressively the slow
-        // start/end ramp (higher = more dramatic).
-        sweepTl.to(strip, {
-          x: () => -strip.scrollWidth,
-          duration: 4.5,
-          ease: 'slow(0.4, 0.8, false)',
-          onUpdate: updateDepth,
-        });
-
-        // Fade-out overlaps the slow-end phase
-        sweepTl.to(strip, {
-          opacity: 0,
-          duration: 1.4,
-          ease: 'power1.in',
-          onStart: () => {
-            unlockScroll();
-            if (workEl) {
-              const target = workEl.getBoundingClientRect().top + window.scrollY;
-              window.scrollTo({ top: target, behavior: 'smooth' });
-            }
-          },
-        }, '-=1.8');
-      };
-
-      ScrollTrigger.create({
-        trigger: stageEl,
-        start: 'center top',
-        once: true,
-        onEnter: fireSweep,
-      });
-    }
   }
 
   // ============ TIMELINE PINNED ============

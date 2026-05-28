@@ -261,28 +261,22 @@ const featured: Project[] = PROJECTS.slice(0, 3);
       if (titleSpan) gsap.set(titleSpan, { y: '110%' });
 
       // Card enter: scale + y + opacity as it rises into focus.
-      // Card 0 is snapped to final state (driven by the intro-stage
-      // scrubbed timeline in index.astro). Cards 1+ use the normal scrub.
-      if (i === 0) {
-        gsap.set(card, { scale: 1, yPercent: 0, opacity: 1 });
-      } else {
-        gsap.fromTo(card, {
-          scale: 0.92,
-          yPercent: 12,
-          opacity: 0.6,
-        }, {
-          scale: 1,
-          yPercent: 0,
-          opacity: 1,
-          ease: 'none',
-          scrollTrigger: {
-            trigger: panel,
-            start: 'top 85%',
-            end: 'center 55%',
-            scrub: 0.8,
-          },
-        });
-      }
+      gsap.fromTo(card, {
+        scale: 0.92,
+        yPercent: 12,
+        opacity: 0.6,
+      }, {
+        scale: 1,
+        yPercent: 0,
+        opacity: 1,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: panel,
+          start: 'top 85%',
+          end: 'center 55%',
+          scrub: 0.8,
+        },
+      });
 
       // Card exit: scale back as it recedes from focus (ALL cards)
       gsap.fromTo(card, {
